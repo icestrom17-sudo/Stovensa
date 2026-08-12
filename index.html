@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stovensa</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            color: #222;
+        }
+
+        header {
+            background: #0b3d91;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 30px;
+        }
+
+        header p {
+            margin-top: 8px;
+        }
+
+        nav {
+            background: #082c68;
+            padding: 12px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+
+        .hero {
+            background: white;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .hero h2 {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #555;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            padding: 25px 15px;
+        }
+
+        .section {
+            background: white;
+            margin-bottom: 20px;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        .section h2 {
+            margin-bottom: 15px;
+            color: #0b3d91;
+        }
+
+        .video {
+            width: 100%;
+            max-height: 500px;
+            background: #000;
+            border-radius: 10px;
+        }
+
+        footer {
+            background: #082c68;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>STOVENSA</h1>
+    <p>Website Resmi</p>
+</header>
+
+<nav>
+    <a href="#">Beranda</a>
+    <a href="#">Tentang</a>
+    <a href="#">Berita</a>
+    <a href="#">Galeri</a>
+    <a href="#">Video</a>
+</nav>
+
+<section class="hero">
+    <h2>Selamat Datang di Stovensa</h2>
+    <p>Informasi, kegiatan, berita, foto, dan video.</p>
+</section>
+
+<div class="container">
+
+    <section class="section">
+        <h2>Tentang Stovensa</h2>
+        <p>
+            Ini adalah tempat untuk menampilkan informasi
+            mengenai Stovensa. Teks ini nantinya bisa kita
+            ubah sesuai kebutuhan.
+        </p>
+    </section>
+
+    <section class="section">
+        <h2>Berita Terbaru</h2>
+        <p>
+            Di bagian ini nantinya kita bisa menambahkan
+            berita lengkap dengan foto dan tulisan.
+        </p>
+    </section>
+
+    <section class="section">
+        <h2>Video</h2>
+
+        <video class="video" controls>
+            <source src="video.mp4" type="video/mp4">
+            Browser kamu tidak mendukung video.
+        </video>
+    </section>
+
+</div>
+
+<footer>
+    <p>&copy; 2026 Stovensa</p>
+</footer>
+
+</body>
+</html>
