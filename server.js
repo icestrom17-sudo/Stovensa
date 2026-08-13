@@ -10,6 +10,7 @@ const MEDIA_DIR = path.join(ROOT, "media");
 const DATA_FILE = path.join(DATA_DIR, "site.json");
 const INDEX_FILE = path.join(ROOT, "index.html");
 
+// Buat folder data dan media jika belum ada
 fs.mkdirSync(DATA_DIR, { recursive: true });
 fs.mkdirSync(MEDIA_DIR, { recursive: true });
 
@@ -44,7 +45,7 @@ function loadData() {
     if (!fs.existsSync(DATA_FILE)) {
         return {
             judul: "STOVENSA",
-            deskripsi: "Selamat datang di Website Resmi Stovensa.",
+            deskripsi: "Pusat Informasi, Berita Kegiatan, Jadwal Pelajaran, dan Struktur Kelas Stovensa.",
             berita: [],
             jadwal: [],
             struktur: []
@@ -57,7 +58,7 @@ function loadData() {
         if (!Array.isArray(d.struktur)) d.struktur = [];
         return d;
     } catch {
-        return { judul: "STOVENSA", deskripsi: "Selamat datang di Website Resmi Stovensa.", berita: [], jadwal: [], struktur: [] };
+        return { judul: "STOVENSA", deskripsi: "Pusat Informasi, Berita Kegiatan, Jadwal Pelajaran, dan Struktur Kelas Stovensa.", berita: [], jadwal: [], struktur: [] };
     }
 }
 
@@ -93,12 +94,13 @@ function generateCards(items, emptyText) {
 }
 
 function createWebsite(data) {
+    if (!fs.existsSync(INDEX_FILE)) return;
     let html = fs.readFileSync(INDEX_FILE, "utf8");
 
     const title = escapeHTML(data.judul);
     const description = escapeHTML(data.deskripsi);
 
-    html = html.replace(/(<title>)([\s\S]*?)(<\/title>)/i, `$1${title}$3`);
+    html = html.replace(/(<title>)([\s\S]*?)(<\/title>)/i, `$1${title} - Official Website$3`);
     html = html.replace(/(<h1[^>]*>)([\s\S]*?)(<\/h1>)/i, `$1${title}$3`);
 
     html = html.replace(
@@ -106,9 +108,9 @@ function createWebsite(data) {
         `<!-- STOVENSA_DESKRIPSI_START -->\n<p>${description}</p>\n<!-- STOVENSA_DESKRIPSI_END -->`
     );
 
-    const beritaHTML = generateCards(data.berita, "Belum ada postingan berita.");
-    const jadwalHTML = generateCards(data.jadwal, "Belum ada postingan jadwal.");
-    const strukturHTML = generateCards(data.struktur, "Belum ada postingan struktur.");
+    const beritaHTML = generateCards(data.berita, "Berita terbaru akan muncul di sini.");
+    const jadwalHTML = generateCards(data.jadwal, "Jadwal terbaru akan muncul di sini.");
+    const strukturHTML = generateCards(data.struktur, "Struktur organisasi akan muncul di sini.");
 
     html = html.replace(/<!-- STOVENSA_BERITA_START -->[\s\S]*?<!-- STOVENSA_BERITA_END -->/i, `<!-- STOVENSA_BERITA_START -->\n${beritaHTML}\n<!-- STOVENSA_BERITA_END -->`);
     html = html.replace(/<!-- STOVENSA_JADWAL_START -->[\s\S]*?<!-- STOVENSA_JADWAL_END -->/i, `<!-- STOVENSA_JADWAL_START -->\n${jadwalHTML}\n<!-- STOVENSA_JADWAL_END -->`);
@@ -120,7 +122,7 @@ function createWebsite(data) {
 async function updateGitHub() {
     await git(["add", "."]);
     try {
-        await git(["commit", "-m", "Update postingan seragam untuk Berita, Jadwal, dan Struktur"]);
+        await git(["commit", "-m", "Update konten dari Admin Panel Stovensa"]);
     } catch (e) {
         if (!String(e).includes("nothing to commit")) throw e;
     }
@@ -132,24 +134,27 @@ function receiveBody(req) {
         let body = "";
         req.on("data", chunk => {
             body += chunk;
-            if (body.length > 150 * 1024 * 1024) { reject(new Error("File terlalu besar")); req.destroy(); }
+            if (body.length > 150 * 1024 * 1024) { reject(new Error("File terlalu besar (Maks 150MB)")); req.destroy(); }
         });
         req.on("end", () => {
-            try { resolve(JSON.parse(body)); } catch { reject(new Error("Data tidak valid")); }
+            try { resolve(JSON.parse(body)); } catch { reject(new Error("Data JSON tidak valid")); }
         });
         req.on("error", reject);
     });
 }
 
 const server = http.createServer(async (req, res) => {
-    if (req.method === "GET" && req.url === "/") {
+    // LAYANI HALAMAN UTAMA ADMIN
+    if (req.method === "GET" && (req.url === "/" || req.url === "/admin.html")) {
         return send(res, 200, "text/html", fs.readFileSync(path.join(ROOT, "admin.html")));
     }
 
+    // API: GET DATA
     if (req.method === "GET" && req.url === "/api/data") {
         return json(res, 200, loadData());
     }
 
+    // API: SAVE DATA
     if (req.method === "POST" && req.url === "/api/save") {
         try {
             const input = await receiveBody(req);
@@ -158,6 +163,7 @@ const server = http.createServer(async (req, res) => {
             if (typeof input.judul === "string") data.judul = input.judul;
             if (typeof input.deskripsi === "string") data.deskripsi = input.deskripsi;
 
+            // TAMBAH POST
             if (input.aksi === "tambah_post") {
                 const kat = input.kategori || "berita";
                 let mediaUrl = "";
@@ -184,6 +190,7 @@ const server = http.createServer(async (req, res) => {
                 });
             }
 
+            // HAPUS POST
             if (input.aksi === "hapus_post") {
                 const kat = input.kategori || "berita";
                 if (Array.isArray(data[kat])) {
@@ -200,20 +207,27 @@ const server = http.createServer(async (req, res) => {
             createWebsite(data);
             await updateGitHub();
 
-            return json(res, 200, { success: true, message: "Berhasil di-push ke GitHub!" });
+            return json(res, 200, { success: true, message: "Perubahan tersimpan & di-push ke GitHub!" });
         } catch (error) {
             console.error(error);
             return json(res, 500, { success: false, message: String(error) });
         }
     }
 
+    // MELAYANI FILE STATIS (CSS, Gambar, Media)
     if (req.method === "GET") {
         let requested = decodeURIComponent(req.url.split("?")[0]);
-        if (requested === "/") requested = "/admin.html";
-
         const filePath = path.join(ROOT, requested);
+
         if (filePath.startsWith(ROOT) && fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
-            return send(res, 200, "text/plain", fs.readFileSync(filePath));
+            let contentType = "text/plain";
+            if (filePath.endsWith(".html")) contentType = "text/html";
+            else if (filePath.endsWith(".css")) contentType = "text/css";
+            else if (filePath.endsWith(".jpg") || filePath.endsWith(".jpeg")) contentType = "image/jpeg";
+            else if (filePath.endsWith(".png")) contentType = "image/png";
+            else if (filePath.endsWith(".mp4")) contentType = "video/mp4";
+
+            return send(res, 200, contentType, fs.readFileSync(filePath));
         }
     }
 
@@ -221,5 +235,8 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, "127.0.0.1", () => {
-    console.log("Admin Stovensa berjalan di: http://127.0.0.1:" + PORT);
+    console.log("----------------------------------------");
+    console.log("⚡ Server Admin Stovensa Aktif!");
+    console.log("👉 Buka di Browser: http://localhost:" + PORT);
+    console.log("----------------------------------------");
 });
