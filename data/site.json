@@ -1,5 +1,5 @@
 {
-  "judul": "STOVENSA 7A ",
+  "judul": "Raja dari segala raja",
   "deskripsi": "Buatan izaas",
   "berita": [
     {
@@ -9,5 +9,15 @@
     }
   ],
   "foto": [],
-  "video": []
+  "video": [],
+  "jadwal": [],
+  "struktur": [
+    {
+      "id": 1786623219971,
+      "judul": "Raja dari segala raja",
+      "isi": "Izaas kesatria Minecraft",
+      "mediaUrl": "media/1786623219962_s2is3i.jpg",
+      "mediaType": "image"
+    }
+  ]
 }
