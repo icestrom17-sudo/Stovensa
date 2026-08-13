@@ -84,43 +84,29 @@ function createWebsite(data) {
         `<!-- STOVENSA_DESKRIPSI_START -->\n<p>${description}</p>\n<!-- STOVENSA_DESKRIPSI_END -->`
     );
 
-    const beritaHTML = data.berita.map(item => `
-        <article class="card news-card show">
-            <div class="news-content">
-                <h3>${escapeHTML(item.judul)}</h3>
-                <p>${escapeHTML(item.isi)}</p>
-            </div>
-        </article>
-    `).join("");
+    const beritaHTML = data.berita.length > 0 ? data.berita.map(item => `
+        <div class="card show">
+            <div class="icon">📰</div>
+            <h3>${escapeHTML(item.judul)}</h3>
+            <p>${escapeHTML(item.isi)}</p>
+        </div>
+    `).join("") : '<div class="card show"><div class="icon">📰</div><h3>Belum ada berita</h3><p>Berita terbaru akan muncul di sini.</p></div>';
 
-    const fotoHTML = data.foto.map(item => `
-        <article class="card media-card show">
+    const fotoHTML = data.foto.length > 0 ? data.foto.map(item => `
+        <div class="card media-card show">
             <img src="${escapeHTML(item.url)}" alt="${escapeHTML(item.nama)}">
-        </article>
-    `).join("");
+        </div>
+    `).join("") : '<div class="card show"><div class="icon">📸</div><h3>Belum ada foto</h3><p>Foto kegiatan akan muncul di sini.</p></div>';
 
-    const videoHTML = data.video.map(item => `
-        <article class="card media-card show">
-            <video controls preload="metadata">
-                <source src="${escapeHTML(item.url)}">
-            </video>
-        </article>
-    `).join("");
+    const videoHTML = data.video.length > 0 ? data.video.map(item => `
+        <div class="card media-card show">
+            <video controls preload="metadata"><source src="${escapeHTML(item.url)}"></video>
+        </div>
+    `).join("") : '<div class="card show"><div class="icon">🎬</div><h3>Belum ada video</h3><p>Video kegiatan akan muncul di sini.</p></div>';
 
-    html = html.replace(
-        /<!-- STOVENSA_BERITA_START -->[\s\S]*?<!-- STOVENSA_BERITA_END -->/i,
-        `<!-- STOVENSA_BERITA_START -->\n${beritaHTML || '<div class="card show"><div class="icon">📰</div><h3>Belum ada berita</h3><p>Berita terbaru akan muncul di sini.</p></div>'}\n<!-- STOVENSA_BERITA_END -->`
-    );
-
-    html = html.replace(
-        /<!-- STOVENSA_FOTO_START -->[\s\S]*?<!-- STOVENSA_FOTO_END -->/i,
-        `<!-- STOVENSA_FOTO_START -->\n${fotoHTML || '<div class="card show"><div class="icon">📸</div><h3>Belum ada foto</h3><p>Foto kegiatan akan muncul di sini.</p></div>'}\n<!-- STOVENSA_FOTO_END -->`
-    );
-
-    html = html.replace(
-        /<!-- STOVENSA_VIDEO_START -->[\s\S]*?<!-- STOVENSA_VIDEO_END -->/i,
-        `<!-- STOVENSA_VIDEO_START -->\n${videoHTML || '<div class="card show"><div class="icon">🎬</div><h3>Belum ada video</h3><p>Video kegiatan akan muncul di sini.</p></div>'}\n<!-- STOVENSA_VIDEO_END -->`
-    );
+    html = html.replace(/<!-- STOVENSA_BERITA_START -->[\s\S]*?<!-- STOVENSA_BERITA_END -->/i, `<!-- STOVENSA_BERITA_START -->${beritaHTML}<!-- STOVENSA_BERITA_END -->`);
+    html = html.replace(/<!-- STOVENSA_FOTO_START -->[\s\S]*?<!-- STOVENSA_FOTO_END -->/i, `<!-- STOVENSA_FOTO_START -->${fotoHTML}<!-- STOVENSA_FOTO_END -->`);
+    html = html.replace(/<!-- STOVENSA_VIDEO_START -->[\s\S]*?<!-- STOVENSA_VIDEO_END -->/i, `<!-- STOVENSA_VIDEO_START -->${videoHTML}<!-- STOVENSA_VIDEO_END -->`);
 
     fs.writeFileSync(INDEX_FILE, html, "utf8");
 }
@@ -128,7 +114,7 @@ function createWebsite(data) {
 async function updateGitHub() {
     await git(["add", "."]);
     try {
-        await git(["commit", "-m", "Update Stovensa dari Admin"]);
+        await git(["commit", "-m", "Update Stovensa dari Admin Panel"]);
     } catch (e) {
         if (!String(e).includes("nothing to commit")) {
             throw e;
@@ -175,6 +161,7 @@ const server = http.createServer(async (req, res) => {
             if (typeof input.judul === "string") data.judul = input.judul;
             if (typeof input.deskripsi === "string") data.deskripsi = input.deskripsi;
 
+            // TAMBAH BERITA
             if (input.aksi === "tambah_berita") {
                 data.berita.unshift({
                     id: Date.now(),
@@ -183,6 +170,12 @@ const server = http.createServer(async (req, res) => {
                 });
             }
 
+            // HAPUS BERITA
+            if (input.aksi === "hapus_berita") {
+                data.berita = data.berita.filter(x => String(x.id) !== String(input.id));
+            }
+
+            // UPLOAD FOTO / VIDEO
             if (input.aksi === "upload_media") {
                 const base64 = String(input.data || "");
                 const type = input.type === "video" ? "video" : "image";
@@ -197,6 +190,26 @@ const server = http.createServer(async (req, res) => {
                 const item = { id: Date.now(), nama: input.nama || filename, url: relative };
                 if (type === "video") data.video.unshift(item);
                 else data.foto.unshift(item);
+            }
+
+            // HAPUS FOTO
+            if (input.aksi === "hapus_foto") {
+                const item = data.foto.find(x => String(x.id) === String(input.id));
+                if (item) {
+                    const filePath = path.join(ROOT, item.url);
+                    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+                }
+                data.foto = data.foto.filter(x => String(x.id) !== String(input.id));
+            }
+
+            // HAPUS VIDEO
+            if (input.aksi === "hapus_video") {
+                const item = data.video.find(x => String(x.id) === String(input.id));
+                if (item) {
+                    const filePath = path.join(ROOT, item.url);
+                    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+                }
+                data.video = data.video.filter(x => String(x.id) !== String(input.id));
             }
 
             saveData(data);

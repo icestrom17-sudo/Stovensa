@@ -17,7 +17,18 @@ input, textarea { width: 100%; padding: 13px; border: 1px solid #d5dbe5; border-
 textarea { min-height: 100px; resize: vertical; }
 button { width: 100%; padding: 14px; border: 0; border-radius: 12px; background: #1769ff; color: white; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
 button:hover { background: #0d55d9; }
-#status { display: none; margin-top: 15px; padding: 13px; border-radius: 10px; background: #eef4ff; font-weight: bold; }
+
+/* ITEM KELOLA & TOMBOL HAPUS */
+.item-list { margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px; }
+.item-row { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 12px 15px; border-radius: 10px; margin-bottom: 10px; border: 1px solid #e2e8f0; }
+.item-info { flex: 1; padding-right: 10px; overflow: hidden; }
+.item-info h4 { margin: 0 0 5px; font-size: 16px; }
+.item-info p { margin: 0; font-size: 13px; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.item-preview-img { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; margin-right: 10px; }
+.btn-delete { width: auto; padding: 8px 14px; background: #ef4444; color: white; border: 0; border-radius: 8px; font-size: 13px; margin: 0; }
+.btn-delete:hover { background: #dc2626; }
+
+#status { display: none; margin-top: 15px; padding: 13px; border-radius: 10px; background: #eef4ff; font-weight: bold; position: fixed; bottom: 20px; right: 20px; left: 20px; max-width: 850px; margin: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 100; }
 </style>
 </head>
 <body>
@@ -41,30 +52,39 @@ button:hover { background: #0d55d9; }
         <button onclick="simpanInfo()">💾 Simpan Info Utama</button>
     </div>
 
-    <!-- TAMBAH BERITA -->
+    <!-- KELOLA BERITA -->
     <div class="card">
-        <h2>📰 Tambah Berita Baru</h2>
-        <label for="beritaJudul">Judul Berita</label>
+        <h2>📰 Kelola Berita</h2>
+        <label for="beritaJudul">Judul Berita Baru</label>
         <input id="beritaJudul" type="text" placeholder="Judul berita baru">
         
         <label for="beritaIsi">Isi Berita</label>
         <textarea id="beritaIsi" placeholder="Tuliskan berita..."></textarea>
         
         <button onclick="tambahBerita()">➕ Tambah Berita</button>
+
+        <h3 style="margin-top:25px; font-size:16px;">Daftar Berita Ada:</h3>
+        <div id="daftarBerita" class="item-list"><i>Memuat berita...</i></div>
     </div>
 
-    <!-- UPLOAD FOTO -->
+    <!-- KELOLA FOTO -->
     <div class="card">
-        <h2>📸 Upload Foto</h2>
+        <h2>📸 Kelola Foto</h2>
         <input id="fotoInput" type="file" accept="image/*">
         <button onclick="uploadMedia('image')">📤 Upload Foto</button>
+
+        <h3 style="margin-top:25px; font-size:16px;">Daftar Foto Ada:</h3>
+        <div id="daftarFoto" class="item-list"><i>Memuat foto...</i></div>
     </div>
 
-    <!-- UPLOAD VIDEO -->
+    <!-- KELOLA VIDEO -->
     <div class="card">
-        <h2>🎬 Upload Video</h2>
+        <h2>🎬 Kelola Video</h2>
         <input id="videoInput" type="file" accept="video/*">
         <button onclick="uploadMedia('video')">📤 Upload Video</button>
+
+        <h3 style="margin-top:25px; font-size:16px;">Daftar Video Ada:</h3>
+        <div id="daftarVideo" class="item-list"><i>Memuat video...</i></div>
     </div>
 
     <div id="status"></div>
@@ -78,14 +98,65 @@ function showStatus(msg, isSuccess = true) {
     statusDiv.style.background = isSuccess ? "#eef4ff" : "#fef2f2";
     statusDiv.style.color = isSuccess ? "#1e40af" : "#991b1b";
     statusDiv.textContent = msg;
+    setTimeout(() => { if(isSuccess) statusDiv.style.display = "none"; }, 4000);
 }
 
+// Ambil & Tampilkan data terbaru dari server
 async function loadData() {
     try {
         const res = await fetch("/api/data");
         const data = await res.json();
+        
         document.getElementById("judul").value = data.judul || "";
         document.getElementById("deskripsi").value = data.deskripsi || "";
+
+        // Render List Berita
+        const beritaBox = document.getElementById("daftarBerita");
+        if (!data.berita || data.berita.length === 0) {
+            beritaBox.innerHTML = "<p style='color:#94a3b8;'>Belum ada berita.</p>";
+        } else {
+            beritaBox.innerHTML = data.berita.map(b => `
+                <div class="item-row">
+                    <div class="item-info">
+                        <h4>${b.judul}</h4>
+                        <p>${b.isi}</p>
+                    </div>
+                    <button class="btn-delete" onclick="hapusItem('hapus_berita', '${b.id}')">🗑️ Hapus</button>
+                </div>
+            `).join("");
+        }
+
+        // Render List Foto
+        const fotoBox = document.getElementById("daftarFoto");
+        if (!data.foto || data.foto.length === 0) {
+            fotoBox.innerHTML = "<p style='color:#94a3b8;'>Belum ada foto.</p>";
+        } else {
+            fotoBox.innerHTML = data.foto.map(f => `
+                <div class="item-row">
+                    <img src="${f.url}" class="item-preview-img">
+                    <div class="item-info">
+                        <h4>${f.nama}</h4>
+                    </div>
+                    <button class="btn-delete" onclick="hapusItem('hapus_foto', '${f.id}')">🗑️ Hapus</button>
+                </div>
+            `).join("");
+        }
+
+        // Render List Video
+        const videoBox = document.getElementById("daftarVideo");
+        if (!data.video || data.video.length === 0) {
+            videoBox.innerHTML = "<p style='color:#94a3b8;'>Belum ada video.</p>";
+        } else {
+            videoBox.innerHTML = data.video.map(v => `
+                <div class="item-row">
+                    <div class="item-info">
+                        <h4>${v.nama}</h4>
+                    </div>
+                    <button class="btn-delete" onclick="hapusItem('hapus_video', '${v.id}')">🗑️ Hapus</button>
+                </div>
+            `).join("");
+        }
+
     } catch (e) {
         console.error(e);
     }
@@ -102,7 +173,8 @@ async function sendData(payload) {
         });
         const result = await res.json();
         if (result.success) {
-            showStatus("✅ Perubahan berhasil disimpan dan di-push ke GitHub!");
+            showStatus("✅ Perubahan berhasil disimpan & di-push ke GitHub!");
+            loadData(); // Reload list
         } else {
             showStatus("❌ Gagal: " + result.message, false);
         }
@@ -127,6 +199,9 @@ function tambahBerita() {
         beritaJudul,
         beritaIsi
     });
+
+    document.getElementById("beritaJudul").value = "";
+    document.getElementById("beritaIsi").value = "";
 }
 
 function uploadMedia(type) {
@@ -142,8 +217,15 @@ function uploadMedia(type) {
             data: e.target.result,
             nama: file.name
         });
+        input.value = "";
     };
     reader.readAsDataURL(file);
+}
+
+function hapusItem(aksi, id) {
+    if (confirm("Apakah kamu yakin ingin menghapus item ini?")) {
+        sendData({ aksi, id });
+    }
 }
 </script>
 </body>
