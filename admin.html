@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Stovensa</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f3f6;
+            color: #222;
+        }
+
+        header {
+            background: #0b3d91;
+            color: white;
+            padding: 22px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        header p {
+            margin: 8px 0 0;
+            opacity: .9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 14px;
+            box-shadow: 0 4px 15px rgba(0,0,0,.08);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: #0b3d91;
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 9px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            border-color: #0b3d91;
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            background: #f5f5f5;
+            border-radius: 9px;
+            border: 1px solid #ccc;
+        }
+
+        .preview-box {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 10px;
+            background: #f5f5f5;
+            text-align: center;
+            display: none;
+        }
+
+        .preview-box img {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 10px;
+        }
+
+        .preview-box video {
+            width: 100%;
+            max-height: 450px;
+            border-radius: 10px;
+            background: black;
+        }
+
+        .file-name {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
+            word-break: break-word;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+            border: none;
+            border-radius: 9px;
+            background: #0b3d91;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: .9;
+        }
+
+        .reset {
+            background: #777;
+        }
+
+        .status {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 9px;
+            background: #e8f0fe;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Admin Stovensa</h1>
+    <p>Kelola isi website Stovensa</p>
+</header>
+
+<div class="container">
+
+    <!-- JUDUL DAN DESKRIPSI -->
+    <div class="card">
+        <h2>📝 Konten</h2>
+
+        <label for="judul">Judul</label>
+
+        <input
+            type="text"
+            id="judul"
+            placeholder="Masukkan judul">
+
+        <label for="deskripsi">Deskripsi / Tulisan</label>
+
+        <textarea
+            id="deskripsi"
+            placeholder="Masukkan tulisan atau deskripsi"></textarea>
+    </div>
+
+
+    <!-- FOTO -->
+    <div class="card">
+
+        <h2>🖼️ Foto</h2>
+
+        <label for="foto">Pilih foto</label>
+
+        <input
+            type="file"
+            id="foto"
+            accept="image/*">
+
+        <div
+            class="preview-box"
+            id="fotoPreview">
+
+            <img
+                id="fotoImage"
+                alt="Preview foto">
+
+            <div
+                class="file-name"
+                id="fotoName">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- VIDEO -->
+    <div class="card">
+
+        <h2>🎥 Video</h2>
+
+        <label for="video">Pilih video</label>
+
+        <input
+            type="file"
+            id="video"
+            accept="video/*">
+
+        <div
+            class="preview-box"
+            id="videoPreview">
+
+            <video
+                id="videoPlayer"
+                controls>
+            </video>
+
+            <div
+                class="file-name"
+                id="videoName">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- TOMBOL -->
+    <div class="card">
+
+        <button onclick="simpanData()">
+            💾 Simpan
+        </button>
+
+        <button
+            class="reset"
+            onclick="resetForm()">
+            🔄 Reset
+        </button>
+
+        <div
+            class="status"
+            id="status">
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const fotoInput =
+    document.getElementById("foto");
+
+const videoInput =
+    document.getElementById("video");
+
+
+/* =========================
+   PREVIEW FOTO
+========================= */
+
+fotoInput.addEventListener(
+    "change",
+    function () {
+
+        const file = this.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        const url =
+            URL.createObjectURL(file);
+
+        document.getElementById(
+            "fotoImage"
+        ).src = url;
+
+        document.getElementById(
+            "fotoName"
+        ).textContent =
+            file.name;
+
+        document.getElementById(
+            "fotoPreview"
+        ).style.display = "block";
+    }
+);
+
+
+/* =========================
+   PREVIEW VIDEO
+========================= */
+
+videoInput.addEventListener(
+    "change",
+    function () {
+
+        const file = this.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        const url =
+            URL.createObjectURL(file);
+
+        document.getElementById(
+            "videoPlayer"
+        ).src = url;
+
+        document.getElementById(
+            "videoName"
+        ).textContent =
+            file.name;
+
+        document.getElementById(
+            "videoPreview"
+        ).style.display = "block";
+    }
+);
+
+
+/* =========================
+   SIMPAN DATA SEMENTARA
+========================= */
+
+function simpanData() {
+
+    const judul =
+        document.getElementById(
+            "judul"
+        ).value;
+
+    const deskripsi =
+        document.getElementById(
+            "deskripsi"
+        ).value;
+
+    localStorage.setItem(
+        "stovensa_judul",
+        judul
+    );
+
+    localStorage.setItem(
+        "stovensa_deskripsi",
+        deskripsi
+    );
+
+    const status =
+        document.getElementById(
+            "status"
+        );
+
+    status.style.display = "block";
+
+    status.textContent =
+        "✅ Judul dan deskripsi berhasil disimpan di browser.";
+}
+
+
+/* =========================
+   RESET
+========================= */
+
+function resetForm() {
+
+    document.getElementById(
+        "judul"
+    ).value = "";
+
+    document.getElementById(
+        "deskripsi"
+    ).value = "";
+
+    fotoInput.value = "";
+    videoInput.value = "";
+
+    document.getElementById(
+        "fotoPreview"
+    ).style.display = "none";
+
+    document.getElementById(
+        "videoPreview"
+    ).style.display = "none";
+
+    document.getElementById(
+        "status"
+    ).style.display = "none";
+}
+
+
+/* =========================
+   MEMUAT DATA TERSIMPAN
+========================= */
+
+window.addEventListener(
+    "load",
+    function () {
+
+        const judul =
+            localStorage.getItem(
+                "stovensa_judul"
+            );
+
+        const deskripsi =
+            localStorage.getItem(
+                "stovensa_deskripsi"
+            );
+
+        if (judul) {
+            document.getElementById(
+                "judul"
+            ).value = judul;
+        }
+
+        if (deskripsi) {
+            document.getElementById(
+                "deskripsi"
+            ).value = deskripsi;
+        }
+    }
+);
+
+</script>
+
+</body>
+</html>
