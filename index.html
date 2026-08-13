@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>STOVENSA 7A </title>
-<!-- Google Fonts: Plus Jakarta Sans -->
+<title>STOVENSA - Official Website</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -16,273 +15,61 @@
     --card-border: rgba(255, 255, 255, 0.08);
     --accent-blue: #3b82f6;
     --accent-purple: #8b5cf6;
-    --accent-cyan: #06b6d4;
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+html { scroll-behavior: smooth; background-color: var(--bg-dark); color: var(--text-primary); }
+body { overflow-x: hidden; position: relative; min-height: 100vh; display: flex; flex-direction: column; }
+
+/* BACKGROUND GLOW */
+.bg-glow-1 { position: fixed; top: -100px; left: -100px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(59, 130, 246, 0.25), transparent 70%); filter: blur(80px); z-index: -1; pointer-events: none; }
+.bg-glow-2 { position: fixed; bottom: -100px; right: -100px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(139, 92, 246, 0.2), transparent 70%); filter: blur(100px); z-index: -1; pointer-events: none; }
+
+/* NAVBAR & TAB SWITCHER */
+nav { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 1000px; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--card-border); border-radius: 50px; z-index: 1000; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); }
+.logo { font-size: 18px; font-weight: 800; background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; color: transparent; cursor: pointer; }
+
+.nav-tabs { display: flex; gap: 8px; }
+.tab-btn { background: transparent; border: 0; color: var(--text-secondary); padding: 8px 16px; border-radius: 30px; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.3s ease; }
+.tab-btn:hover { color: var(--text-primary); }
+.tab-btn.active { background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
+
+/* HERO HEADER */
+.hero-mini { padding: 130px 20px 30px; text-align: center; }
+.hero-mini h1 { font-size: clamp(32px, 6vw, 55px); font-weight: 800; background: linear-gradient(180deg, #ffffff 30%, #94a3b8 100%); -webkit-background-clip: text; color: transparent; }
+.hero-mini p { color: var(--text-secondary); font-size: 15px; margin-top: 8px; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+/* CONTAINER & TABS */
+.container { max-width: 1100px; margin: 0 auto; padding: 20px 20px 80px; flex: 1; width: 100%; }
+.tab-content { display: none; animation: fadeIn 0.4s ease-in-out forwards; }
+.tab-content.active { display: block; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-html {
-    scroll-behavior: smooth;
-    background-color: var(--bg-dark);
-    color: var(--text-primary);
-}
+/* GRID & CARDS */
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
 
-body {
-    overflow-x: hidden;
-    position: relative;
-}
+.card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; overflow: hidden; backdrop-filter: blur(10px); transition: all 0.3s ease; display: flex; flex-direction: column; }
+.card:hover { transform: translateY(-5px); border-color: rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.05); }
 
-/* BACKGROUND MESH GRADIENT GLOW */
-.bg-glow-1 {
-    position: fixed;
-    top: -100px;
-    left: -100px;
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, rgba(59, 130, 246, 0.25), transparent 70%);
-    filter: blur(80px);
-    z-index: -1;
-    pointer-events: none;
-}
+.card-media { width: 100%; height: 230px; overflow: hidden; background: #000; }
+.card-media img, .card-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-.bg-glow-2 {
-    position: fixed;
-    bottom: -100px;
-    right: -100px;
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(139, 92, 246, 0.2), transparent 70%);
-    filter: blur(100px);
-    z-index: -1;
-    pointer-events: none;
-}
+.card-body { padding: 24px; flex: 1; }
+.card-body h3 { font-size: 19px; font-weight: 700; margin-bottom: 10px; color: var(--text-primary); }
+.card-body p { color: var(--text-secondary); line-height: 1.6; font-size: 14px; white-space: pre-line; }
 
-/* NAVBAR GLASSMORPHISM */
-nav {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 1000px;
-    padding: 14px 28px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(15, 23, 42, 0.65);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--card-border);
-    border-radius: 50px;
-    z-index: 1000;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-}
-
-.logo {
-    font-size: 20px;
-    font-weight: 800;
-    letter-spacing: 1px;
-    background: linear-gradient(135deg, #60a5fa, #a78bfa);
-    -webkit-background-clip: text;
-    color: transparent;
-}
-
-.nav-links a {
-    text-decoration: none;
-    color: var(--text-secondary);
-    margin-left: 24px;
-    font-weight: 600;
-    font-size: 14px;
-    transition: all 0.3s ease;
-}
-
-.nav-links a:hover {
-    color: var(--text-primary);
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-}
-
-/* HERO SECTION (21st.dev style) */
-.hero {
-    min-height: 100vh;
-    padding: 160px 20px 100px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    position: relative;
-}
-
-.hero-badge {
-    display: inline-block;
-    padding: 8px 18px;
-    background: rgba(59, 130, 246, 0.1);
-    border: 1px solid rgba(59, 130, 246, 0.3);
-    border-radius: 30px;
-    font-size: 13px;
-    color: #60a5fa;
-    margin-bottom: 24px;
-    backdrop-filter: blur(5px);
-}
-
-.hero h1 {
-    font-size: clamp(45px, 8vw, 85px);
-    font-weight: 800;
-    line-height: 1.1;
-    background: linear-gradient(180deg, #ffffff 30%, #94a3b8 100%);
-    -webkit-background-clip: text;
-    color: transparent;
-    max-width: 900px;
-    margin-bottom: 24px;
-    letter-spacing: -1.5px;
-}
-
-.hero p {
-    font-size: clamp(16px, 2.5vw, 20px);
-    color: var(--text-secondary);
-    max-width: 650px;
-    line-height: 1.7;
-    margin-bottom: 36px;
-}
-
-.hero-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 16px 36px;
-    border-radius: 50px;
-    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-    color: white;
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 15px;
-    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
-    transition: all 0.4s ease;
-}
-
-.hero-btn:hover {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(139, 92, 246, 0.5);
-}
-
-/* SECTIONS */
-section {
-    padding: 100px 5%;
-    max-width: 1200px;
-    margin: auto;
-}
-
-.section-title {
-    text-align: center;
-    margin-bottom: 60px;
-}
-
-.section-title h2 {
-    font-size: 36px;
-    font-weight: 800;
-    margin-bottom: 12px;
-    letter-spacing: -0.5px;
-}
-
-.section-title p {
-    color: var(--text-secondary);
-    font-size: 16px;
-}
-
-/* CARDS & GRID */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-}
-
-.card {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 24px;
-    padding: 32px;
-    backdrop-filter: blur(10px);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-/* HOVER ANIMATION EFFEK FRAMER MOTION */
-.card:hover {
-    transform: translateY(-10px);
-    border-color: rgba(255, 255, 255, 0.25);
-    background: rgba(255, 255, 255, 0.05);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-}
-
-.card .icon {
-    font-size: 40px;
-    margin-bottom: 20px;
-    display: inline-block;
-}
-
-.card h3 {
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 12px;
-    color: var(--text-primary);
-}
-
-.card p {
-    color: var(--text-secondary);
-    line-height: 1.6;
-    font-size: 14px;
-}
-
-.media-card img, .media-card video {
-    width: 100%;
-    border-radius: 16px;
-    object-fit: cover;
-    display: block;
-}
-
-/* FOOTER */
-footer {
-    border-top: 1px solid var(--card-border);
-    padding: 60px 20px;
-    text-align: center;
-    background: rgba(9, 13, 22, 0.8);
-    margin-top: 60px;
-}
-
-footer h3 {
-    font-size: 22px;
-    font-weight: 800;
-    margin-bottom: 8px;
-}
-
-footer p {
-    color: var(--text-secondary);
-    font-size: 14px;
-}
-
-/* SCROLL REVEAL ANIMATION */
-.reveal {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
-}
-
-.reveal.active {
-    opacity: 1;
-    transform: translateY(0);
-}
+footer { border-top: 1px solid var(--card-border); padding: 40px 20px; text-align: center; background: rgba(9, 13, 22, 0.8); }
 
 @media (max-width: 768px) {
-    nav { width: 92%; padding: 12px 20px; }
-    .nav-links a { margin-left: 12px; font-size: 12px; }
-    .hero h1 { font-size: 38px; }
-    section { padding: 70px 20px; }
+    nav { width: 95%; padding: 8px 12px; }
+    .logo { font-size: 15px; }
+    .tab-btn { padding: 6px 10px; font-size: 11px; }
 }
 </style>
 </head>
@@ -291,89 +78,71 @@ footer p {
 <div class="bg-glow-1"></div>
 <div class="bg-glow-2"></div>
 
-<!-- NAVBAR -->
+<!-- NAVBAR TAB MENU -->
 <nav>
-    <div class="logo">STOVENSA</div>
-    <div class="nav-links">
-        <a href="#beranda">Beranda</a>
-        <a href="#berita">Berita</a>
-        <a href="#galeri">Galeri</a>
-        <a href="#video">Video</a>
+    <div class="logo" onclick="switchTab('berita')">STOVENSA</div>
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('berita')">📰 Berita</button>
+        <button class="tab-btn" onclick="switchTab('jadwal')">📅 Jadwal</button>
+        <button class="tab-btn" onclick="switchTab('struktur')">👥 Struktur</button>
     </div>
 </nav>
 
-<!-- HERO -->
-<header class="hero" id="beranda">
-    <div class="hero-badge reveal active">✨ Official Digital Platform Stovensa</div>
-    <h1 class="reveal active">STOVENSA 7A </h1>
+<!-- HEADER UTAMA -->
+<div class="hero-mini">
+    <h1>STOVENSA</h1>
     <!-- STOVENSA_DESKRIPSI_START -->
-<p>Buatan izaas</p>
-<!-- STOVENSA_DESKRIPSI_END -->
-    <a href="#berita" class="hero-btn reveal active">Jelajahi Sekarang ↓</a>
-</header>
+    <p>Pusat Informasi, Berita Kegiatan, Jadwal Pelajaran, dan Struktur Kelas Stovensa.</p>
+    <!-- STOVENSA_DESKRIPSI_END -->
+</div>
 
-<!-- BERITA -->
-<section id="berita">
-    <div class="section-title reveal">
-        <h2>📰 Berita Terbaru</h2>
-        <p>Informasi dan pembaruan kegiatan harian Stovensa</p>
-    </div>
-    <div class="grid">
-        <!-- STOVENSA_BERITA_START -->
-        <div class="card show">
-            <div class="icon">📰</div>
-            <h3>Lomba 17 Agustus</h3>
-            <p>7A berasil melaju kebabak basket berikutnya</p>
+<!-- CONTAINER DEPAN -->
+<div class="container">
+
+    <!-- TAB 1: BERITA -->
+    <div id="tab-berita" class="tab-content active">
+        <div class="grid">
+            <!-- STOVENSA_BERITA_START -->
+            <div class="card"><div class="card-body"><h3>Belum Ada Berita</h3><p>Berita terbaru akan muncul di sini.</p></div></div>
+            <!-- STOVENSA_BERITA_END -->
         </div>
-    <!-- STOVENSA_BERITA_END -->
     </div>
-</section>
 
-<!-- GALERI -->
-<section id="galeri">
-    <div class="section-title reveal">
-        <h2>📸 Galeri Foto</h2>
-        <p>Dokumentasi visual momen terbaik Stovensa</p>
+    <!-- TAB 2: JADWAL -->
+    <div id="tab-jadwal" class="tab-content">
+        <div class="grid">
+            <!-- STOVENSA_JADWAL_START -->
+            <div class="card"><div class="card-body"><h3>Belum Ada Jadwal</h3><p>Jadwal terbaru akan muncul di sini.</p></div></div>
+            <!-- STOVENSA_JADWAL_END -->
+        </div>
     </div>
-    <div class="grid">
-        <!-- STOVENSA_FOTO_START --><div class="card show"><div class="icon">📸</div><h3>Belum ada foto</h3><p>Foto kegiatan akan muncul di sini.</p></div><!-- STOVENSA_FOTO_END -->
-    </div>
-</section>
 
-<!-- VIDEO -->
-<section id="video">
-    <div class="section-title reveal">
-        <h2>🎬 Dokumentasi Video</h2>
-        <p>Kumpulan video kegiatan Stovensa</p>
+    <!-- TAB 3: STRUKTUR -->
+    <div id="tab-struktur" class="tab-content">
+        <div class="grid">
+            <!-- STOVENSA_STRUKTUR_START -->
+            <div class="card"><div class="card-body"><h3>Belum Ada Struktur</h3><p>Struktur organisasi akan muncul di sini.</p></div></div>
+            <!-- STOVENSA_STRUKTUR_END -->
+        </div>
     </div>
-    <div class="grid">
-        <!-- STOVENSA_VIDEO_START --><div class="card show"><div class="icon">🎬</div><h3>Belum ada video</h3><p>Video kegiatan akan muncul di sini.</p></div><!-- STOVENSA_VIDEO_END -->
-    </div>
-</section>
 
-<!-- FOOTER -->
+</div>
+
 <footer>
     <h3>STOVENSA</h3>
-    <p>Platform Informasi & Dokumentasi Digital</p>
-    <p style="margin-top:12px; font-size:12px; opacity:0.6;">© 2026 Stovensa. All rights reserved.</p>
+    <p>© 2026 Stovensa. All rights reserved.</p>
 </footer>
 
 <script>
-/* ANIMASI SCROLL SMOOTH ALA FRAMER MOTION */
-function revealOnScroll() {
-    const reveals = document.querySelectorAll(".reveal");
-    for (let i = 0; i < reveals.length; i++) {
-        const windowHeight = window.innerHeight;
-        const elementTop = reveals[i].getBoundingClientRect().top;
-        const elementVisible = 100;
-        if (elementTop < windowHeight - elementVisible) {
-            reveals[i].classList.add("active");
-        }
-    }
-}
+function switchTab(tabName) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
 
-window.addEventListener("scroll", revealOnScroll);
-revealOnScroll(); // Trigger awal
+    const selectedTab = document.getElementById('tab-' + tabName);
+    if (selectedTab) selectedTab.classList.add('active');
+
+    event.target.classList.add('active');
+}
 </script>
 </body>
 </html>

@@ -16,10 +16,7 @@ fs.mkdirSync(MEDIA_DIR, { recursive: true });
 function git(args) {
     return new Promise((resolve, reject) => {
         execFile("git", args, { cwd: ROOT }, (err, stdout, stderr) => {
-            if (err) {
-                reject(stderr || stdout || err.message);
-                return;
-            }
+            if (err) { reject(stderr || stdout || err.message); return; }
             resolve(stdout);
         });
     });
@@ -47,27 +44,52 @@ function loadData() {
     if (!fs.existsSync(DATA_FILE)) {
         return {
             judul: "STOVENSA",
-            deskripsi: "Website informasi Stovensa.",
+            deskripsi: "Selamat datang di Website Resmi Stovensa.",
             berita: [],
-            foto: [],
-            video: []
+            jadwal: [],
+            struktur: []
         };
     }
     try {
-        return JSON.parse(fs.readFileSync(DATA_FILE, "utf8"));
+        const d = JSON.parse(fs.readFileSync(DATA_FILE, "utf8"));
+        if (!Array.isArray(d.berita)) d.berita = [];
+        if (!Array.isArray(d.jadwal)) d.jadwal = [];
+        if (!Array.isArray(d.struktur)) d.struktur = [];
+        return d;
     } catch {
-        return {
-            judul: "STOVENSA",
-            deskripsi: "Website informasi Stovensa.",
-            berita: [],
-            foto: [],
-            video: []
-        };
+        return { judul: "STOVENSA", deskripsi: "Selamat datang di Website Resmi Stovensa.", berita: [], jadwal: [], struktur: [] };
     }
 }
 
 function saveData(data) {
     fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), "utf8");
+}
+
+function generateCards(items, emptyText) {
+    if (!items || items.length === 0) {
+        return `<div class="card"><div class="card-body"><h3>Belum Ada Data</h3><p>${emptyText}</p></div></div>`;
+    }
+    return items.map(item => {
+        let mediaTag = "";
+        if (item.mediaUrl) {
+            if (item.mediaType === "video") {
+                mediaTag = `<div class="card-media"><video controls preload="metadata"><source src="${escapeHTML(item.mediaUrl)}"></video></div>`;
+            } else {
+                mediaTag = `<div class="card-media"><img src="${escapeHTML(item.mediaUrl)}" alt="${escapeHTML(item.judul)}"></div>`;
+            }
+        }
+        return `
+            <div class="card">
+                ${mediaTag}
+                ${(item.judul || item.isi) ? `
+                    <div class="card-body">
+                        ${item.judul ? `<h3>${escapeHTML(item.judul)}</h3>` : ''}
+                        ${item.isi ? `<p>${escapeHTML(item.isi)}</p>` : ''}
+                    </div>
+                ` : ''}
+            </div>
+        `;
+    }).join("");
 }
 
 function createWebsite(data) {
@@ -84,29 +106,13 @@ function createWebsite(data) {
         `<!-- STOVENSA_DESKRIPSI_START -->\n<p>${description}</p>\n<!-- STOVENSA_DESKRIPSI_END -->`
     );
 
-    const beritaHTML = data.berita.length > 0 ? data.berita.map(item => `
-        <div class="card show">
-            <div class="icon">📰</div>
-            <h3>${escapeHTML(item.judul)}</h3>
-            <p>${escapeHTML(item.isi)}</p>
-        </div>
-    `).join("") : '<div class="card show"><div class="icon">📰</div><h3>Belum ada berita</h3><p>Berita terbaru akan muncul di sini.</p></div>';
+    const beritaHTML = generateCards(data.berita, "Belum ada postingan berita.");
+    const jadwalHTML = generateCards(data.jadwal, "Belum ada postingan jadwal.");
+    const strukturHTML = generateCards(data.struktur, "Belum ada postingan struktur.");
 
-    const fotoHTML = data.foto.length > 0 ? data.foto.map(item => `
-        <div class="card media-card show">
-            <img src="${escapeHTML(item.url)}" alt="${escapeHTML(item.nama)}">
-        </div>
-    `).join("") : '<div class="card show"><div class="icon">📸</div><h3>Belum ada foto</h3><p>Foto kegiatan akan muncul di sini.</p></div>';
-
-    const videoHTML = data.video.length > 0 ? data.video.map(item => `
-        <div class="card media-card show">
-            <video controls preload="metadata"><source src="${escapeHTML(item.url)}"></video>
-        </div>
-    `).join("") : '<div class="card show"><div class="icon">🎬</div><h3>Belum ada video</h3><p>Video kegiatan akan muncul di sini.</p></div>';
-
-    html = html.replace(/<!-- STOVENSA_BERITA_START -->[\s\S]*?<!-- STOVENSA_BERITA_END -->/i, `<!-- STOVENSA_BERITA_START -->${beritaHTML}<!-- STOVENSA_BERITA_END -->`);
-    html = html.replace(/<!-- STOVENSA_FOTO_START -->[\s\S]*?<!-- STOVENSA_FOTO_END -->/i, `<!-- STOVENSA_FOTO_START -->${fotoHTML}<!-- STOVENSA_FOTO_END -->`);
-    html = html.replace(/<!-- STOVENSA_VIDEO_START -->[\s\S]*?<!-- STOVENSA_VIDEO_END -->/i, `<!-- STOVENSA_VIDEO_START -->${videoHTML}<!-- STOVENSA_VIDEO_END -->`);
+    html = html.replace(/<!-- STOVENSA_BERITA_START -->[\s\S]*?<!-- STOVENSA_BERITA_END -->/i, `<!-- STOVENSA_BERITA_START -->\n${beritaHTML}\n<!-- STOVENSA_BERITA_END -->`);
+    html = html.replace(/<!-- STOVENSA_JADWAL_START -->[\s\S]*?<!-- STOVENSA_JADWAL_END -->/i, `<!-- STOVENSA_JADWAL_START -->\n${jadwalHTML}\n<!-- STOVENSA_JADWAL_END -->`);
+    html = html.replace(/<!-- STOVENSA_STRUKTUR_START -->[\s\S]*?<!-- STOVENSA_STRUKTUR_END -->/i, `<!-- STOVENSA_STRUKTUR_START -->\n${strukturHTML}\n<!-- STOVENSA_STRUKTUR_END -->`);
 
     fs.writeFileSync(INDEX_FILE, html, "utf8");
 }
@@ -114,11 +120,9 @@ function createWebsite(data) {
 async function updateGitHub() {
     await git(["add", "."]);
     try {
-        await git(["commit", "-m", "Update Stovensa dari Admin Panel"]);
+        await git(["commit", "-m", "Update postingan seragam untuk Berita, Jadwal, dan Struktur"]);
     } catch (e) {
-        if (!String(e).includes("nothing to commit")) {
-            throw e;
-        }
+        if (!String(e).includes("nothing to commit")) throw e;
     }
     await git(["push", "origin", "main"]);
 }
@@ -128,17 +132,10 @@ function receiveBody(req) {
         let body = "";
         req.on("data", chunk => {
             body += chunk;
-            if (body.length > 150 * 1024 * 1024) {
-                reject(new Error("File terlalu besar."));
-                req.destroy();
-            }
+            if (body.length > 150 * 1024 * 1024) { reject(new Error("File terlalu besar")); req.destroy(); }
         });
         req.on("end", () => {
-            try {
-                resolve(JSON.parse(body));
-            } catch {
-                reject(new Error("Data JSON tidak valid."));
-            }
+            try { resolve(JSON.parse(body)); } catch { reject(new Error("Data tidak valid")); }
         });
         req.on("error", reject);
     });
@@ -161,62 +158,49 @@ const server = http.createServer(async (req, res) => {
             if (typeof input.judul === "string") data.judul = input.judul;
             if (typeof input.deskripsi === "string") data.deskripsi = input.deskripsi;
 
-            // TAMBAH BERITA
-            if (input.aksi === "tambah_berita") {
-                data.berita.unshift({
+            if (input.aksi === "tambah_post") {
+                const kat = input.kategori || "berita";
+                let mediaUrl = "";
+                let mediaType = "";
+
+                if (input.mediaData) {
+                    mediaType = input.mediaType || "image";
+                    const extension = mediaType === "video" ? ".mp4" : ".jpg";
+                    const filename = Date.now() + "_" + Math.random().toString(36).slice(2, 8) + extension;
+                    mediaUrl = "media/" + filename;
+                    const output = path.join(ROOT, mediaUrl);
+
+                    const cleanBase64 = input.mediaData.includes(",") ? input.mediaData.split(",")[1] : input.mediaData;
+                    fs.writeFileSync(output, Buffer.from(cleanBase64, "base64"));
+                }
+
+                if (!Array.isArray(data[kat])) data[kat] = [];
+                data[kat].unshift({
                     id: Date.now(),
-                    judul: input.beritaJudul || "",
-                    isi: input.beritaIsi || ""
+                    judul: input.judul || "",
+                    isi: input.isi || "",
+                    mediaUrl,
+                    mediaType
                 });
             }
 
-            // HAPUS BERITA
-            if (input.aksi === "hapus_berita") {
-                data.berita = data.berita.filter(x => String(x.id) !== String(input.id));
-            }
-
-            // UPLOAD FOTO / VIDEO
-            if (input.aksi === "upload_media") {
-                const base64 = String(input.data || "");
-                const type = input.type === "video" ? "video" : "image";
-                const extension = type === "video" ? ".mp4" : ".jpg";
-                const filename = Date.now() + "_" + Math.random().toString(36).slice(2, 8) + extension;
-                const relative = "media/" + filename;
-                const output = path.join(ROOT, relative);
-
-                const cleanBase64 = base64.includes(",") ? base64.split(",")[1] : base64;
-                fs.writeFileSync(output, Buffer.from(cleanBase64, "base64"));
-
-                const item = { id: Date.now(), nama: input.nama || filename, url: relative };
-                if (type === "video") data.video.unshift(item);
-                else data.foto.unshift(item);
-            }
-
-            // HAPUS FOTO
-            if (input.aksi === "hapus_foto") {
-                const item = data.foto.find(x => String(x.id) === String(input.id));
-                if (item) {
-                    const filePath = path.join(ROOT, item.url);
-                    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+            if (input.aksi === "hapus_post") {
+                const kat = input.kategori || "berita";
+                if (Array.isArray(data[kat])) {
+                    const item = data[kat].find(x => String(x.id) === String(input.id));
+                    if (item && item.mediaUrl) {
+                        const filePath = path.join(ROOT, item.mediaUrl);
+                        if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+                    }
+                    data[kat] = data[kat].filter(x => String(x.id) !== String(input.id));
                 }
-                data.foto = data.foto.filter(x => String(x.id) !== String(input.id));
-            }
-
-            // HAPUS VIDEO
-            if (input.aksi === "hapus_video") {
-                const item = data.video.find(x => String(x.id) === String(input.id));
-                if (item) {
-                    const filePath = path.join(ROOT, item.url);
-                    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-                }
-                data.video = data.video.filter(x => String(x.id) !== String(input.id));
             }
 
             saveData(data);
             createWebsite(data);
             await updateGitHub();
 
-            return json(res, 200, { success: true, data: data, message: "Berhasil disimpan ke GitHub." });
+            return json(res, 200, { success: true, message: "Berhasil di-push ke GitHub!" });
         } catch (error) {
             console.error(error);
             return json(res, 500, { success: false, message: String(error) });

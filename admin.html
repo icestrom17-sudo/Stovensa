@@ -15,10 +15,9 @@ header h1 { margin: 0 0 8px; }
 label { display: block; font-weight: bold; margin: 15px 0 7px; }
 input, textarea { width: 100%; padding: 13px; border: 1px solid #d5dbe5; border-radius: 10px; font-size: 16px; font-family: inherit; }
 textarea { min-height: 100px; resize: vertical; }
-button { width: 100%; padding: 14px; border: 0; border-radius: 12px; background: #1769ff; color: white; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+button { width: 100%; padding: 14px; border: 0; border-radius: 12px; background: #1769ff; color: white; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 15px; }
 button:hover { background: #0d55d9; }
 
-/* ITEM KELOLA & TOMBOL HAPUS */
 .item-list { margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px; }
 .item-row { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 12px 15px; border-radius: 10px; margin-bottom: 10px; border: 1px solid #e2e8f0; }
 .item-info { flex: 1; padding-right: 10px; overflow: hidden; }
@@ -26,7 +25,6 @@ button:hover { background: #0d55d9; }
 .item-info p { margin: 0; font-size: 13px; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .item-preview-img { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; margin-right: 10px; }
 .btn-delete { width: auto; padding: 8px 14px; background: #ef4444; color: white; border: 0; border-radius: 8px; font-size: 13px; margin: 0; }
-.btn-delete:hover { background: #dc2626; }
 
 #status { display: none; margin-top: 15px; padding: 13px; border-radius: 10px; background: #eef4ff; font-weight: bold; position: fixed; bottom: 20px; right: 20px; left: 20px; max-width: 850px; margin: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 100; }
 </style>
@@ -34,57 +32,70 @@ button:hover { background: #0d55d9; }
 <body>
 
 <header>
-    <h1>⚙️ Admin Stovensa</h1>
-    <p>Kelola isi website Stovensa secara langsung</p>
+    <h1>⚙️ Admin Panel Stovensa</h1>
+    <p>Kelola Berita, Jadwal, dan Struktur secara Fleksibel</p>
 </header>
 
 <div class="container">
 
-    <!-- SETTING UTAMA -->
+    <!-- HEADER WEB -->
     <div class="card">
-        <h2>✏️ Informasi Utama</h2>
+        <h2>✏️ Header Utama Website</h2>
         <label for="judul">Judul Website</label>
         <input id="judul" type="text" placeholder="STOVENSA">
         
-        <label for="deskripsi">Deskripsi</label>
-        <textarea id="deskripsi" placeholder="Tulis deskripsi Stovensa..."></textarea>
+        <label for="deskripsi">Deskripsi Singkat Header</label>
+        <textarea id="deskripsi" placeholder="Tulis deskripsi utama website..."></textarea>
         
-        <button onclick="simpanInfo()">💾 Simpan Info Utama</button>
+        <button onclick="simpanHeader()">💾 Simpan Header</button>
     </div>
 
-    <!-- KELOLA BERITA -->
+    <!-- POSTINGAN BERITA -->
     <div class="card">
-        <h2>📰 Kelola Berita</h2>
-        <label for="beritaJudul">Judul Berita Baru</label>
-        <input id="beritaJudul" type="text" placeholder="Judul berita baru">
-        
-        <label for="beritaIsi">Isi Berita</label>
-        <textarea id="beritaIsi" placeholder="Tuliskan berita..."></textarea>
-        
-        <button onclick="tambahBerita()">➕ Tambah Berita</button>
+        <h2>📰 Postingan BERITA</h2>
+        <label for="bJudul">Judul Berita</label>
+        <input id="bJudul" type="text" placeholder="Judul berita...">
+        <label for="bIsi">Deskripsi / Tulisan Berita</label>
+        <textarea id="bIsi" placeholder="Tuliskan deskripsi berita..."></textarea>
+        <label for="bMedia">Lampirkan Foto / Video (Opsional)</label>
+        <input id="bMedia" type="file" accept="image/*,video/*">
 
-        <h3 style="margin-top:25px; font-size:16px;">Daftar Berita Ada:</h3>
-        <div id="daftarBerita" class="item-list"><i>Memuat berita...</i></div>
+        <button onclick="tambahPost('berita', 'bJudul', 'bIsi', 'bMedia')">➕ Tambah Kartu Berita</button>
+
+        <h3 style="margin-top:20px; font-size:15px;">Daftar Postingan Berita:</h3>
+        <div id="listBerita" class="item-list"><i>Memuat berita...</i></div>
     </div>
 
-    <!-- KELOLA FOTO -->
+    <!-- POSTINGAN JADWAL -->
     <div class="card">
-        <h2>📸 Kelola Foto</h2>
-        <input id="fotoInput" type="file" accept="image/*">
-        <button onclick="uploadMedia('image')">📤 Upload Foto</button>
+        <h2>📅 Postingan JADWAL (Pelajaran / Piket / Lainnya)</h2>
+        <label for="jJudul">Judul Jadwal</label>
+        <input id="jJudul" type="text" placeholder="Contoh: Jadwal Pelajaran / Jadwal Piket">
+        <label for="jIsi">Deskripsi / Tulisan Jadwal</label>
+        <textarea id="jIsi" placeholder="Tuliskan isi jadwal..."></textarea>
+        <label for="jMedia">Lampirkan Foto / Video Jadwal (Opsional)</label>
+        <input id="jMedia" type="file" accept="image/*,video/*">
 
-        <h3 style="margin-top:25px; font-size:16px;">Daftar Foto Ada:</h3>
-        <div id="daftarFoto" class="item-list"><i>Memuat foto...</i></div>
+        <button onclick="tambahPost('jadwal', 'jJudul', 'jIsi', 'jMedia')">➕ Tambah Kartu Jadwal</button>
+
+        <h3 style="margin-top:20px; font-size:15px;">Daftar Postingan Jadwal:</h3>
+        <div id="listJadwal" class="item-list"><i>Memuat jadwal...</i></div>
     </div>
 
-    <!-- KELOLA VIDEO -->
+    <!-- POSTINGAN STRUKTUR -->
     <div class="card">
-        <h2>🎬 Kelola Video</h2>
-        <input id="videoInput" type="file" accept="video/*">
-        <button onclick="uploadMedia('video')">📤 Upload Video</button>
+        <h2>👥 Postingan STRUKTUR KELAS</h2>
+        <label for="sJudul">Judul / Jabatan</label>
+        <input id="sJudul" type="text" placeholder="Contoh: Ketua Kelas / Bagan Organisasi">
+        <label for="sIsi">Deskripsi / Nama / Penjelasan</label>
+        <textarea id="sIsi" placeholder="Tuliskan nama atau deskripsi..."></textarea>
+        <label for="sMedia">Lampirkan Foto / Video Pengurus/Bagan (Opsional)</label>
+        <input id="sMedia" type="file" accept="image/*,video/*">
 
-        <h3 style="margin-top:25px; font-size:16px;">Daftar Video Ada:</h3>
-        <div id="daftarVideo" class="item-list"><i>Memuat video...</i></div>
+        <button onclick="tambahPost('struktur', 'sJudul', 'sIsi', 'sMedia')">➕ Tambah Kartu Struktur</button>
+
+        <h3 style="margin-top:20px; font-size:15px;">Daftar Postingan Struktur:</h3>
+        <div id="listStruktur" class="item-list"><i>Memuat struktur...</i></div>
     </div>
 
     <div id="status"></div>
@@ -101,7 +112,24 @@ function showStatus(msg, isSuccess = true) {
     setTimeout(() => { if(isSuccess) statusDiv.style.display = "none"; }, 4000);
 }
 
-// Ambil & Tampilkan data terbaru dari server
+function renderList(items, containerId, kualifier) {
+    const box = document.getElementById(containerId);
+    if (!items || items.length === 0) {
+        box.innerHTML = "<p style='color:#94a3b8;'>Belum ada data.</p>";
+    } else {
+        box.innerHTML = items.map(item => `
+            <div class="item-row">
+                ${item.mediaUrl && item.mediaType === 'image' ? `<img src="${item.mediaUrl}" class="item-preview-img">` : ''}
+                <div class="item-info">
+                    <h4>${item.judul || 'Tanpa Judul'}</h4>
+                    <p>${item.isi || 'Tanpa deskripsi'}</p>
+                </div>
+                <button class="btn-delete" onclick="hapusPost('${kualifier}', '${item.id}')">🗑️ Hapus</button>
+            </div>
+        `).join("");
+    }
+}
+
 async function loadData() {
     try {
         const res = await fetch("/api/data");
@@ -110,53 +138,9 @@ async function loadData() {
         document.getElementById("judul").value = data.judul || "";
         document.getElementById("deskripsi").value = data.deskripsi || "";
 
-        // Render List Berita
-        const beritaBox = document.getElementById("daftarBerita");
-        if (!data.berita || data.berita.length === 0) {
-            beritaBox.innerHTML = "<p style='color:#94a3b8;'>Belum ada berita.</p>";
-        } else {
-            beritaBox.innerHTML = data.berita.map(b => `
-                <div class="item-row">
-                    <div class="item-info">
-                        <h4>${b.judul}</h4>
-                        <p>${b.isi}</p>
-                    </div>
-                    <button class="btn-delete" onclick="hapusItem('hapus_berita', '${b.id}')">🗑️ Hapus</button>
-                </div>
-            `).join("");
-        }
-
-        // Render List Foto
-        const fotoBox = document.getElementById("daftarFoto");
-        if (!data.foto || data.foto.length === 0) {
-            fotoBox.innerHTML = "<p style='color:#94a3b8;'>Belum ada foto.</p>";
-        } else {
-            fotoBox.innerHTML = data.foto.map(f => `
-                <div class="item-row">
-                    <img src="${f.url}" class="item-preview-img">
-                    <div class="item-info">
-                        <h4>${f.nama}</h4>
-                    </div>
-                    <button class="btn-delete" onclick="hapusItem('hapus_foto', '${f.id}')">🗑️ Hapus</button>
-                </div>
-            `).join("");
-        }
-
-        // Render List Video
-        const videoBox = document.getElementById("daftarVideo");
-        if (!data.video || data.video.length === 0) {
-            videoBox.innerHTML = "<p style='color:#94a3b8;'>Belum ada video.</p>";
-        } else {
-            videoBox.innerHTML = data.video.map(v => `
-                <div class="item-row">
-                    <div class="item-info">
-                        <h4>${v.nama}</h4>
-                    </div>
-                    <button class="btn-delete" onclick="hapusItem('hapus_video', '${v.id}')">🗑️ Hapus</button>
-                </div>
-            `).join("");
-        }
-
+        renderList(data.berita, "listBerita", "berita");
+        renderList(data.jadwal, "listJadwal", "jadwal");
+        renderList(data.struktur, "listStruktur", "struktur");
     } catch (e) {
         console.error(e);
     }
@@ -174,7 +158,7 @@ async function sendData(payload) {
         const result = await res.json();
         if (result.success) {
             showStatus("✅ Perubahan berhasil disimpan & di-push ke GitHub!");
-            loadData(); // Reload list
+            loadData();
         } else {
             showStatus("❌ Gagal: " + result.message, false);
         }
@@ -183,48 +167,47 @@ async function sendData(payload) {
     }
 }
 
-function simpanInfo() {
-    const judul = document.getElementById("judul").value;
-    const deskripsi = document.getElementById("deskripsi").value;
-    sendData({ judul, deskripsi });
-}
-
-function tambahBerita() {
-    const beritaJudul = document.getElementById("beritaJudul").value;
-    const beritaIsi = document.getElementById("beritaIsi").value;
-    if (!beritaJudul || !beritaIsi) return alert("Judul dan isi berita wajib diisi!");
-    
+function simpanHeader() {
     sendData({
-        aksi: "tambah_berita",
-        beritaJudul,
-        beritaIsi
+        judul: document.getElementById("judul").value,
+        deskripsi: document.getElementById("deskripsi").value
     });
-
-    document.getElementById("beritaJudul").value = "";
-    document.getElementById("beritaIsi").value = "";
 }
 
-function uploadMedia(type) {
-    const input = document.getElementById(type === 'image' ? 'fotoInput' : 'videoInput');
-    const file = input.files[0];
-    if (!file) return alert("Pilih file terlebih dahulu!");
+function tambahPost(kategori, idJudul, idIsi, idMedia) {
+    const judul = document.getElementById(idJudul).value;
+    const isi = document.getElementById(idIsi).value;
+    const mediaInput = document.getElementById(idMedia);
+    const file = mediaInput.files[0];
 
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        sendData({
-            aksi: "upload_media",
-            type: type,
-            data: e.target.result,
-            nama: file.name
-        });
-        input.value = "";
-    };
-    reader.readAsDataURL(file);
+    if (!judul && !isi && !file) return alert("Isi judul, deskripsi, atau lampirkan foto/video terlebih dahulu!");
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            sendData({
+                aksi: "tambah_post",
+                kategori,
+                judul,
+                isi,
+                mediaData: e.target.result,
+                mediaType: file.type.startsWith("video") ? "video" : "image"
+            });
+            document.getElementById(idJudul).value = "";
+            document.getElementById(idIsi).value = "";
+            document.getElementById(idMedia).value = "";
+        };
+        reader.readAsDataURL(file);
+    } else {
+        sendData({ aksi: "tambah_post", kategori, judul, isi });
+        document.getElementById(idJudul).value = "";
+        document.getElementById(idIsi).value = "";
+    }
 }
 
-function hapusItem(aksi, id) {
-    if (confirm("Apakah kamu yakin ingin menghapus item ini?")) {
-        sendData({ aksi, id });
+function hapusPost(kategori, id) {
+    if (confirm("Yakin hapus postingan ini?")) {
+        sendData({ aksi: "hapus_post", kategori, id });
     }
 }
 </script>
