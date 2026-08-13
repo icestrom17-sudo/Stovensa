@@ -3,428 +3,148 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Admin Stovensa</title>
-
 <style>
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f4f7fb;
-    color: #172033;
-}
-
-header {
-    background: linear-gradient(135deg, #1769ff, #7c3aed);
-    color: white;
-    padding: 28px 20px;
-    text-align: center;
-}
-
-header h1 {
-    margin: 0 0 8px;
-}
-
-.container {
-    max-width: 850px;
-    margin: auto;
-    padding: 20px;
-}
-
-.card {
-    background: white;
-    padding: 22px;
-    margin-bottom: 20px;
-    border-radius: 18px;
-    box-shadow: 0 8px 30px rgba(0,0,0,.08);
-}
-
-.card h2 {
-    margin-top: 0;
-    color: #1769ff;
-}
-
-label {
-    display: block;
-    font-weight: bold;
-    margin: 15px 0 7px;
-}
-
-input,
-textarea {
-    width: 100%;
-    padding: 13px;
-    border: 1px solid #d5dbe5;
-    border-radius: 10px;
-    font-size: 16px;
-    font-family: inherit;
-}
-
-textarea {
-    min-height: 130px;
-    resize: vertical;
-}
-
-input[type="file"] {
-    background: #f8fafc;
-}
-
-button {
-    width: 100%;
-    padding: 15px;
-    border: 0;
-    border-radius: 12px;
-    background: #1769ff;
-    color: white;
-    font-size: 17px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-button:hover {
-    background: #0d55d9;
-}
-
-.preview {
-    display: none;
-    margin-top: 15px;
-    padding: 10px;
-    background: #f1f5f9;
-    border-radius: 12px;
-}
-
-.preview img,
-.preview video {
-    display: block;
-    width: 100%;
-    max-height: 400px;
-    object-fit: contain;
-    border-radius: 10px;
-}
-
-#status {
-    display: none;
-    margin-top: 15px;
-    padding: 13px;
-    border-radius: 10px;
-    background: #eef4ff;
-}
-
-.warning {
-    font-size: 14px;
-    color: #687386;
-    line-height: 1.6;
-}
-
-@media (max-width: 600px) {
-    .container {
-        padding: 12px;
-    }
-
-    .card {
-        padding: 18px;
-    }
-}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: Arial, sans-serif; background: #f4f7fb; color: #172033; }
+header { background: linear-gradient(135deg, #1769ff, #7c3aed); color: white; padding: 28px 20px; text-align: center; }
+header h1 { margin: 0 0 8px; }
+.container { max-width: 850px; margin: auto; padding: 20px; }
+.card { background: white; padding: 22px; margin-bottom: 20px; border-radius: 18px; box-shadow: 0 8px 30px rgba(0,0,0,.08); }
+.card h2 { margin-top: 0; color: #1769ff; }
+label { display: block; font-weight: bold; margin: 15px 0 7px; }
+input, textarea { width: 100%; padding: 13px; border: 1px solid #d5dbe5; border-radius: 10px; font-size: 16px; font-family: inherit; }
+textarea { min-height: 100px; resize: vertical; }
+button { width: 100%; padding: 14px; border: 0; border-radius: 12px; background: #1769ff; color: white; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+button:hover { background: #0d55d9; }
+#status { display: none; margin-top: 15px; padding: 13px; border-radius: 10px; background: #eef4ff; font-weight: bold; }
 </style>
 </head>
-
 <body>
 
 <header>
     <h1>⚙️ Admin Stovensa</h1>
-    <p>Kelola isi website Stovensa</p>
+    <p>Kelola isi website Stovensa secara langsung</p>
 </header>
 
 <div class="container">
 
-    <!-- JUDUL -->
-
+    <!-- SETTING UTAMA -->
     <div class="card">
-
-        <h2>✏️ Judul Website</h2>
-
-        <label for="judul">
-            Judul utama
-        </label>
-
-        <input
-            id="judul"
-            type="text"
-            placeholder="Contoh: STOVENSA">
-
+        <h2>✏️ Informasi Utama</h2>
+        <label for="judul">Judul Website</label>
+        <input id="judul" type="text" placeholder="STOVENSA">
+        
+        <label for="deskripsi">Deskripsi</label>
+        <textarea id="deskripsi" placeholder="Tulis deskripsi Stovensa..."></textarea>
+        
+        <button onclick="simpanInfo()">💾 Simpan Info Utama</button>
     </div>
 
-
-    <!-- DESKRIPSI -->
-
+    <!-- TAMBAH BERITA -->
     <div class="card">
-
-        <h2>📝 Deskripsi</h2>
-
-        <label for="deskripsi">
-            Deskripsi utama
-        </label>
-
-        <textarea
-            id="deskripsi"
-            placeholder="Tulis deskripsi Stovensa..."></textarea>
-
+        <h2>📰 Tambah Berita Baru</h2>
+        <label for="beritaJudul">Judul Berita</label>
+        <input id="beritaJudul" type="text" placeholder="Judul berita baru">
+        
+        <label for="beritaIsi">Isi Berita</label>
+        <textarea id="beritaIsi" placeholder="Tuliskan berita..."></textarea>
+        
+        <button onclick="tambahBerita()">➕ Tambah Berita</button>
     </div>
 
-
-    <!-- BERITA -->
-
+    <!-- UPLOAD FOTO -->
     <div class="card">
-
-        <h2>📰 Berita Terbaru</h2>
-
-        <label for="beritaJudul">
-            Judul berita
-        </label>
-
-        <input
-            id="beritaJudul"
-            type="text"
-            placeholder="Judul berita">
-
-        <label for="beritaIsi">
-            Isi berita
-        </label>
-
-        <textarea
-            id="beritaIsi"
-            placeholder="Tuliskan berita..."></textarea>
-
+        <h2>📸 Upload Foto</h2>
+        <input id="fotoInput" type="file" accept="image/*">
+        <button onclick="uploadMedia('image')">📤 Upload Foto</button>
     </div>
 
-
-    <!-- FOTO -->
-
+    <!-- UPLOAD VIDEO -->
     <div class="card">
-
-        <h2>📸 Foto</h2>
-
-        <label for="foto">
-            Pilih foto
-        </label>
-
-        <input
-            id="foto"
-            type="file"
-            accept="image/*">
-
-        <div
-            class="preview"
-            id="fotoPreview">
-
-            <img
-                id="fotoImage"
-                alt="Preview foto">
-
-        </div>
-
+        <h2>🎬 Upload Video</h2>
+        <input id="videoInput" type="file" accept="video/*">
+        <button onclick="uploadMedia('video')">📤 Upload Video</button>
     </div>
 
-
-    <!-- VIDEO -->
-
-    <div class="card">
-
-        <h2>🎬 Video</h2>
-
-        <label for="video">
-            Pilih video
-        </label>
-
-        <input
-            id="video"
-            type="file"
-            accept="video/*">
-
-        <div
-            class="preview"
-            id="videoPreview">
-
-            <video
-                id="videoPlayer"
-                controls>
-            </video>
-
-        </div>
-
-    </div>
-
-
-    <!-- SIMPAN -->
-
-    <div class="card">
-
-        <button id="saveButton">
-            💾 SIMPAN PERUBAHAN
-        </button>
-
-        <div id="status"></div>
-
-        <p class="warning">
-            Perubahan akan dikirim melalui server Termux
-            kemudian diperbarui ke repository GitHub.
-        </p>
-
-    </div>
-
+    <div id="status"></div>
 </div>
 
-
 <script>
+const statusDiv = document.getElementById("status");
 
-/* =========================
-   PREVIEW FOTO
-========================= */
+function showStatus(msg, isSuccess = true) {
+    statusDiv.style.display = "block";
+    statusDiv.style.background = isSuccess ? "#eef4ff" : "#fef2f2";
+    statusDiv.style.color = isSuccess ? "#1e40af" : "#991b1b";
+    statusDiv.textContent = msg;
+}
 
-const foto =
-    document.getElementById("foto");
-
-foto.addEventListener("change", function () {
-
-    const file = this.files[0];
-
-    if (!file) return;
-
-    const url =
-        URL.createObjectURL(file);
-
-    document.getElementById(
-        "fotoImage"
-    ).src = url;
-
-    document.getElementById(
-        "fotoPreview"
-    ).style.display = "block";
-});
-
-
-/* =========================
-   PREVIEW VIDEO
-========================= */
-
-const video =
-    document.getElementById("video");
-
-video.addEventListener("change", function () {
-
-    const file = this.files[0];
-
-    if (!file) return;
-
-    const url =
-        URL.createObjectURL(file);
-
-    document.getElementById(
-        "videoPlayer"
-    ).src = url;
-
-    document.getElementById(
-        "videoPreview"
-    ).style.display = "block";
-});
-
-
-/* =========================
-   SIMPAN
-========================= */
-
-document
-.getElementById("saveButton")
-.addEventListener("click", async function () {
-
-    const status =
-        document.getElementById("status");
-
-    const judul =
-        document.getElementById("judul").value;
-
-    const deskripsi =
-        document.getElementById("deskripsi").value;
-
-    const beritaJudul =
-        document.getElementById("beritaJudul").value;
-
-    const beritaIsi =
-        document.getElementById("beritaIsi").value;
-
-
-    status.style.display = "block";
-
-    status.textContent =
-        "⏳ Mengirim perubahan...";
-
-
+async function loadData() {
     try {
-
-        const response =
-            await fetch("/save", {
-
-                method: "POST",
-
-                headers: {
-                    "Content-Type":
-                        "application/json"
-                },
-
-                body: JSON.stringify({
-
-                    judul: judul,
-
-                    deskripsi: deskripsi,
-
-                    beritaJudul:
-                        beritaJudul,
-
-                    beritaIsi:
-                        beritaIsi
-
-                })
-
-            });
-
-
-        const result =
-            await response.json();
-
-
-        if (result.success) {
-
-            status.textContent =
-                "✅ Perubahan berhasil dikirim ke GitHub.";
-
-        } else {
-
-            status.textContent =
-                "❌ " +
-                (result.message ||
-                "Gagal menyimpan.");
-
-            console.error(
-                result.error
-            );
-        }
-
-
-    } catch (error) {
-
-        console.error(error);
-
-        status.textContent =
-            "❌ Server Termux tidak dapat dihubungi.";
+        const res = await fetch("/api/data");
+        const data = await res.json();
+        document.getElementById("judul").value = data.judul || "";
+        document.getElementById("deskripsi").value = data.deskripsi || "";
+    } catch (e) {
+        console.error(e);
     }
+}
+loadData();
 
-});
+async function sendData(payload) {
+    showStatus("⏳ Mengirim perubahan ke server & GitHub...");
+    try {
+        const res = await fetch("/api/save", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+        const result = await res.json();
+        if (result.success) {
+            showStatus("✅ Perubahan berhasil disimpan dan di-push ke GitHub!");
+        } else {
+            showStatus("❌ Gagal: " + result.message, false);
+        }
+    } catch (e) {
+        showStatus("❌ Gagal terhubung ke server Termux.", false);
+    }
+}
 
+function simpanInfo() {
+    const judul = document.getElementById("judul").value;
+    const deskripsi = document.getElementById("deskripsi").value;
+    sendData({ judul, deskripsi });
+}
+
+function tambahBerita() {
+    const beritaJudul = document.getElementById("beritaJudul").value;
+    const beritaIsi = document.getElementById("beritaIsi").value;
+    if (!beritaJudul || !beritaIsi) return alert("Judul dan isi berita wajib diisi!");
+    
+    sendData({
+        aksi: "tambah_berita",
+        beritaJudul,
+        beritaIsi
+    });
+}
+
+function uploadMedia(type) {
+    const input = document.getElementById(type === 'image' ? 'fotoInput' : 'videoInput');
+    const file = input.files[0];
+    if (!file) return alert("Pilih file terlebih dahulu!");
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        sendData({
+            aksi: "upload_media",
+            type: type,
+            data: e.target.result,
+            nama: file.name
+        });
+    };
+    reader.readAsDataURL(file);
+}
 </script>
-
 </body>
 </html>
