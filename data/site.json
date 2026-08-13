@@ -1,7 +1,13 @@
 {
   "judul": "STOVENSA 7A ",
   "deskripsi": "Website informasi Stovensa.",
-  "berita": [],
+  "berita": [
+    {
+      "id": 1786610666210,
+      "judul": "Lomba 17 Agustus",
+      "isi": "7A berasil melaju kebabak basket berikutnya"
+    }
+  ],
   "foto": [],
   "video": []
 }
