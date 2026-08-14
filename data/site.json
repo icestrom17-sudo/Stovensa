@@ -1,10 +1,41 @@
 {
   "judul": "Stovensa",
-  "deskripsi": "Buatan izaas",
+  "deskripsi": "The best and religeous generation",
   "berita": [],
   "foto": [],
   "video": [],
-  "jadwal": [],
+  "jadwal": [
+    {
+      "id": 101,
+      "judul": "📚 SENIN",
+      "isi": "AQIDAH AKHLAK\nTAHFIDZ\nQUR'AN HADIST\nIPA\n-MATEMATIKA\n-IPS"
+    },
+    {
+      "id": 102,
+      "judul": "📚 SELASA",
+      "isi": "TIK\nBK\nBAHASA INDONESIA\nSKI\n-TAHFIDZ\n-MATEMATIKA"
+    },
+    {
+      "id": 103,
+      "judul": "📚 RABU",
+      "isi": "BAHASA INGGRIS\nBAHASA LAMPUNG\nFIKIH\nSBDP\n-MYRES\n-BIOLOGI"
+    },
+    {
+      "id": 104,
+      "judul": "📚 KAMIS",
+      "isi": "IPS\nMATEMATIKA\nBAHASA ARAB\n-BAHASA INGGRIS\n-FISIKA"
+    },
+    {
+      "id": 105,
+      "judul": "📚 JUM'AT",
+      "isi": "PENJAS\nPKN\nIPA"
+    },
+    {
+      "id": 106,
+      "judul": "📚 SABTU",
+      "isi": "MATEMATIKA\nBAHASA INDONESIA"
+    }
+  ],
   "struktur": [
     {
       "id": 1786623219971,
@@ -13,5 +44,64 @@
       "mediaUrl": "media/1786623219962_s2is3i.jpg",
       "mediaType": "image"
     }
-  ]
+  ],
+  "pengurus": [
+    {
+      "id": 1,
+      "judul": "Wali Kelas",
+      "isi": "Eka Devi Safitri",
+      "mediaUrl": "",
+      "mediaType": ""
+    },
+    {
+      "id": 2,
+      "judul": "Ketua Kelas",
+      "isi": "Alby Yudhira S.",
+      "mediaUrl": "",
+      "mediaType": ""
+    },
+    {
+      "id": 3,
+      "judul": "Wakil Ketua",
+      "isi": "Kayla Ayudya R.",
+      "mediaUrl": "",
+      "mediaType": ""
+    },
+    {
+      "id": 4,
+      "judul": "Sekertaris",
+      "isi": "Nayla Azka A.",
+      "mediaUrl": "",
+      "mediaType": ""
+    },
+    {
+      "id": 5,
+      "judul": "Sekertaris 2",
+      "isi": "Asyraf Reje M.",
+      "mediaUrl": "",
+      "mediaType": ""
+    },
+    {
+      "id": 6,
+      "judul": "Bendahara",
+      "isi": "Arkananta Yaala M.",
+      "mediaUrl": "",
+      "mediaType": ""
+    },
+    {
+      "id": 7,
+      "judul": "Seksi Kebersihan",
+      "isi": "Carissa Rana S.",
+      "mediaUrl": "",
+      "mediaType": ""
+    },
+    {
+      "id": 8,
+      "judul": "Seksi Keamanan",
+      "isi": "Ahmad Kurniawan",
+      "mediaUrl": "",
+      "mediaType": ""
+    }
+  ],
+  "anggota": []
 }
