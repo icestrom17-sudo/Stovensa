@@ -1,5 +1,5 @@
 {
-  "judul": "Momen sinematik",
+  "judul": "Hdbdn",
   "deskripsi": "The best and religeous generation",
   "berita": [],
   "foto": [],
@@ -105,6 +105,14 @@
   ],
   "anggota": [],
   "galeri": [
+    {
+      "id": 1786748412362,
+      "judul": "Hdbdn",
+      "tanggal": "Ndne",
+      "isi": "Bdbd",
+      "mediaUrl": "media/galeri_1786748412360.mp4",
+      "mediaType": "video"
+    },
     {
       "id": 1786748387617,
       "judul": "Momen sinematik",
