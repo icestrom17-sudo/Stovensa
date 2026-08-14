@@ -57,44 +57,50 @@ nav { position: fixed; top: 15px; left: 50%; transform: translateX(-50%); width:
     to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* LAYOUT GRID UTAMA - MEMPERTAHANKAN TAMPILAN DESKTOP DI HP DENGAN PROPORSI RAPI */
-.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+/* JADWAL PELAJARAN: 1 BARIS 2 KOTAK Saja agar Bahasa Lampung/Inggris tidak terpotong */
+.grid-jadwal { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
 
 .card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; overflow: hidden; backdrop-filter: blur(12px); transition: all 0.3s ease; display: flex; flex-direction: column; }
 .card:hover { transform: translateY(-4px); border-color: var(--accent-bamboo); box-shadow: 0 10px 25px rgba(132, 204, 22, 0.2); }
 
 .card-body { padding: 16px; flex: 1; }
 .card-body h3 { font-size: 15px; font-weight: 800; margin-bottom: 10px; color: var(--accent-bamboo); border-bottom: 1px solid var(--card-border); padding-bottom: 6px; display: flex; align-items: center; gap: 6px; }
-.card-body p { color: var(--text-secondary); line-height: 1.6; font-size: 12.5px; font-weight: 600; white-space: pre-line; }
+.card-body p { color: var(--text-secondary); line-height: 1.6; font-size: 13px; font-weight: 600; white-space: pre-line; word-break: keep-all; }
 
-.section-title { font-size: 18px; font-weight: 800; text-align: center; margin-bottom: 18px; color: var(--text-primary); display: flex; align-items: center; justify-content: center; gap: 8px; }
+.section-title { font-size: 18px; font-weight: 800; text-align: center; margin-bottom: 22px; color: var(--text-primary); display: flex; align-items: center; justify-content: center; gap: 8px; }
 
-/* BAGAN PENGURUS KELAS (4 KOLOM DENGAN STRUKTUR DEXTOP DI HP) */
-.tree-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 30px; }
-.tree-node { background: rgba(12, 26, 20, 0.75); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px 8px; text-align: center; backdrop-filter: blur(10px); transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.tree-node:hover { border-color: var(--accent-bamboo); transform: translateY(-4px); box-shadow: 0 8px 20px rgba(132, 204, 22, 0.2); }
+/* STRUKTUR KELAS BERCABANG (TREE HIERARCHY) */
+.org-tree { display: flex; flex-direction: column; align-items: center; gap: 24px; position: relative; margin-bottom: 40px; }
+.org-level { display: flex; justify-content: center; gap: 12px; width: 100%; position: relative; }
 
-.node-photo-placeholder { width: 52px; height: 52px; border-radius: 50%; border: 2px solid var(--accent-bamboo); overflow: hidden; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--accent-bamboo), var(--accent-flower)); font-size: 20px; font-weight: 800; color: white; flex-shrink: 0; }
+.tree-node { background: rgba(12, 26, 20, 0.85); border: 1px solid var(--card-border); border-radius: 16px; padding: 12px 8px; text-align: center; backdrop-filter: blur(10px); transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; min-width: 100px; flex: 1; max-width: 220px; z-index: 2; position: relative; }
+.tree-node:hover { border-color: var(--accent-bamboo); transform: translateY(-3px); box-shadow: 0 8px 20px rgba(132, 204, 22, 0.25); }
 
-.tree-node .title { font-size: 10.5px; font-weight: 800; text-transform: uppercase; color: var(--accent-bamboo); letter-spacing: 0.5px; margin-bottom: 4px; }
-.tree-node .name { font-size: 12.5px; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
+/* GARIS PENGHUBUNG CABANG HIERARKI */
+.org-level::before { content: ''; position: absolute; top: -12px; left: 15%; right: 15%; height: 2px; background: var(--accent-emerald); opacity: 0.5; z-index: 1; }
+.org-level.level-1::before { display: none; }
+.tree-node::before { content: ''; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); width: 2px; height: 12px; background: var(--accent-emerald); opacity: 0.5; z-index: 1; }
+.org-level.level-1 .tree-node::before { display: none; }
 
-/* MEMBER CARD (3 KOLOM PRESISI & PRESISI) */
-.member-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px 10px; text-align: center; backdrop-filter: blur(10px); transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; }
+.node-photo-placeholder { width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--accent-bamboo); overflow: hidden; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--accent-bamboo), var(--accent-flower)); font-size: 18px; font-weight: 800; color: white; flex-shrink: 0; }
+
+.tree-node .title { font-size: 9.5px; font-weight: 800; text-transform: uppercase; color: var(--accent-bamboo); letter-spacing: 0.5px; margin-bottom: 2px; }
+.tree-node .name { font-size: 11.5px; font-weight: 700; color: var(--text-primary); line-height: 1.2; }
+
+/* ANGGOTA KELAS (3 KOLOM KOTAK ACAK OTOMATIS) */
+.grid-anggota { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+
+.member-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px 6px; text-align: center; backdrop-filter: blur(10px); transition: all 0.4s ease; display: flex; flex-direction: column; align-items: center; }
 .member-card:hover { border-color: var(--accent-flower); transform: translateY(-4px); box-shadow: 0 10px 25px rgba(244, 63, 94, 0.25); }
 
-.avatar { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-bamboo), var(--accent-flower)); display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 800; color: white; margin-bottom: 10px; overflow: hidden; border: 2px solid var(--accent-bamboo); flex-shrink: 0; }
+.avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-bamboo), var(--accent-flower)); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 800; color: white; margin-bottom: 8px; overflow: hidden; border: 2px solid var(--accent-bamboo); flex-shrink: 0; }
 .avatar img { width: 100%; height: 100%; object-fit: cover; }
 
-.member-name { font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 2px; }
-.member-tag { font-size: 11px; color: var(--accent-bamboo); font-weight: 500; }
-
-.btn-shuffle { background: linear-gradient(135deg, var(--accent-emerald), var(--accent-flower)); color: white; border: 0; padding: 10px 22px; border-radius: 30px; font-weight: 700; font-size: 12px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(244, 63, 94, 0.3); margin: 0 auto 20px; display: block; }
-.btn-shuffle:hover { transform: translateY(-2px) scale(1.03); }
+.member-name { font-size: 12px; font-weight: 700; color: var(--text-primary); margin-bottom: 2px; }
+.member-tag { font-size: 10px; color: var(--accent-bamboo); font-weight: 500; }
 
 footer { border-top: 1px solid var(--card-border); padding: 30px 15px; text-align: center; background: rgba(8, 18, 14, 0.9); }
 
-/* PENYESUAIAN HP SUPAYA TAMPILAN DESKTOP TERLIHAT LEBIH PAS & TIDAK KEKECILAN */
 @media (max-width: 768px) {
     nav { width: 95%; padding: 8px 12px; }
     .logo { font-size: 14px; }
@@ -103,21 +109,21 @@ footer { border-top: 1px solid var(--card-border); padding: 30px 15px; text-alig
     .hero-mini h1 { font-size: 34px; }
     .hero-mini p { font-size: 12px; }
     
-    .grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .card-body { padding: 12px 8px; }
-    .card-body h3 { font-size: 12.5px; }
-    .card-body p { font-size: 11px; }
+    .grid-jadwal { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .card-body { padding: 12px 10px; }
+    .card-body h3 { font-size: 13px; }
+    .card-body p { font-size: 11.5px; }
     
-    .tree-container { grid-template-columns: repeat(4, 1fr); gap: 8px; }
-    .tree-node { padding: 10px 4px; }
-    .node-photo-placeholder { width: 44px; height: 44px; font-size: 17px; margin-bottom: 6px; }
-    .tree-node .title { font-size: 9px; }
-    .tree-node .name { font-size: 10.5px; }
+    .tree-node { padding: 10px 4px; min-width: 0; }
+    .node-photo-placeholder { width: 42px; height: 42px; font-size: 16px; }
+    .tree-node .title { font-size: 8.5px; }
+    .tree-node .name { font-size: 10px; }
 
-    .member-card { padding: 12px 6px; }
-    .avatar { width: 46px; height: 46px; font-size: 18px; margin-bottom: 6px; }
-    .member-name { font-size: 11.5px; }
-    .member-tag { font-size: 10px; }
+    .grid-anggota { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .member-card { padding: 10px 4px; }
+    .avatar { width: 42px; height: 42px; font-size: 16px; margin-bottom: 6px; }
+    .member-name { font-size: 11px; }
+    .member-tag { font-size: 9.5px; }
 }
 </style>
 </head>
@@ -153,16 +159,16 @@ footer { border-top: 1px solid var(--card-border); padding: 30px 15px; text-alig
 
     <!-- TAB 1: BERITA -->
     <div id="tab-berita" class="tab-content active">
-        <div class="grid" style="grid-template-columns: 1fr;">
+        <div class="grid-jadwal" style="grid-template-columns: 1fr;">
             <!-- STOVENSA_BERITA_START -->
             <div class="card"><div class="card-body"><h3>Belum Ada Data</h3><p>Berita terbaru akan muncul di sini.</p></div></div>
             <!-- STOVENSA_BERITA_END -->
         </div>
     </div>
 
-    <!-- TAB 2: JADWAL PELAJARAN -->
+    <!-- TAB 2: JADWAL PELAJARAN (1 BARIS 2 KOTAK - NAMA MAPEL TIDAK TERPOTONG) -->
     <div id="tab-jadwal" class="tab-content">
-        <div class="grid">
+        <div class="grid-jadwal">
             <!-- STOVENSA_JADWAL_START -->
             <div class="card"><div class="card-body"><h3>📚 SENIN</h3><p>AQIDAH AKHLAK&#10;TAHFIDZ&#10;QUR'AN HADIST&#10;IPA&#10;-MATEMATIKA&#10;-IPS</p></div></div>
             <div class="card"><div class="card-body"><h3>📚 SELASA</h3><p>TIK&#10;BK&#10;BAHASA INDONESIA&#10;SKI&#10;-TAHFIDZ&#10;-MATEMATIKA</p></div></div>
@@ -174,29 +180,43 @@ footer { border-top: 1px solid var(--card-border); padding: 30px 15px; text-alig
         </div>
     </div>
 
-    <!-- TAB 3: PENGURUS KELAS & 9 KOTAK ANGGOTA ACAK -->
+    <!-- TAB 3: PENGURUS KELAS (BERCABANG) & 9 KOTAK ANGGOTA (ACAK AUTOMATIS 7 DETIK) -->
     <div id="tab-struktur" class="tab-content">
         
-        <!-- 1. PENGURUS KELAS -->
+        <!-- 1. PENGURUS KELAS BERCABANG (TREE ORGANISASI) -->
         <h2 class="section-title">🏛️ Pengurus Kelas</h2>
         <!-- STOVENSA_STRUKTUR_START -->
-        <div class="tree-container">
-            <div class="tree-node"><div class="node-photo-placeholder">E</div><div class="title">Wali Kelas</div><div class="name">Eka Devi Safitri</div></div>
-            <div class="tree-node"><div class="node-photo-placeholder">A</div><div class="title">Ketua Kelas</div><div class="name">Alby Yudhira S.</div></div>
-            <div class="tree-node"><div class="node-photo-placeholder">K</div><div class="title">Wakil Ketua</div><div class="name">Kayla Ayudya R.</div></div>
-            <div class="tree-node"><div class="node-photo-placeholder">N</div><div class="title">Sekertaris</div><div class="name">Nayla Azka A.</div></div>
-            <div class="tree-node"><div class="node-photo-placeholder">A</div><div class="title">Sekertaris 2</div><div class="name">Asyraf Reje M.</div></div>
-            <div class="tree-node"><div class="node-photo-placeholder">A</div><div class="title">Bendahara</div><div class="name">Arkananta Yaala M.</div></div>
-            <div class="tree-node"><div class="node-photo-placeholder">C</div><div class="title">Seksi Kebersihan</div><div class="name">Carissa Rana S.</div></div>
-            <div class="tree-node"><div class="node-photo-placeholder">A</div><div class="title">Seksi Keamanan</div><div class="name">Ahmad Kurniawan</div></div>
+        <div class="org-tree">
+            <!-- LEVEL 1: WALI KELAS -->
+            <div class="org-level level-1">
+                <div class="tree-node"><div class="node-photo-placeholder">E</div><div class="title">Wali Kelas</div><div class="name">Eka Devi Safitri</div></div>
+            </div>
+            
+            <!-- LEVEL 2: KETUA & WAKIL -->
+            <div class="org-level">
+                <div class="tree-node"><div class="node-photo-placeholder">A</div><div class="title">Ketua Kelas</div><div class="name">Alby Yudhira S.</div></div>
+                <div class="tree-node"><div class="node-photo-placeholder">K</div><div class="title">Wakil Ketua</div><div class="name">Kayla Ayudya R.</div></div>
+            </div>
+
+            <!-- LEVEL 3: SEKRETARIS & BENDAHARA -->
+            <div class="org-level">
+                <div class="tree-node"><div class="node-photo-placeholder">N</div><div class="title">Sekertaris</div><div class="name">Nayla Azka A.</div></div>
+                <div class="tree-node"><div class="node-photo-placeholder">A</div><div class="title">Sekertaris 2</div><div class="name">Asyraf Reje M.</div></div>
+                <div class="tree-node"><div class="node-photo-placeholder">A</div><div class="title">Bendahara</div><div class="name">Arkananta Yaala M.</div></div>
+            </div>
+
+            <!-- LEVEL 4: SEKSI-SEKSI -->
+            <div class="org-level">
+                <div class="tree-node"><div class="node-photo-placeholder">C</div><div class="title">Seksi Kebersihan</div><div class="name">Carissa Rana S.</div></div>
+                <div class="tree-node"><div class="node-photo-placeholder">A</div><div class="title">Seksi Keamanan</div><div class="name">Ahmad Kurniawan</div></div>
+            </div>
         </div>
         <!-- STOVENSA_STRUKTUR_END -->
 
-        <!-- 2. ANGGOTA KELAS (9 KOTAK DISPLAY ACAK) -->
+        <!-- 2. ANGGOTA KELAS (ACAK OTOMATIS SETIAP 7 DETIK) -->
         <h2 class="section-title" style="margin-top: 35px;">🌺 Anggota Kelas</h2>
-        <button class="btn-shuffle" onclick="acakAnggota()">🔀 Acak Tampilan Anggota</button>
 
-        <div class="grid" id="gridDisplayAnggota">
+        <div class="grid-anggota" id="gridDisplayAnggota">
             <div class="member-card"><div class="avatar" id="avatar-0">🐘</div><div class="member-name" id="nama-0">Anggota 1</div><div class="member-tag" id="tag-0">@stovensa</div></div>
             <div class="member-card"><div class="avatar" id="avatar-1">🐘</div><div class="member-name" id="nama-1">Anggota 2</div><div class="member-tag" id="tag-1">@stovensa</div></div>
             <div class="member-card"><div class="avatar" id="avatar-2">🐘</div><div class="member-name" id="nama-2">Anggota 3</div><div class="member-tag" id="tag-2">@stovensa</div></div>
@@ -227,8 +247,8 @@ function switchTab(tabName) {
     const selectedTab = document.getElementById('tab-' + tabName);
     if (selectedTab) selectedTab.classList.add('active');
 
-    if (event && event.target) {
-        event.target.classList.add('active');
+    if (window.event && window.event.target) {
+        window.event.target.classList.add('active');
     }
 }
 
@@ -264,7 +284,11 @@ function acakAnggota() {
     }
 }
 
-window.addEventListener('DOMContentLoaded', acakAnggota);
+// JALANKAN PENGACAKAN OTOMATIS SETIAP 7 DETIK (7000 ms)
+window.addEventListener('DOMContentLoaded', () => {
+    acakAnggota();
+    setInterval(acakAnggota, 7000);
+});
 </script>
 </body>
 </html>
