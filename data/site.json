@@ -103,5 +103,14 @@
       "mediaType": ""
     }
   ],
-  "anggota": []
+  "anggota": [],
+  "galeri": [],
+  "sosmed": [
+    {
+      "id": 1786748275975,
+      "platform": "📸 Instagram",
+      "username": "Izaastwng@kaka",
+      "link": "http://localhost:3000"
+    }
+  ]
 }
