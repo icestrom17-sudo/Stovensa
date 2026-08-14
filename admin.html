@@ -10,13 +10,14 @@
 
 <style>
 :root {
-    --bg-dark: #090d16;
-    --card-bg: rgba(255, 255, 255, 0.03);
-    --card-border: rgba(255, 255, 255, 0.08);
-    --accent-blue: #3b82f6;
-    --accent-purple: #8b5cf6;
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
+    --bg-dark: #08120e;
+    --card-bg: rgba(16, 34, 26, 0.6);
+    --card-border: rgba(52, 211, 153, 0.2);
+    --accent-emerald: #10b981;
+    --accent-bamboo: #84cc16;
+    --accent-flower: #f43f5e;
+    --text-primary: #f0fdf4;
+    --text-secondary: #a7f3d0;
     --danger: #ef4444;
 }
 
@@ -24,25 +25,17 @@
 html { scroll-behavior: smooth; background-color: var(--bg-dark); color: var(--text-primary); }
 body { overflow-x: hidden; position: relative; min-height: 100vh; display: flex; flex-direction: column; }
 
-/* BACKGROUND GLOW */
-.bg-glow-1 { position: fixed; top: -100px; left: -100px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(59, 130, 246, 0.25), transparent 70%); filter: blur(80px); z-index: -1; pointer-events: none; }
-.bg-glow-2 { position: fixed; bottom: -100px; right: -100px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(139, 92, 246, 0.2), transparent 70%); filter: blur(100px); z-index: -1; pointer-events: none; }
-
-/* NAVBAR & TAB SWITCHER */
-nav { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 1000px; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--card-border); border-radius: 50px; z-index: 1000; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); }
-.logo { font-size: 18px; font-weight: 800; background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; color: transparent; cursor: pointer; }
+nav { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 1000px; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(12, 26, 20, 0.85); backdrop-filter: blur(16px); border: 1px solid var(--card-border); border-radius: 50px; z-index: 1000; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); }
+.logo { font-size: 18px; font-weight: 800; background: linear-gradient(135deg, var(--accent-bamboo), var(--accent-flower)); -webkit-background-clip: text; color: transparent; cursor: pointer; }
 
 .nav-tabs { display: flex; gap: 8px; }
 .tab-btn { background: transparent; border: 0; color: var(--text-secondary); padding: 8px 16px; border-radius: 30px; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.3s ease; }
-.tab-btn:hover { color: var(--text-primary); }
-.tab-btn.active { background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
+.tab-btn.active { background: linear-gradient(135deg, var(--accent-emerald), var(--accent-flower)); color: white; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); }
 
-/* HERO HEADER */
 .hero-mini { padding: 130px 20px 30px; text-align: center; }
-.hero-mini h1 { font-size: clamp(32px, 6vw, 55px); font-weight: 800; background: linear-gradient(180deg, #ffffff 30%, #94a3b8 100%); -webkit-background-clip: text; color: transparent; }
-.hero-mini p { color: var(--text-secondary); font-size: 15px; margin-top: 8px; max-width: 600px; margin-left: auto; margin-right: auto; }
+.hero-mini h1 { font-size: clamp(32px, 6vw, 55px); font-weight: 800; background: linear-gradient(180deg, #ffffff 20%, var(--accent-bamboo) 100%); -webkit-background-clip: text; color: transparent; }
+.hero-mini p { color: var(--text-secondary); font-size: 15px; margin-top: 8px; }
 
-/* CONTAINER & TABS */
 .container { max-width: 1100px; margin: 0 auto; padding: 20px 20px 80px; flex: 1; width: 100%; }
 .tab-content { display: none; animation: fadeIn 0.4s ease-in-out forwards; }
 .tab-content.active { display: block; }
@@ -52,147 +45,105 @@ nav { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width:
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* ADMIN FORM CARD */
-.admin-form-card { background: rgba(15, 23, 42, 0.6); border: 1px dashed var(--accent-blue); border-radius: 20px; padding: 24px; margin-bottom: 30px; backdrop-filter: blur(10px); }
-.admin-form-card h2 { font-size: 18px; font-weight: 700; color: #60a5fa; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+.admin-form-card { background: var(--card-bg); border: 1px dashed var(--accent-bamboo); border-radius: 20px; padding: 24px; margin-bottom: 30px; backdrop-filter: blur(10px); }
+.admin-form-card h2 { font-size: 18px; font-weight: 700; color: var(--accent-bamboo); margin-bottom: 15px; }
 
 .form-group { margin-bottom: 15px; }
 .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; }
-.form-control { width: 100%; padding: 12px 16px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); border-radius: 12px; color: var(--text-primary); font-size: 14px; outline: none; transition: all 0.3s; }
-.form-control:focus { border-color: var(--accent-blue); background: rgba(255, 255, 255, 0.08); }
+.form-control { width: 100%; padding: 12px 16px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); border-radius: 12px; color: var(--text-primary); font-size: 14px; outline: none; }
+.form-control:focus { border-color: var(--accent-bamboo); }
 textarea.form-control { min-height: 90px; resize: vertical; }
 
-.btn-primary { background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); color: white; border: 0; padding: 12px 24px; border-radius: 30px; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
+.btn-primary { background: linear-gradient(135deg, var(--accent-emerald), var(--accent-flower)); color: white; border: 0; padding: 12px 24px; border-radius: 30px; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.3s ease; }
 .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); }
 
-/* GRID & CARDS (SAME AS MAIN WEB) */
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
 
-.card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; overflow: hidden; backdrop-filter: blur(10px); transition: all 0.3s ease; display: flex; flex-direction: column; position: relative; }
-.card:hover { border-color: rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.05); }
+.card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; overflow: hidden; backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; padding: 15px; text-align: center; }
+.card-media { width: 100px; height: 100px; border-radius: 50%; overflow: hidden; background: #000; border: 2px solid var(--accent-bamboo); margin-bottom: 10px; display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 800; }
+.card-media img, .card-media video { width: 100%; height: 100%; object-fit: cover; }
+.card-body { flex: 1; }
+.card-body h3 { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+.card-body p { color: var(--accent-bamboo); font-size: 13px; font-weight: 600; }
 
-.card-media { width: 100%; height: 230px; overflow: hidden; background: #000; }
-.card-media img, .card-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-.card-body { padding: 24px; flex: 1; }
-.card-body h3 { font-size: 19px; font-weight: 700; margin-bottom: 10px; color: var(--text-primary); }
-.card-body p { color: var(--text-secondary); line-height: 1.6; font-size: 14px; white-space: pre-line; }
-
-.card-actions { padding: 0 24px 20px; display: flex; justify-content: flex-end; }
-.btn-delete { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+.card-actions { margin-top: 10px; width: 100%; display: flex; justify-content: center; gap: 8px; }
+.btn-delete { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; }
 .btn-delete:hover { background: var(--danger); color: white; }
 
-#status-toast { position: fixed; bottom: 25px; right: 25px; background: rgba(15, 23, 42, 0.9); border: 1px solid var(--accent-blue); border-radius: 16px; padding: 14px 22px; color: #60a5fa; font-weight: 600; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(10px); display: none; z-index: 2000; }
+#status-toast { position: fixed; bottom: 25px; right: 25px; background: rgba(12, 26, 20, 0.95); border: 1px solid var(--accent-bamboo); border-radius: 16px; padding: 14px 22px; color: var(--accent-bamboo); font-weight: 600; font-size: 14px; display: none; z-index: 2000; }
 
-footer { border-top: 1px solid var(--card-border); padding: 40px 20px; text-align: center; background: rgba(9, 13, 22, 0.8); }
-
-@media (max-width: 768px) {
-    nav { width: 95%; padding: 8px 12px; }
-    .logo { font-size: 15px; }
-    .tab-btn { padding: 6px 10px; font-size: 11px; }
-}
+footer { border-top: 1px solid var(--card-border); padding: 40px 20px; text-align: center; background: rgba(8, 18, 14, 0.9); }
 </style>
 </head>
 <body>
 
-<div class="bg-glow-1"></div>
-<div class="bg-glow-2"></div>
-
-<!-- NAVBAR TAB MENU -->
 <nav>
     <div class="logo" onclick="switchTab('berita')">⚙️ STOVENSA ADMIN</div>
     <div class="nav-tabs">
         <button class="tab-btn active" onclick="switchTab('berita')">📰 Berita</button>
         <button class="tab-btn" onclick="switchTab('jadwal')">📅 Jadwal</button>
-        <button class="tab-btn" onclick="switchTab('struktur')">👥 Struktur</button>
+        <button class="tab-btn" onclick="switchTab('struktur')">🏛️ Pengurus & Anggota</button>
     </div>
 </nav>
 
-<!-- HEADER UTAMA EDITABLE -->
 <div class="hero-mini">
     <h1 id="headerJudul">STOVENSA</h1>
     <p id="headerDeskripsi">Mode Pengelola Website Stovensa</p>
     
-    <!-- EDIT HEADER CARD -->
     <div style="max-width: 600px; margin: 20px auto 0;" class="admin-form-card">
         <h2>✏️ Edit Header Website</h2>
-        <div class="form-group">
-            <input id="editJudul" class="form-control" type="text" placeholder="Judul Utama (misal: STOVENSA)">
-        </div>
-        <div class="form-group">
-            <textarea id="editDeskripsi" class="form-control" placeholder="Deskripsi Singkat Website..."></textarea>
-        </div>
+        <div class="form-group"><input id="editJudul" class="form-control" type="text" placeholder="Judul Utama"></div>
+        <div class="form-group"><textarea id="editDeskripsi" class="form-control" placeholder="Deskripsi Singkat Website..."></textarea></div>
         <button onclick="simpanHeader()" class="btn-primary">💾 Simpan Header</button>
     </div>
 </div>
 
-<!-- CONTAINER UTAMA -->
 <div class="container">
 
-    <!-- TAB 1: ADMIN BERITA -->
+    <!-- TAB 1: BERITA -->
     <div id="tab-berita" class="tab-content active">
         <div class="admin-form-card">
             <h2>➕ Tambah Berita Baru</h2>
-            <div class="form-group">
-                <label>Judul Berita</label>
-                <input id="bJudul" class="form-control" type="text" placeholder="Judul berita...">
-            </div>
-            <div class="form-group">
-                <label>Isi / Penjelasan Berita</label>
-                <textarea id="bIsi" class="form-control" placeholder="Tuliskan isi berita di sini..."></textarea>
-            </div>
-            <div class="form-group">
-                <label>Lampirkan Foto / Video (Opsional)</label>
-                <input id="bMedia" class="form-control" type="file" accept="image/*,video/*">
-            </div>
+            <div class="form-group"><label>Judul Berita</label><input id="bJudul" class="form-control" type="text" placeholder="Judul berita..."></div>
+            <div class="form-group"><label>Isi / Penjelasan</label><textarea id="bIsi" class="form-control" placeholder="Tuliskan berita..."></textarea></div>
+            <div class="form-group"><label>Foto / Video (Opsional)</label><input id="bMedia" class="form-control" type="file" accept="image/*,video/*"></div>
             <button onclick="tambahPost('berita', 'bJudul', 'bIsi', 'bMedia')" class="btn-primary">🚀 Publisahkan Berita</button>
         </div>
-
-        <div id="gridBerita" class="grid"><i>Memuat konten berita...</i></div>
+        <div id="gridBerita" class="grid"><i>Memuat berita...</i></div>
     </div>
 
-    <!-- TAB 2: ADMIN JADWAL -->
+    <!-- TAB 2: JADWAL -->
     <div id="tab-jadwal" class="tab-content">
         <div class="admin-form-card">
-            <h2>➕ Tambah Jadwal Baru (Pelajaran / Piket / Kegiatan)</h2>
-            <div class="form-group">
-                <label>Judul Jadwal</label>
-                <input id="jJudul" class="form-control" type="text" placeholder="Contoh: Jadwal Pelajaran / Jadwal Piket">
-            </div>
-            <div class="form-group">
-                <label>Isi / Penjelasan Jadwal</label>
-                <textarea id="jIsi" class="form-control" placeholder="Tuliskan rincian jadwal..."></textarea>
-            </div>
-            <div class="form-group">
-                <label>Lampirkan Foto / Video Tabel (Opsional)</label>
-                <input id="jMedia" class="form-control" type="file" accept="image/*,video/*">
-            </div>
-            <button onclick="tambahPost('jadwal', 'jJudul', 'jIsi', 'jMedia')" class="btn-primary">🚀 Publisahkan Jadwal</button>
+            <h2>➕ Tambah Jadwal Baru</h2>
+            <div class="form-group"><label>Judul Jadwal</label><input id="jJudul" class="form-control" type="text" placeholder="Contoh: SENIN"></div>
+            <div class="form-group"><label>Isi Pelajaran</label><textarea id="jIsi" class="form-control" placeholder="Tuliskan pelajaran..."></textarea></div>
+            <button onclick="tambahPost('jadwal', 'jJudul', 'jIsi')" class="btn-primary">🚀 Publisahkan Jadwal</button>
         </div>
-
-        <div id="gridJadwal" class="grid"><i>Memuat konten jadwal...</i></div>
+        <div id="gridJadwal" class="grid"><i>Memuat jadwal...</i></div>
     </div>
 
-    <!-- TAB 3: ADMIN STRUKTUR -->
+    <!-- TAB 3: PENGURUS & ANGGOTA (25 ANAK) -->
     <div id="tab-struktur" class="tab-content">
+        
+        <!-- 1. PENGURUS KELAS (8 ORANG SAMA PERSIS GAMBAR) -->
+        <h2 style="color:var(--accent-bamboo); margin-bottom:15px;">🏛️ 1. Foto Pengurus Kelas (8 Orang)</h2>
+        <div id="gridPengurus" class="grid" style="margin-bottom: 40px;"><i>Memuat pengurus...</i></div>
+
+        <hr style="border-color: var(--card-border); margin: 40px 0;">
+
+        <!-- 2. ANGGOTA KELAS (25 ANAK) -->
         <div class="admin-form-card">
-            <h2>➕ Tambah Pengurus / Organisasi Kelas</h2>
-            <div class="form-group">
-                <label>Judul / Jabatan</label>
-                <input id="sJudul" class="form-control" type="text" placeholder="Contoh: Wali Kelas / Ketua Kelas / Bagan Organisasi">
-            </div>
-            <div class="form-group">
-                <label>Nama / Deskripsi Tugas</label>
-                <textarea id="sIsi" class="form-control" placeholder="Tuliskan nama atau deskripsi..."></textarea>
-            </div>
-            <div class="form-group">
-                <label>Lampirkan Foto Anggota / Bagan (Opsional)</label>
-                <input id="sMedia" class="form-control" type="file" accept="image/*,video/*">
-            </div>
-            <button onclick="tambahPost('struktur', 'sJudul', 'sIsi', 'sMedia')" class="btn-primary">🚀 Publisahkan Struktur</button>
+            <h2>✨ 2. Tambah Anggota Kelas Baru (Total 25 Anak)</h2>
+            <div class="form-group"><label>Nama Anggota</label><input id="aNama" class="form-control" type="text" placeholder="Nama lengkap anggota..."></div>
+            <div class="form-group"><label>Username / Tag (Opsional)</label><input id="aTag" class="form-control" type="text" placeholder="@stovensa"></div>
+            <div class="form-group"><label>Foto Profil Anggota</label><input id="aMedia" class="form-control" type="file" accept="image/*"></div>
+            <button onclick="tambahPost('anggota', 'aNama', 'aTag', 'aMedia')" class="btn-primary">➕ Tambah Anggota Ke Daftar (25 Anak)</button>
         </div>
 
-        <div id="gridStruktur" class="grid"><i>Memuat konten struktur...</i></div>
+        <h3 style="margin-bottom:15px; color:var(--accent-bamboo);">Daftar Seluruh Anggota Kelas:</h3>
+        <div id="gridAnggota" class="grid"><i>Memuat anggota...</i></div>
+
     </div>
 
 </div>
@@ -223,34 +174,65 @@ function switchTab(tabName) {
     event.target.classList.add('active');
 }
 
-function renderCards(items, containerId, kategori) {
-    const box = document.getElementById(containerId);
-    if (!items || items.length === 0) {
-        box.innerHTML = `<div class="card"><div class="card-body"><h3>Belum Ada Data</h3><p>Gunakan formulir di atas untuk menambahkan konten baru.</p></div></div>`;
-        return;
-    }
-    box.innerHTML = items.map(item => {
-        let mediaTag = "";
-        if (item.mediaUrl) {
-            if (item.mediaType === "video") {
-                mediaTag = `<div class="card-media"><video controls preload="metadata"><source src="${item.mediaUrl}"></video></div>`;
-            } else {
-                mediaTag = `<div class="card-media"><img src="${item.mediaUrl}" alt="${item.judul || ''}"></div>`;
-            }
-        }
+function renderPengurusAdmin(items) {
+    const box = document.getElementById("gridPengurus");
+    box.innerHTML = items.map(p => {
+        let mediaTag = p.mediaUrl ? `<img src="${p.mediaUrl}">` : (p.isi || "S").charAt(0).toUpperCase();
         return `
             <div class="card">
-                ${mediaTag}
+                <div class="card-media">${typeof mediaTag === 'string' && mediaTag.startsWith('<img') ? mediaTag : mediaTag}</div>
                 <div class="card-body">
-                    ${item.judul ? `<h3>${item.judul}</h3>` : ''}
-                    ${item.isi ? `<p>${item.isi}</p>` : ''}
+                    <p>${p.judul}</p>
+                    <h3>${p.isi}</h3>
                 </div>
-                <div class="card-actions">
-                    <button class="btn-delete" onclick="hapusPost('${kategori}', '${item.id}')">🗑️ Hapus Kartu Ini</button>
+                <div style="margin-top:10px; width:100%;">
+                    <input type="file" accept="image/*" onchange="uploadFotoPengurus(${p.id}, this)" style="font-size:11px; width:100%;">
                 </div>
             </div>
         `;
     }).join("");
+}
+
+function renderAnggotaAdmin(items) {
+    const box = document.getElementById("gridAnggota");
+    if (!items || items.length === 0) {
+        box.innerHTML = `<p style="color:var(--text-secondary);">Belum ada anggota ditambahkan. Tambahkan hingga 25 anak di atas.</p>`;
+        return;
+    }
+    box.innerHTML = items.map(item => {
+        let mediaTag = item.mediaUrl ? `<img src="${item.mediaUrl}">` : (item.judul || "A").charAt(0).toUpperCase();
+        return `
+            <div class="card">
+                <div class="card-media">${typeof mediaTag === 'string' && mediaTag.startsWith('<img') ? mediaTag : mediaTag}</div>
+                <div class="card-body">
+                    <h3>${item.judul}</h3>
+                    <p>${item.isi || '@stovensa'}</p>
+                </div>
+                <div class="card-actions">
+                    <button class="btn-delete" onclick="hapusPost('anggota', '${item.id}')">🗑️ Hapus</button>
+                </div>
+            </div>
+        `;
+    }).join("");
+}
+
+function renderSimpleCards(items, containerId, kat) {
+    const box = document.getElementById(containerId);
+    if (!items || items.length === 0) {
+        box.innerHTML = `<p style="color:var(--text-secondary);">Belum ada data.</p>`;
+        return;
+    }
+    box.innerHTML = items.map(item => `
+        <div class="card" style="align-items:flex-start; text-align:left;">
+            <div class="card-body">
+                <h3>${item.judul}</h3>
+                <p style="white-space:pre-line; color:var(--text-secondary);">${item.isi}</p>
+            </div>
+            <div class="card-actions">
+                <button class="btn-delete" onclick="hapusPost('${kat}', '${item.id}')">🗑️ Hapus</button>
+            </div>
+        </div>
+    `).join("");
 }
 
 async function loadData() {
@@ -262,9 +244,10 @@ async function loadData() {
         document.getElementById("editJudul").value = data.judul || "";
         document.getElementById("editDeskripsi").value = data.deskripsi || "";
 
-        renderCards(data.berita, "gridBerita", "berita");
-        renderCards(data.jadwal, "gridJadwal", "jadwal");
-        renderCards(data.struktur, "gridStruktur", "struktur");
+        renderSimpleCards(data.berita, "gridBerita", "berita");
+        renderSimpleCards(data.jadwal, "gridJadwal", "jadwal");
+        renderPengurusAdmin(data.pengurus);
+        renderAnggotaAdmin(data.anggota);
     } catch (e) {
         console.error(e);
     }
@@ -272,7 +255,7 @@ async function loadData() {
 loadData();
 
 async function sendData(payload) {
-    showToast("⏳ Menyimpan perubahan & memproses...");
+    showToast("⏳ Menyimpan perubahan...");
     try {
         const res = await fetch("/api/save", {
             method: "POST",
@@ -281,13 +264,13 @@ async function sendData(payload) {
         });
         const result = await res.json();
         if (result.success) {
-            showToast("✅ Berhasil disimpan & diperbarui di GitHub!");
+            showToast("✅ Berhasil disimpan!");
             loadData();
         } else {
             showToast("❌ Gagal: " + result.message);
         }
     } catch (e) {
-        showToast("❌ Gagal terhubung ke server Termux.");
+        showToast("❌ Gagal terhubung ke server.");
     }
 }
 
@@ -298,13 +281,27 @@ function simpanHeader() {
     });
 }
 
+function uploadFotoPengurus(id, inputEl) {
+    const file = inputEl.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        sendData({
+            aksi: "update_pengurus_foto",
+            id: id,
+            mediaData: e.target.result
+        });
+    };
+    reader.readAsDataURL(file);
+}
+
 function tambahPost(kategori, idJudul, idIsi, idMedia) {
     const judul = document.getElementById(idJudul).value;
     const isi = document.getElementById(idIsi).value;
-    const mediaInput = document.getElementById(idMedia);
-    const file = mediaInput.files[0];
+    const mediaInput = idMedia ? document.getElementById(idMedia) : null;
+    const file = mediaInput ? mediaInput.files[0] : null;
 
-    if (!judul && !isi && !file) return alert("Isi judul, deskripsi, atau upload media terlebih dahulu!");
+    if (!judul && !isi) return alert("Isi nama / judul terlebih dahulu!");
 
     if (file) {
         const reader = new FileReader();
@@ -315,11 +312,11 @@ function tambahPost(kategori, idJudul, idIsi, idMedia) {
                 judul,
                 isi,
                 mediaData: e.target.result,
-                mediaType: file.type.startsWith("video") ? "video" : "image"
+                mediaType: "image"
             });
             document.getElementById(idJudul).value = "";
             document.getElementById(idIsi).value = "";
-            document.getElementById(idMedia).value = "";
+            if (mediaInput) mediaInput.value = "";
         };
         reader.readAsDataURL(file);
     } else {
@@ -330,7 +327,7 @@ function tambahPost(kategori, idJudul, idIsi, idMedia) {
 }
 
 function hapusPost(kategori, id) {
-    if (confirm("Hapus kartu ini dari website?")) {
+    if (confirm("Hapus data ini?")) {
         sendData({ aksi: "hapus_post", kategori, id });
     }
 }

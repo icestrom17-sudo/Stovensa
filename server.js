@@ -10,7 +10,6 @@ const MEDIA_DIR = path.join(ROOT, "media");
 const DATA_FILE = path.join(DATA_DIR, "site.json");
 const INDEX_FILE = path.join(ROOT, "index.html");
 
-// Buat folder data dan media jika belum ada
 fs.mkdirSync(DATA_DIR, { recursive: true });
 fs.mkdirSync(MEDIA_DIR, { recursive: true });
 
@@ -41,24 +40,50 @@ function escapeHTML(text) {
         .replace(/'/g, "&#039;");
 }
 
+function defaultPengurus() {
+    return [
+        { id: 1, judul: "Wali Kelas", isi: "Eka Devi Safitri", mediaUrl: "", mediaType: "" },
+        { id: 2, judul: "Ketua Kelas", isi: "Alby Yudhira S.", mediaUrl: "", mediaType: "" },
+        { id: 3, judul: "Wakil Ketua", isi: "Kayla Ayudya R.", mediaUrl: "", mediaType: "" },
+        { id: 4, judul: "Sekertaris", isi: "Nayla Azka A.", mediaUrl: "", mediaType: "" },
+        { id: 5, judul: "Sekertaris 2", isi: "Asyraf Reje M.", mediaUrl: "", mediaType: "" },
+        { id: 6, judul: "Bendahara", isi: "Arkananta Yaala M.", mediaUrl: "", mediaType: "" },
+        { id: 7, judul: "Seksi Kebersihan", isi: "Carissa Rana S.", mediaUrl: "", mediaType: "" },
+        { id: 8, judul: "Seksi Keamanan", isi: "Ahmad Kurniawan", mediaUrl: "", mediaType: "" }
+    ];
+}
+
+function defaultJadwal() {
+    return [
+        { id: 101, judul: "📚 SENIN", isi: "AQIDAH AKHLAK\nTAHFIDZ\nQUR'AN HADIST\nIPA\n-MATEMATIKA\n-IPS" },
+        { id: 102, judul: "📚 SELASA", isi: "TIK\nBK\nBAHASA INDONESIA\nSKI\n-TAHFIDZ\n-MATEMATIKA" },
+        { id: 103, judul: "📚 RABU", isi: "BAHASA INGGRIS\nBAHASA LAMPUNG\nFIKIH\nSBDP\n-MYRES\n-BIOLOGI" },
+        { id: 104, judul: "📚 KAMIS", isi: "IPS\nMATEMATIKA\nBAHASA ARAB\n-BAHASA INGGRIS\n-FISIKA" },
+        { id: 105, judul: "📚 JUM'AT", isi: "PENJAS\nPKN\nIPA" },
+        { id: 106, judul: "📚 SABTU", isi: "MATEMATIKA\nBAHASA INDONESIA" }
+    ];
+}
+
 function loadData() {
     if (!fs.existsSync(DATA_FILE)) {
         return {
             judul: "STOVENSA",
             deskripsi: "Pusat Informasi, Berita Kegiatan, Jadwal Pelajaran, dan Struktur Kelas Stovensa.",
             berita: [],
-            jadwal: [],
-            struktur: []
+            jadwal: defaultJadwal(),
+            pengurus: defaultPengurus(),
+            anggota: []
         };
     }
     try {
         const d = JSON.parse(fs.readFileSync(DATA_FILE, "utf8"));
         if (!Array.isArray(d.berita)) d.berita = [];
-        if (!Array.isArray(d.jadwal)) d.jadwal = [];
-        if (!Array.isArray(d.struktur)) d.struktur = [];
+        if (!Array.isArray(d.jadwal) || d.jadwal.length === 0) d.jadwal = defaultJadwal();
+        if (!Array.isArray(d.pengurus) || d.pengurus.length === 0) d.pengurus = defaultPengurus();
+        if (!Array.isArray(d.anggota)) d.anggota = [];
         return d;
     } catch {
-        return { judul: "STOVENSA", deskripsi: "Pusat Informasi, Berita Kegiatan, Jadwal Pelajaran, dan Struktur Kelas Stovensa.", berita: [], jadwal: [], struktur: [] };
+        return { judul: "STOVENSA", deskripsi: "Pusat Informasi Stovensa.", berita: [], jadwal: defaultJadwal(), pengurus: defaultPengurus(), anggota: [] };
     }
 }
 
@@ -93,6 +118,27 @@ function generateCards(items, emptyText) {
     }).join("");
 }
 
+function generatePengurusHTML(items) {
+    if (!items || items.length === 0) items = defaultPengurus();
+    
+    return `<div class="tree-container">` + items.map(p => {
+        let photoTag = "";
+        if (p.mediaUrl) {
+            photoTag = `<div class="node-photo"><img src="${escapeHTML(p.mediaUrl)}" alt="${escapeHTML(p.isi)}"></div>`;
+        } else {
+            const inisial = (p.isi || "S").charAt(0).toUpperCase();
+            photoTag = `<div class="node-photo-placeholder">${inisial}</div>`;
+        }
+        return `
+            <div class="tree-node">
+                ${photoTag}
+                <div class="title">${escapeHTML(p.judul)}</div>
+                <div class="name">${escapeHTML(p.isi)}</div>
+            </div>
+        `;
+    }).join("") + `</div>`;
+}
+
 function createWebsite(data) {
     if (!fs.existsSync(INDEX_FILE)) return;
     let html = fs.readFileSync(INDEX_FILE, "utf8");
@@ -110,11 +156,14 @@ function createWebsite(data) {
 
     const beritaHTML = generateCards(data.berita, "Berita terbaru akan muncul di sini.");
     const jadwalHTML = generateCards(data.jadwal, "Jadwal terbaru akan muncul di sini.");
-    const strukturHTML = generateCards(data.struktur, "Struktur organisasi akan muncul di sini.");
+    const pengurusHTML = generatePengurusHTML(data.pengurus);
 
     html = html.replace(/<!-- STOVENSA_BERITA_START -->[\s\S]*?<!-- STOVENSA_BERITA_END -->/i, `<!-- STOVENSA_BERITA_START -->\n${beritaHTML}\n<!-- STOVENSA_BERITA_END -->`);
     html = html.replace(/<!-- STOVENSA_JADWAL_START -->[\s\S]*?<!-- STOVENSA_JADWAL_END -->/i, `<!-- STOVENSA_JADWAL_START -->\n${jadwalHTML}\n<!-- STOVENSA_JADWAL_END -->`);
-    html = html.replace(/<!-- STOVENSA_STRUKTUR_START -->[\s\S]*?<!-- STOVENSA_STRUKTUR_END -->/i, `<!-- STOVENSA_STRUKTUR_START -->\n${strukturHTML}\n<!-- STOVENSA_STRUKTUR_END -->`);
+    html = html.replace(/<!-- STOVENSA_STRUKTUR_START -->[\s\S]*?<!-- STOVENSA_STRUKTUR_END -->/i, `<!-- STOVENSA_STRUKTUR_START -->\n${pengurusHTML}\n<!-- STOVENSA_STRUKTUR_END -->`);
+
+    const anggotaJS = JSON.stringify(data.anggota || []);
+    html = html.replace(/let daftarAnggota = \[[\s\S]*?\];/i, `let daftarAnggota = ${anggotaJS};`);
 
     fs.writeFileSync(INDEX_FILE, html, "utf8");
 }
@@ -122,7 +171,7 @@ function createWebsite(data) {
 async function updateGitHub() {
     await git(["add", "."]);
     try {
-        await git(["commit", "-m", "Update konten dari Admin Panel Stovensa"]);
+        await git(["commit", "-m", "Update Pengurus dan 25 Anggota dari Admin Panel"]);
     } catch (e) {
         if (!String(e).includes("nothing to commit")) throw e;
     }
@@ -134,27 +183,24 @@ function receiveBody(req) {
         let body = "";
         req.on("data", chunk => {
             body += chunk;
-            if (body.length > 150 * 1024 * 1024) { reject(new Error("File terlalu besar (Maks 150MB)")); req.destroy(); }
+            if (body.length > 150 * 1024 * 1024) { reject(new Error("File terlalu besar")); req.destroy(); }
         });
         req.on("end", () => {
-            try { resolve(JSON.parse(body)); } catch { reject(new Error("Data JSON tidak valid")); }
+            try { resolve(JSON.parse(body)); } catch { reject(new Error("Data tidak valid")); }
         });
         req.on("error", reject);
     });
 }
 
 const server = http.createServer(async (req, res) => {
-    // LAYANI HALAMAN UTAMA ADMIN
     if (req.method === "GET" && (req.url === "/" || req.url === "/admin.html")) {
         return send(res, 200, "text/html", fs.readFileSync(path.join(ROOT, "admin.html")));
     }
 
-    // API: GET DATA
     if (req.method === "GET" && req.url === "/api/data") {
         return json(res, 200, loadData());
     }
 
-    // API: SAVE DATA
     if (req.method === "POST" && req.url === "/api/save") {
         try {
             const input = await receiveBody(req);
@@ -163,7 +209,6 @@ const server = http.createServer(async (req, res) => {
             if (typeof input.judul === "string") data.judul = input.judul;
             if (typeof input.deskripsi === "string") data.deskripsi = input.deskripsi;
 
-            // TAMBAH POST
             if (input.aksi === "tambah_post") {
                 const kat = input.kategori || "berita";
                 let mediaUrl = "";
@@ -190,7 +235,18 @@ const server = http.createServer(async (req, res) => {
                 });
             }
 
-            // HAPUS POST
+            if (input.aksi === "update_pengurus_foto") {
+                const item = data.pengurus.find(p => String(p.id) === String(input.id));
+                if (item && input.mediaData) {
+                    const filename = "pengurus_" + item.id + "_" + Date.now() + ".jpg";
+                    const mediaUrl = "media/" + filename;
+                    const output = path.join(ROOT, mediaUrl);
+                    const cleanBase64 = input.mediaData.includes(",") ? input.mediaData.split(",")[1] : input.mediaData;
+                    fs.writeFileSync(output, Buffer.from(cleanBase64, "base64"));
+                    item.mediaUrl = mediaUrl;
+                }
+            }
+
             if (input.aksi === "hapus_post") {
                 const kat = input.kategori || "berita";
                 if (Array.isArray(data[kat])) {
@@ -207,14 +263,13 @@ const server = http.createServer(async (req, res) => {
             createWebsite(data);
             await updateGitHub();
 
-            return json(res, 200, { success: true, message: "Perubahan tersimpan & di-push ke GitHub!" });
+            return json(res, 200, { success: true, message: "Berhasil di-push ke GitHub!" });
         } catch (error) {
             console.error(error);
             return json(res, 500, { success: false, message: String(error) });
         }
     }
 
-    // MELAYANI FILE STATIS (CSS, Gambar, Media)
     if (req.method === "GET") {
         let requested = decodeURIComponent(req.url.split("?")[0]);
         const filePath = path.join(ROOT, requested);
