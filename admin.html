@@ -62,7 +62,7 @@ textarea.form-control { min-height: 90px; resize: vertical; }
 .card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; overflow: hidden; backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; padding: 15px; text-align: center; }
 .card-media { width: 100px; height: 100px; border-radius: 50%; overflow: hidden; background: #000; border: 2px solid var(--accent-bamboo); margin-bottom: 10px; display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 800; }
 .card-media img, .card-media video { width: 100%; height: 100%; object-fit: cover; }
-.card-body { flex: 1; }
+.card-body { flex: 1; width: 100%; }
 .card-body h3 { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
 .card-body p { color: var(--accent-bamboo); font-size: 13px; font-weight: 600; }
 
@@ -70,7 +70,26 @@ textarea.form-control { min-height: 90px; resize: vertical; }
 .btn-delete { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; }
 .btn-delete:hover { background: var(--danger); color: white; }
 
-#status-toast { position: fixed; bottom: 25px; right: 25px; background: rgba(12, 26, 20, 0.95); border: 1px solid var(--accent-bamboo); border-radius: 16px; padding: 14px 22px; color: var(--accent-bamboo); font-weight: 600; font-size: 14px; display: none; z-index: 2000; }
+/* Toast Notifikasi */
+#status-toast { 
+    position: fixed; 
+    bottom: 25px; 
+    right: 25px; 
+    background: rgba(12, 26, 20, 0.95); 
+    border: 1px solid var(--accent-bamboo); 
+    border-radius: 16px; 
+    padding: 14px 22px; 
+    color: var(--accent-bamboo); 
+    font-weight: 700; 
+    font-size: 14px; 
+    display: none; 
+    z-index: 2000; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+}
+#status-toast.error {
+    border-color: var(--danger);
+    color: #fca5a5;
+}
 
 footer { border-top: 1px solid var(--card-border); padding: 40px 20px; text-align: center; background: rgba(8, 18, 14, 0.9); }
 </style>
@@ -94,10 +113,10 @@ footer { border-top: 1px solid var(--card-border); padding: 40px 20px; text-alig
     <p id="headerDeskripsi">Mode Pengelola Website Stovensa</p>
     
     <div style="max-width: 600px; margin: 20px auto 0;" class="admin-form-card">
-        <h2>✏️ Edit Header Website</h2>
-        <div class="form-group"><input id="editJudul" class="form-control" type="text" placeholder="Judul Utama"></div>
+        <h2>✏️ Edit Header Website Utama</h2>
+        <div class="form-group"><input id="editJudul" class="form-control" type="text" placeholder="Judul Utama Website"></div>
         <div class="form-group"><textarea id="editDeskripsi" class="form-control" placeholder="Deskripsi Singkat Website..."></textarea></div>
-        <button onclick="simpanHeader()" class="btn-primary">💾 Simpan Header</button>
+        <button onclick="simpanHeader()" class="btn-primary">💾 Simpan Header Website</button>
     </div>
 </div>
 
@@ -108,7 +127,7 @@ footer { border-top: 1px solid var(--card-border); padding: 40px 20px; text-alig
         <div class="admin-form-card">
             <h2>➕ Tambah Info Terkini</h2>
             <div class="form-group"><label>Judul Info</label><input id="bJudul" class="form-control" type="text" placeholder="Judul info..."></div>
-            <div class="form-group"><label>Isi Info</label><textarea id="bIsi" class="form-control" placeholder="Tuliskan pengumuman / info gaul..."></textarea></div>
+            <div class="form-group"><label>Isi Info</label><textarea id="bIsi" class="form-control" placeholder="Tuliskan pengumuman / info..."></textarea></div>
             <button onclick="tambahPost('berita', 'bJudul', 'bIsi')" class="btn-primary">🚀 Publisahkan Info</button>
         </div>
         <div id="gridBerita" class="grid"><i>Memuat info...</i></div>
@@ -118,10 +137,10 @@ footer { border-top: 1px solid var(--card-border); padding: 40px 20px; text-alig
     <div id="tab-galeri" class="tab-content">
         <div class="admin-form-card">
             <h2>➕ Tambah Galeri Kenangan (Foto / Video)</h2>
-            <div class="form-group"><label>Judul Momen</label><input id="gJudul" class="form-control" type="text" placeholder="Contoh: Momen Kebersamaan"></div>
+            <div class="form-group"><label>Judul Momen Kenangan</label><input id="gJudul" class="form-control" type="text" placeholder="Contoh: Momen Kebersamaan"></div>
             <div class="form-group"><label>Tanggal Momen</label><input id="gTanggal" class="form-control" type="text" placeholder="Contoh: 14 Agustus 2026"></div>
-            <div class="form-group"><label>Deskripsi Momen</label><textarea id="gIsi" class="form-control" placeholder="Cerita / deskripsi kenangan ini..."></textarea></div>
-            <div class="form-group"><label>Upload Foto / Video</label><input id="gMedia" class="form-control" type="file" accept="image/*,video/*"></div>
+            <div class="form-group"><label>Deskripsi / Cerita</label><textarea id="gIsi" class="form-control" placeholder="Cerita singkat mengenai momen ini..."></textarea></div>
+            <div class="form-group"><label>Upload File Foto / Video</label><input id="gMedia" class="form-control" type="file" accept="image/*,video/*"></div>
             <button onclick="tambahGaleri()" class="btn-primary">📸 Simpan Ke Galeri</button>
         </div>
         <div id="gridGaleri" class="grid"><i>Memuat galeri...</i></div>
@@ -197,11 +216,22 @@ footer { border-top: 1px solid var(--card-border); padding: 40px 20px; text-alig
 
 <script>
 const statusToast = document.getElementById("status-toast");
+let toastTimer = null;
 
-function showToast(msg) {
+function showToast(msg, isError = false) {
+    if (toastTimer) clearTimeout(toastTimer);
     statusToast.style.display = "block";
     statusToast.textContent = msg;
-    setTimeout(() => { statusToast.style.display = "none"; }, 4000);
+    
+    if (isError) {
+        statusToast.classList.add("error");
+    } else {
+        statusToast.classList.remove("error");
+    }
+
+    toastTimer = setTimeout(() => { 
+        statusToast.style.display = "none"; 
+    }, 4500);
 }
 
 function switchTab(tabName) {
@@ -216,7 +246,8 @@ function switchTab(tabName) {
 
 function renderPengurusAdmin(items) {
     const box = document.getElementById("gridPengurus");
-    box.innerHTML = items.map(p => {
+    if (!box) return;
+    box.innerHTML = (items || []).map(p => {
         let mediaTag = p.mediaUrl ? `<img src="${p.mediaUrl}">` : (p.isi || "S").charAt(0).toUpperCase();
         return `
             <div class="card">
@@ -235,6 +266,7 @@ function renderPengurusAdmin(items) {
 
 function renderAnggotaAdmin(items) {
     const box = document.getElementById("gridAnggota");
+    if (!box) return;
     if (!items || items.length === 0) {
         box.innerHTML = `<p style="color:var(--text-secondary);">Belum ada anggota ditambahkan.</p>`;
         return;
@@ -258,6 +290,7 @@ function renderAnggotaAdmin(items) {
 
 function renderSimpleCards(items, containerId, kat) {
     const box = document.getElementById(containerId);
+    if (!box) return;
     if (!items || items.length === 0) {
         box.innerHTML = `<p style="color:var(--text-secondary);">Belum ada data.</p>`;
         return;
@@ -265,8 +298,8 @@ function renderSimpleCards(items, containerId, kat) {
     box.innerHTML = items.map(item => `
         <div class="card" style="align-items:flex-start; text-align:left;">
             <div class="card-body">
-                <h3>${item.judul}</h3>
-                <p style="white-space:pre-line; color:var(--text-secondary);">${item.isi || ''}</p>
+                <h3>${item.judul || item.platform}</h3>
+                <p style="white-space:pre-line; color:var(--text-secondary);">${item.isi || item.username || ''}</p>
             </div>
             <div class="card-actions">
                 <button class="btn-delete" onclick="hapusPost('${kat}', '${item.id}')">🗑️ Hapus</button>
@@ -277,6 +310,7 @@ function renderSimpleCards(items, containerId, kat) {
 
 function renderGaleriAdmin(items) {
     const box = document.getElementById("gridGaleri");
+    if (!box) return;
     if (!items || items.length === 0) {
         box.innerHTML = `<p style="color:var(--text-secondary);">Belum ada kenangan di galeri.</p>`;
         return;
@@ -305,19 +339,20 @@ async function loadData() {
         document.getElementById("editDeskripsi").value = data.deskripsi || "";
 
         renderSimpleCards(data.berita, "gridBerita", "berita");
-        renderGaleriAdmin(data.galeri || [], "gridGaleri");
+        renderGaleriAdmin(data.galeri || []);
         renderSimpleCards(data.sosmed || [], "gridSosmed", "sosmed");
         renderSimpleCards(data.jadwal, "gridJadwal", "jadwal");
         renderPengurusAdmin(data.pengurus);
         renderAnggotaAdmin(data.anggota);
     } catch (e) {
         console.error(e);
+        showToast("❌ Gagal mengambil data dari server.", true);
     }
 }
 loadData();
 
 async function sendData(payload) {
-    showToast("⏳ Menyimpan perubahan & pushing to GitHub...");
+    showToast("⏳ Menyimpan perubahan...");
     try {
         const res = await fetch("/api/save", {
             method: "POST",
@@ -326,18 +361,19 @@ async function sendData(payload) {
         });
         const result = await res.json();
         if (result.success) {
-            showToast("✅ Berhasil disimpan & Pushed!");
+            showToast("✅ Berhasil menyimpan!");
             loadData();
         } else {
-            showToast("❌ Gagal: " + result.message);
+            showToast("❌ Gagal menyimpan: " + (result.message || "Terjadi kesalahan"), true);
         }
     } catch (e) {
-        showToast("❌ Gagal terhubung ke server.");
+        showToast("❌ Gagal menyimpan: Tidak terhubung ke server.", true);
     }
 }
 
 function simpanHeader() {
     sendData({
+        aksi: "update_header",
         judul: document.getElementById("editJudul").value,
         deskripsi: document.getElementById("editDeskripsi").value
     });
@@ -363,7 +399,10 @@ function tambahPost(kategori, idJudul, idIsi, idMedia) {
     const mediaInput = idMedia ? document.getElementById(idMedia) : null;
     const file = mediaInput ? mediaInput.files[0] : null;
 
-    if (!judul && !isi) return alert("Isi judul/nama terlebih dahulu!");
+    if (!judul && !isi) {
+        showToast("❌ Gagal menyimpan: Judul atau Isi wajib diisi!", true);
+        return;
+    }
 
     if (file) {
         const reader = new FileReader();
@@ -394,7 +433,10 @@ function tambahGaleri() {
     const isi = document.getElementById("gIsi").value;
     const file = document.getElementById("gMedia").files[0];
 
-    if (!judul) return alert("Isi judul kenangan!");
+    if (!judul) {
+        showToast("❌ Gagal menyimpan: Judul momen wajib diisi!", true);
+        return;
+    }
 
     if (file) {
         const reader = new FileReader();
@@ -414,7 +456,7 @@ function tambahGaleri() {
         };
         reader.readAsDataURL(file);
     } else {
-        alert("Pilih file foto atau video untuk galeri!");
+        showToast("❌ Gagal menyimpan: Pilih foto atau video dulu!", true);
     }
 }
 
@@ -422,7 +464,10 @@ function uploadLagu() {
     const judulLagu = document.getElementById("lJudul").value;
     const file = document.getElementById("lMedia").files[0];
 
-    if (!file) return alert("Pilih file MP3 terlebih dahulu!");
+    if (!file) {
+        showToast("❌ Gagal menyimpan: File MP3 belum dipilih!", true);
+        return;
+    }
 
     const reader = new FileReader();
     reader.onload = function(e) {
@@ -442,7 +487,10 @@ function tambahSosmed() {
     const username = document.getElementById("sUser").value;
     const link = document.getElementById("sLink").value;
 
-    if (!username || !link) return alert("Lengkapi data sosmed!");
+    if (!username || !link) {
+        showToast("❌ Gagal menyimpan: Username dan Link wajib diisi!", true);
+        return;
+    }
 
     sendData({
         aksi: "tambah_sosmed",

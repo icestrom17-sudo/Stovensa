@@ -253,8 +253,10 @@ const server = http.createServer(async (req, res) => {
             const input = await receiveBody(req);
             const data = loadData();
 
-            if (typeof input.judul === "string") data.judul = input.judul;
-            if (typeof input.deskripsi === "string") data.deskripsi = input.deskripsi;
+            if (input.aksi === "update_header") {
+                if (typeof input.judul === "string") data.judul = input.judul;
+                if (typeof input.deskripsi === "string") data.deskripsi = input.deskripsi;
+            }
 
             if (input.aksi === "tambah_post") {
                 const kat = input.kategori || "berita";
@@ -355,9 +357,11 @@ const server = http.createServer(async (req, res) => {
 
             saveData(data);
             createWebsite(data);
-            await updateGitHub();
+            
+            // Sync GitHub secara background tanpa membuat admin menunggu
+            updateGitHub().catch(err => console.error("Error Git push:", err));
 
-            return json(res, 200, { success: true, message: "Berhasil di-push ke GitHub!" });
+            return json(res, 200, { success: true, message: "Berhasil disimpan!" });
         } catch (error) {
             console.error(error);
             return json(res, 500, { success: false, message: String(error) });
