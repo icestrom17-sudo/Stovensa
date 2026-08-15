@@ -70,7 +70,6 @@ textarea.form-control { min-height: 90px; resize: vertical; }
 .btn-delete { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; }
 .btn-delete:hover { background: var(--danger); color: white; }
 
-/* Toast Notifikasi */
 #status-toast { 
     position: fixed; 
     bottom: 25px; 
@@ -86,10 +85,7 @@ textarea.form-control { min-height: 90px; resize: vertical; }
     z-index: 2000; 
     box-shadow: 0 10px 30px rgba(0,0,0,0.8);
 }
-#status-toast.error {
-    border-color: var(--danger);
-    color: #fca5a5;
-}
+#status-toast.error { border-color: var(--danger); color: #fca5a5; }
 
 footer { border-top: 1px solid var(--card-border); padding: 40px 20px; text-align: center; background: rgba(8, 18, 14, 0.9); }
 </style>
@@ -201,7 +197,8 @@ footer { border-top: 1px solid var(--card-border); padding: 40px 20px; text-alig
             <button onclick="tambahPost('anggota', 'aNama', 'aTag', 'aMedia')" class="btn-primary">➕ Tambah Anggota Ke Daftar</button>
         </div>
 
-        <h3 style="margin-bottom:15px; color:var(--accent-bamboo);">Daftar Seluruh Anggota Kelas:</h3>
+        <!-- COUNTER TERHUBUNG LANGSUNG DENGAN DAFTAR ANGGOTA -->
+        <h3 id="anggotaCounter" style="margin-bottom:15px; color:var(--accent-bamboo);">Daftar Seluruh Anggota Kelas: (0 / 25)</h3>
         <div id="gridAnggota" class="grid"><i>Memuat anggota...</i></div>
     </div>
 
@@ -217,6 +214,7 @@ footer { border-top: 1px solid var(--card-border); padding: 40px 20px; text-alig
 <script>
 const statusToast = document.getElementById("status-toast");
 let toastTimer = null;
+let totalAnggotaSaatIni = 0; // Menyimpan data kuota real-time
 
 function showToast(msg, isError = false) {
     if (toastTimer) clearTimeout(toastTimer);
@@ -266,6 +264,14 @@ function renderPengurusAdmin(items) {
 
 function renderAnggotaAdmin(items) {
     const box = document.getElementById("gridAnggota");
+    const counterEl = document.getElementById("anggotaCounter");
+    
+    totalAnggotaSaatIni = (items || []).length;
+    
+    if (counterEl) {
+        counterEl.textContent = `Daftar Seluruh Anggota Kelas: (${totalAnggotaSaatIni} / 25)`;
+    }
+
     if (!box) return;
     if (!items || items.length === 0) {
         box.innerHTML = `<p style="color:var(--text-secondary);">Belum ada anggota ditambahkan.</p>`;
@@ -399,8 +405,13 @@ function tambahPost(kategori, idJudul, idIsi, idMedia) {
     const mediaInput = idMedia ? document.getElementById(idMedia) : null;
     const file = mediaInput ? mediaInput.files[0] : null;
 
+    if (kategori === "anggota" && totalAnggotaSaatIni >= 25) {
+        showToast("❌ Gagal menyimpan: Kuota anggota sudah penuh (maksimal 25)!", true);
+        return;
+    }
+
     if (!judul && !isi) {
-        showToast("❌ Gagal menyimpan: Judul atau Isi wajib diisi!", true);
+        showToast("❌ Gagal menyimpan: Judul atau Nama wajib diisi!", true);
         return;
     }
 
@@ -502,6 +513,7 @@ function tambahSosmed() {
     document.getElementById("sLink").value = "";
 }
 
+// FUNGSI HAPUS: Otomatis mengurangi kuota anggota secara instan saat diklik!
 function hapusPost(kategori, id) {
     if (confirm("Hapus data ini?")) {
         sendData({ aksi: "hapus_post", kategori, id });
