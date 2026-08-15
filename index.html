@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stovensa - Official Website</title>
+<title>STOVENSA - Official Website</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Fredoka:wght@600;700&family=Caveat:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 :root {
     --bg-dark: #08120e;
-    --card-bg: rgba(16, 34, 26, 0.75);
-    --card-border: rgba(52, 211, 153, 0.25);
+    --card-bg: rgba(16, 34, 26, 0.6);
+    --card-border: rgba(52, 211, 153, 0.2);
     --accent-emerald: #10b981;
     --accent-bamboo: #84cc16;
     --accent-flower: #f43f5e;
@@ -22,490 +22,208 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
 html { scroll-behavior: smooth; background-color: var(--bg-dark); color: var(--text-primary); }
-body { overflow-x: hidden; position: relative; min-height: 100vh; display: flex; flex-direction: column; }
+body { overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; }
 
-/* BACKGROUND GLOW */
-.bg-glow-bamboo { position: fixed; top: -100px; left: -100px; width: 450px; height: 450px; background: radial-gradient(circle, rgba(132, 204, 22, 0.2), transparent 70%); filter: blur(90px); z-index: -1; pointer-events: none; }
-.bg-glow-flower { position: fixed; bottom: -100px; right: -100px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(244, 63, 94, 0.18), transparent 70%); filter: blur(100px); z-index: -1; pointer-events: none; }
-.bg-elephant-watermark { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.04; font-size: 25vw; pointer-events: none; z-index: -1; user-select: none; }
+/* Navbar Floating */
+nav { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 94%; max-width: 1050px; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; background: rgba(12, 26, 20, 0.85); backdrop-filter: blur(16px); border: 1px solid var(--card-border); border-radius: 50px; z-index: 1000; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); }
+.logo { font-size: 18px; font-weight: 800; background: linear-gradient(135deg, var(--accent-bamboo), var(--accent-flower)); -webkit-background-clip: text; color: transparent; text-decoration: none; }
+.nav-links { display: flex; gap: 15px; }
+.nav-links a { color: var(--text-secondary); text-decoration: none; font-weight: 600; font-size: 13px; transition: 0.3s; }
+.nav-links a:hover { color: var(--accent-bamboo); }
 
-/* DAUN GUGUR */
-.bamboo-leaf { position: fixed; top: -20px; color: var(--accent-bamboo); opacity: 0.4; font-size: 20px; pointer-events: none; animation: leafFall linear infinite; z-index: 0; }
-@keyframes leafFall {
-    0% { transform: translateY(0) rotate(0deg); opacity: 0.6; }
-    100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
-}
+/* Hero Section */
+.hero { padding: 140px 20px 60px; text-align: center; }
+.hero h1 { font-size: clamp(40px, 8vw, 70px); font-weight: 800; background: linear-gradient(180deg, #ffffff 20%, var(--accent-bamboo) 100%); -webkit-background-clip: text; color: transparent; }
+.hero p { color: var(--text-secondary); font-size: 16px; margin-top: 10px; }
 
-nav { position: fixed; top: 15px; left: 50%; transform: translateX(-50%); width: 94%; max-width: 1050px; padding: 8px 14px; display: flex; justify-content: space-between; align-items: center; background: rgba(12, 26, 20, 0.88); backdrop-filter: blur(16px); border: 1px solid var(--card-border); border-radius: 50px; z-index: 1000; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); overflow-x: auto; }
-.logo { font-size: 15px; font-weight: 800; background: linear-gradient(135deg, var(--accent-bamboo), var(--accent-flower)); -webkit-background-clip: text; color: transparent; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; margin-right: 10px; }
+.container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; flex: 1; width: 100%; }
+.section-title { font-size: 24px; font-weight: 800; color: var(--accent-bamboo); margin-bottom: 20px; text-align: center; }
 
-.nav-tabs { display: flex; gap: 4px; }
-.tab-btn { background: transparent; border: 0; color: var(--text-secondary); padding: 7px 12px; border-radius: 30px; font-weight: 600; font-size: 11.5px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; }
-.tab-btn:hover { color: var(--text-primary); }
-.tab-btn.active { background: linear-gradient(135deg, var(--accent-emerald), var(--accent-flower)); color: white; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); }
+/* Grid Layout */
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+.grid-9 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+@media (max-width: 768px) { .grid-9 { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); } }
 
-.hero-mini { padding: 95px 15px 15px; text-align: center; }
-.hero-mini h1 { font-size: 36px; font-weight: 800; background: linear-gradient(180deg, #ffffff 20%, var(--accent-bamboo) 100%); -webkit-background-clip: text; color: transparent; letter-spacing: -0.5px; }
-.hero-mini p { color: var(--text-secondary); font-size: 13px; margin-top: 4px; font-weight: 500; }
+/* Cards & Anggota */
+.card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px; backdrop-filter: blur(10px); }
+.card-anggota { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px; backdrop-filter: blur(10px); text-align: center; display: flex; flex-direction: column; align-items: center; transition: all 0.4s ease; }
+.card-media { width: 90px; height: 90px; border-radius: 50%; overflow: hidden; background: #000; border: 2px solid var(--accent-bamboo); margin-bottom: 12px; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 800; }
+.card-media img, .card-media video { width: 100%; height: 100%; object-fit: cover; }
+.card-avatar-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: rgba(132, 204, 22, 0.2); color: var(--accent-bamboo); }
 
-.container { max-width: 1100px; margin: 0 auto; padding: 10px 12px 60px; flex: 1; width: 100%; z-index: 1; }
-.tab-content { display: none; }
-.tab-content.active { display: block; animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.card-anggota h3 { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+.card-anggota p { color: var(--accent-bamboo); font-size: 13px; font-weight: 600; }
 
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(15px) scale(0.98); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.section-title { font-size: 20px; font-weight: 800; text-align: center; margin: 25px 0 15px; color: var(--accent-bamboo); display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; letter-spacing: 1px; }
-
-/* PERATURAN KELAS & SOSMED */
-.rules-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 30px; }
-.rule-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px; backdrop-filter: blur(12px); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
-.rule-card h3 { font-family: 'Caveat', cursive; font-size: 32px; color: var(--accent-flower); text-align: center; margin-bottom: 15px; border-bottom: 2px dashed var(--card-border); padding-bottom: 8px; }
-.rule-card.do h3 { color: var(--accent-bamboo); }
-
-.rule-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-.rule-list li { font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.4; display: flex; align-items: flex-start; gap: 8px; background: rgba(0,0,0,0.2); padding: 8px 12px; border-radius: 10px; border-left: 3px solid var(--accent-flower); }
-.rule-card.do .rule-list li { border-left-color: var(--accent-bamboo); }
-
-.sosmed-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 30px; }
-.sosmed-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-primary); transition: all 0.3s ease; }
-.sosmed-card:hover { transform: translateY(-3px); border-color: var(--accent-flower); box-shadow: 0 8px 20px rgba(244, 63, 94, 0.2); }
-.sosmed-icon { font-size: 24px; }
-.sosmed-info h4 { font-size: 13px; font-weight: 700; }
-.sosmed-info p { font-size: 11px; color: var(--text-secondary); }
-
-/* MUSIC PLAYER */
-.music-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px; backdrop-filter: blur(12px); margin-bottom: 20px; display: flex; flex-direction: column; align-items: center; gap: 15px; }
-.music-cover { width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-bamboo), var(--accent-flower)); display: flex; align-items: center; justify-content: center; font-size: 40px; border: 3px solid var(--accent-bamboo); animation: spinCover 12s linear infinite paused; }
-.music-cover.playing { animation-play-state: running; }
-@keyframes spinCover { 100% { transform: rotate(360deg); } }
-audio { width: 100%; max-width: 400px; border-radius: 30px; filter: invert(0.9) hue-rotate(90deg); }
-
-/* GALERI KENANGAN */
-.grid-galeri { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; margin-bottom: 30px; }
-.galeri-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 18px; overflow: hidden; backdrop-filter: blur(12px); transition: all 0.3s ease; display: flex; flex-direction: column; }
-.galeri-card:hover { transform: translateY(-4px); border-color: var(--accent-flower); box-shadow: 0 10px 25px rgba(244, 63, 94, 0.25); }
-.galeri-media { width: 100%; height: 200px; overflow: hidden; background: #000; position: relative; }
+/* Galeri Card */
+.galeri-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; overflow: hidden; }
+.galeri-media { width: 100%; height: 200px; background: #000; }
 .galeri-media img, .galeri-media video { width: 100%; height: 100%; object-fit: cover; }
-.galeri-body { padding: 16px; flex: 1; display: flex; flex-direction: column; }
-.galeri-date { font-size: 10.5px; color: var(--accent-bamboo); font-weight: 700; text-transform: uppercase; margin-bottom: 4px; }
-.galeri-title { font-size: 16px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px; }
-.galeri-desc { font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; font-weight: 500; }
+.galeri-body { padding: 15px; }
+.galeri-date { font-size: 11px; color: var(--accent-bamboo); font-weight: 700; }
+.galeri-title { font-size: 16px; font-weight: 700; margin: 4px 0; }
+.galeri-desc { font-size: 13px; color: var(--text-secondary); }
 
-/* JADWAL PELAJARAN */
-.grid-jadwal { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 30px; }
-.card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; overflow: hidden; backdrop-filter: blur(12px); transition: all 0.3s ease; display: flex; flex-direction: column; }
-.card-body { padding: 16px; flex: 1; }
-.card-body h3 { font-size: 15px; font-weight: 800; margin-bottom: 10px; color: var(--accent-bamboo); border-bottom: 1px solid var(--card-border); padding-bottom: 6px; }
-.card-body p { color: var(--text-secondary); line-height: 1.6; font-size: 13px; font-weight: 600; white-space: pre-line; }
+/* Sosmed Card */
+.sosmed-card { display: flex; align-items: center; gap: 15px; background: var(--card-bg); border: 1px solid var(--card-border); padding: 15px 20px; border-radius: 16px; text-decoration: none; color: white; }
+.sosmed-icon { font-size: 24px; }
 
-/* PIKET FLOWER */
-.grid-piket-flower { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 40px; }
-.flower-container { width: 100%; height: 260px; display: flex; align-items: center; justify-content: center; position: relative; margin: 0 auto; }
-.flower-core { width: 62px; height: 62px; background: radial-gradient(circle, #fef08a 20%, #facc15 60%, #ca8a04 100%); border-radius: 50%; z-index: 10; display: flex; align-items: center; justify-content: center; font-family: 'Fredoka', cursive, sans-serif; font-size: 13px; font-weight: 700; color: #713f12; border: 2.5px solid #ffffff; box-shadow: 0 0 15px rgba(250, 204, 21, 0.8); position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
-.petal { position: absolute; left: calc(50% - 35px); top: calc(50% - 78px); width: 70px; height: 70px; border-radius: 50% 50% 15% 50%; background: linear-gradient(135deg, #a855f7 0%, #6b21a8 100%); border: 1.5px solid rgba(254, 240, 138, 0.85); box-shadow: inset 0 0 8px rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; text-align: center; padding: 4px; z-index: 2; transform-origin: 35px 78px; }
-.petal-0 { transform: rotate(0deg); } .petal-1 { transform: rotate(72deg); } .petal-2 { transform: rotate(144deg); } .petal-3 { transform: rotate(216deg); } .petal-4 { transform: rotate(288deg); }
-.petal-0 .petal-name { transform: rotate(0deg); } .petal-1 .petal-name { transform: rotate(-72deg); } .petal-2 .petal-name { transform: rotate(-144deg); } .petal-3 .petal-name { transform: rotate(-216deg); } .petal-4 .petal-name { transform: rotate(-288deg); }
-.petal-name { font-family: 'Fredoka', cursive, sans-serif; font-size: 10.5px; font-weight: 700; color: #ffffff; text-shadow: 0 1px 4px rgba(0,0,0,0.9); line-height: 1.1; display: block; width: 100%; word-break: break-word; }
+/* Audio Player */
+.audio-player { position: fixed; bottom: 20px; right: 20px; background: rgba(12, 26, 20, 0.9); border: 1px solid var(--card-border); padding: 10px 18px; border-radius: 30px; display: flex; align-items: center; gap: 10px; z-index: 999; backdrop-filter: blur(10px); }
 
-/* STRUKTUR & ANGGOTA */
-.org-tree { display: flex; flex-direction: column; align-items: center; gap: 24px; margin-bottom: 40px; }
-.org-level { display: flex; justify-content: center; gap: 12px; width: 100%; position: relative; }
-.tree-node { background: rgba(12, 26, 20, 0.85); border: 1px solid var(--card-border); border-radius: 16px; padding: 12px 8px; text-align: center; backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; min-width: 100px; flex: 1; max-width: 220px; z-index: 2; }
-.node-photo-placeholder { width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--accent-bamboo); margin-bottom: 6px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--accent-bamboo), var(--accent-flower)); font-size: 18px; font-weight: 800; color: white; }
-.tree-node .title { font-size: 9.5px; font-weight: 800; text-transform: uppercase; color: var(--accent-bamboo); }
-.tree-node .name { font-size: 11.5px; font-weight: 700; color: var(--text-primary); }
-
-.grid-anggota { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.member-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px 6px; text-align: center; backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; }
-.avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-bamboo), var(--accent-flower)); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 800; color: white; margin-bottom: 8px; overflow: hidden; border: 2px solid var(--accent-bamboo); }
-.avatar img { width: 100%; height: 100%; object-fit: cover; }
-.member-name { font-size: 12px; font-weight: 700; }
-.member-tag { font-size: 10px; color: var(--accent-bamboo); }
-
-footer { border-top: 1px solid var(--card-border); padding: 30px 15px; text-align: center; background: rgba(8, 18, 14, 0.9); }
-
-@media (max-width: 768px) {
-    nav { width: 95%; padding: 6px 10px; }
-    .logo { font-size: 13px; }
-    .tab-btn { padding: 5px 9px; font-size: 10.5px; }
-    .rules-container { grid-template-columns: 1fr; }
-    .grid-galeri { grid-template-columns: 1fr; }
-    .grid-jadwal { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-    .grid-piket-flower { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-    .flower-container { height: 180px; }
-    .flower-core { width: 44px; height: 44px; font-size: 10px; }
-    .petal { left: calc(50% - 25px); top: calc(50% - 56px); width: 50px; height: 50px; transform-origin: 25px 56px; }
-    .petal-name { font-size: 8px; }
-    .grid-anggota { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+/* Animasi Fade In untuk Acak Anggota */
+.shuffle-fade { animation: fadeEffect 0.7s cubic-bezier(0.4, 0, 0.2, 1); }
+@keyframes fadeEffect {
+    0% { opacity: 0; transform: scale(0.93); }
+    100% { opacity: 1; transform: scale(1); }
 }
+
+footer { border-top: 1px solid var(--card-border); padding: 40px 20px; text-align: center; background: rgba(8, 18, 14, 0.9); margin-top: 40px; }
 </style>
 </head>
 <body>
 
-<div class="bg-glow-bamboo"></div>
-<div class="bg-glow-flower"></div>
-<div class="bg-elephant-watermark">🐘</div>
-
-<div class="bamboo-leaf" style="left: 10%; animation-duration: 8s;">🍃</div>
-<div class="bamboo-leaf" style="left: 30%; animation-duration: 12s;">🎋</div>
-<div class="bamboo-leaf" style="left: 50%; animation-duration: 9s;">🍃</div>
-<div class="bamboo-leaf" style="left: 70%; animation-duration: 11s;">🌿</div>
-<div class="bamboo-leaf" style="left: 90%; animation-duration: 10s;">🍃</div>
-
 <nav>
-    <div class="logo" onclick="switchTab('home')">🐘 STOVENSA 🌸</div>
-    <div class="nav-tabs">
-        <button class="tab-btn active" onclick="switchTab('home')">🏠 Home</button>
-        <button class="tab-btn" onclick="switchTab('info')">📢 Info</button>
-        <button class="tab-btn" onclick="switchTab('galeri')">🖼️ Galeri</button>
-        <button class="tab-btn" onclick="switchTab('jadwal')">📅 Jadwal</button>
-        <button class="tab-btn" onclick="switchTab('lagu')">🎵 Lagu</button>
-        <button class="tab-btn" onclick="switchTab('struktur')">👥 Struktur</button>
+    <a href="#" class="logo">STOVENSA</a>
+    <div class="nav-links">
+        <a href="#info">Info</a>
+        <a href="#galeri">Galeri</a>
+        <a href="#jadwal">Jadwal</a>
+        <a href="#anggota">Anggota</a>
     </div>
 </nav>
 
-<div class="hero-mini">
-    <h1>Stovensa</h1>
+<div class="hero">
+    <h1>STOVENSA</h1>
     <!-- STOVENSA_DESKRIPSI_START -->
-<p>The best and religeous generation</p>
-<!-- STOVENSA_DESKRIPSI_END -->
+    <p>The best and religious generation</p>
+    <!-- STOVENSA_DESKRIPSI_END -->
 </div>
 
 <div class="container">
 
-    <!-- ================= TAB 1: HOME ================= -->
-    <div id="tab-home" class="tab-content active">
-        <h2 class="section-title">✨ DO & DONT CLASS 7A</h2>
-        <div class="rules-container">
-            <div class="rule-card do">
-                <h3>DO :</h3>
-                <ul class="rule-list">
-                    <li><span>1.</span> Izin ke kamar mandi</li>
-                    <li><span>2.</span> Minum di kelas</li>
-                    <li><span>3.</span> Boleh membawa obat</li>
-                    <li><span>4.</span> Boleh memakai peci di kelas</li>
-                    <li><span>5.</span> Boleh berjualan di jam istirahat</li>
-                </ul>
-            </div>
-            <div class="rule-card">
-                <h3>DONT :</h3>
-                <ul class="rule-list">
-                    <li><span>1.</span> Makan di kelas pada saat KBM berlangsung</li>
-                    <li><span>2.</span> Tidur di jam pelajaran</li>
-                    <li><span>3.</span> Main bola di kelas</li>
-                    <li><span>4.</span> Mencuri</li>
-                    <li><span>5.</span> Meminjam tanpa izin</li>
-                    <li><span>6.</span> Membawa mainan</li>
-                    <li><span>7.</span> Merokok</li>
-                    <li><span>8.</span> Merusak fasilitas</li>
-                    <li><span>9.</span> Pacaran</li>
-                    <li><span>10.</span> Mengejek / membully teman</li>
-                    <li><span>11.</span> Bawa kosmetik</li>
-                    <li><span>12.</span> Mengobrol di jam pelajaran</li>
-                    <li><span>13.</span> Membawa gantungan kunci kebanyakan</li>
-                    <li><span>14.</span> Membawa senjata tajam</li>
-                </ul>
-            </div>
-        </div>
-
-        <h2 class="section-title">📱 MEDIA SOSIAL KELAS</h2>
-        <div class="sosmed-grid" id="sosmedDisplayContainer">
-            <!-- STOVENSA_SOSMED_START -->
-
-            <a href="http://localhost:3000" target="_blank" class="sosmed-card">
-                <div class="sosmed-icon">📸</div>
-                <div class="sosmed-info">
-                    <h4>Instagram</h4>
-                    <p>Izaastwng@kaka</p>
-                </div>
-            </a>
-        
-<!-- STOVENSA_SOSMED_END -->
-        </div>
-    </div>
-
-    <!-- ================= TAB 2: INFO ================= -->
-    <div id="tab-info" class="tab-content">
-        <h2 class="section-title">📢 INFO TERKINI</h2>
-        <div class="grid-jadwal" style="grid-template-columns: 1fr;">
+    <!-- INFO / BERITA -->
+    <section id="info" style="margin-bottom: 50px;">
+        <h2 class="section-title">📢 Info Terkini</h2>
+        <div class="grid">
             <!-- STOVENSA_BERITA_START -->
-<div class="card"><div class="card-body"><h3>Belum Ada Data</h3><p>Info terbaru akan muncul di sini.</p></div></div>
-<!-- STOVENSA_BERITA_END -->
+            <div class="card"><div class="card-body"><h3>Belum Ada Data</h3><p>Info terbaru akan muncul di sini.</p></div></div>
+            <!-- STOVENSA_BERITA_END -->
         </div>
-    </div>
+    </section>
 
-    <!-- ================= TAB 3: GALERI ================= -->
-    <div id="tab-galeri" class="tab-content">
-        <h2 class="section-title">🖼️ GALERI KENANGAN</h2>
-        <div class="grid-galeri">
+    <!-- ANGGOTA (GAMBLING / ACAK 9 KOTAK - NO DUPLICATE - ROTASI 7 DETIK) -->
+    <section id="anggota" style="margin-bottom: 50px;">
+        <h2 class="section-title">👥 Anggota Kelas</h2>
+        <div id="gridAnggotaUtama" class="grid-9">
+            <!-- 9 Kotak Unik Teracak Otomatis Muncul Di Sini -->
+        </div>
+    </section>
+
+    <!-- GALERI KENANGAN -->
+    <section id="galeri" style="margin-bottom: 50px;">
+        <h2 class="section-title">🖼️ Galeri Kenangan</h2>
+        <div class="grid">
             <!-- STOVENSA_GALERI_START -->
-
-            <div class="galeri-card">
-                <div class="galeri-media"><video src="media/galeri_1786748412360.mp4" controls></video></div>
-                <div class="galeri-body">
-                    <span class="galeri-date">Ndne</span>
-                    <h3 class="galeri-title">Hdbdn</h3>
-                    <p class="galeri-desc">Bdbd</p>
-                </div>
-            </div>
-        
-            <div class="galeri-card">
-                <div class="galeri-media"><video src="media/galeri_1786748387588.mp4" controls></video></div>
-                <div class="galeri-body">
-                    <span class="galeri-date">24 Januari 1230</span>
-                    <h3 class="galeri-title">Momen sinematik</h3>
-                    <p class="galeri-desc">Ceritanya lalu babubkd</p>
-                </div>
-            </div>
-        
-<!-- STOVENSA_GALERI_END -->
+            <div class="galeri-card"><div class="galeri-body"><h3>Belum Ada Kenangan</h3><p>Kenangan foto dan video akan muncul di sini.</p></div></div>
+            <!-- STOVENSA_GALERI_END -->
         </div>
-    </div>
+    </section>
 
-    <!-- ================= TAB 4: JADWAL & PIKET ================= -->
-    <div id="tab-jadwal" class="tab-content">
-        <h2 class="section-title">📚 PELAJARAN</h2>
-        <div class="grid-jadwal">
+    <!-- JADWAL PELAJARAN -->
+    <section id="jadwal" style="margin-bottom: 50px;">
+        <h2 class="section-title">📅 Jadwal Pelajaran</h2>
+        <div class="grid">
             <!-- STOVENSA_JADWAL_START -->
-
-            <div class="card">
-                
-                
-                    <div class="card-body">
-                        <h3>📚 SENIN</h3>
-                        <p>AQIDAH AKHLAK
-TAHFIDZ
-QUR&#039;AN HADIST
-IPA
--MATEMATIKA
--IPS</p>
-                    </div>
-                
-            </div>
-        
-            <div class="card">
-                
-                
-                    <div class="card-body">
-                        <h3>📚 SELASA</h3>
-                        <p>TIK
-BK
-BAHASA INDONESIA
-SKI
--TAHFIDZ
--MATEMATIKA</p>
-                    </div>
-                
-            </div>
-        
-            <div class="card">
-                
-                
-                    <div class="card-body">
-                        <h3>📚 RABU</h3>
-                        <p>BAHASA INGGRIS
-BAHASA LAMPUNG
-FIKIH
-SBDP
--MYRES
--BIOLOGI</p>
-                    </div>
-                
-            </div>
-        
-            <div class="card">
-                
-                
-                    <div class="card-body">
-                        <h3>📚 KAMIS</h3>
-                        <p>IPS
-MATEMATIKA
-BAHASA ARAB
--BAHASA INGGRIS
--FISIKA</p>
-                    </div>
-                
-            </div>
-        
-            <div class="card">
-                
-                
-                    <div class="card-body">
-                        <h3>📚 JUM&#039;AT</h3>
-                        <p>PENJAS
-PKN
-IPA</p>
-                    </div>
-                
-            </div>
-        
-            <div class="card">
-                
-                
-                    <div class="card-body">
-                        <h3>📚 SABTU</h3>
-                        <p>MATEMATIKA
-BAHASA INDONESIA</p>
-                    </div>
-                
-            </div>
-        
-<!-- STOVENSA_JADWAL_END -->
+            <div class="card"><div class="card-body"><h3>Belum Ada Data</h3><p>Jadwal terbaru akan muncul di sini.</p></div></div>
+            <!-- STOVENSA_JADWAL_END -->
         </div>
+    </section>
 
-        <h2 class="section-title">🌸 PIKET</h2>
-        <div class="grid-piket-flower">
-            <div class="flower-container">
-                <div class="flower-core">Senin</div>
-                <div class="petal petal-0"><span class="petal-name">Adinda</span></div>
-                <div class="petal petal-1"><span class="petal-name">Afiqah</span></div>
-                <div class="petal petal-2"><span class="petal-name">Kurni</span></div>
-                <div class="petal petal-3"><span class="petal-name">Albi / Zhafira</span></div>
-                <div class="petal petal-4"><span class="petal-name">Putri</span></div>
-            </div>
-            <div class="flower-container">
-                <div class="flower-core">Selasa</div>
-                <div class="petal petal-0"><span class="petal-name">Arjuna</span></div>
-                <div class="petal petal-1"><span class="petal-name">Arka</span></div>
-                <div class="petal petal-2"><span class="petal-name">Asyraf</span></div>
-                <div class="petal petal-3"><span class="petal-name">Aqila / Barra</span></div>
-                <div class="petal petal-4"><span class="petal-name">Bilal</span></div>
-            </div>
-            <div class="flower-container">
-                <div class="flower-core">Rabu</div>
-                <div class="petal petal-0"><span class="petal-name">Carissa</span></div>
-                <div class="petal petal-1"><span class="petal-name">Dealova</span></div>
-                <div class="petal petal-2"><span class="petal-name">Arkan</span></div>
-                <div class="petal petal-3"><span class="petal-name">Hendra</span></div>
-                <div class="petal petal-4"><span class="petal-name">Izaas</span></div>
-            </div>
-            <div class="flower-container">
-                <div class="flower-core">Kamis</div>
-                <div class="petal petal-0"><span class="petal-name">Kayla</span></div>
-                <div class="petal petal-1"><span class="petal-name">Latifa</span></div>
-                <div class="petal petal-2"><span class="petal-name">Lutfiya</span></div>
-                <div class="petal petal-3"><span class="petal-name">Chaca</span></div>
-                <div class="petal petal-4"><span class="petal-name">Mawar</span></div>
-            </div>
-            <div class="flower-container">
-                <div class="flower-core">Jum'at</div>
-                <div class="petal petal-0"><span class="petal-name">Fatih</span></div>
-                <div class="petal petal-1"><span class="petal-name">Irvan</span></div>
-                <div class="petal petal-2"><span class="petal-name">Rais</span></div>
-                <div class="petal petal-3"><span class="petal-name">Rashid</span></div>
-                <div class="petal petal-4"><span class="petal-name">Tahsin</span></div>
-            </div>
-            <div class="flower-container">
-                <div class="flower-core">Sabtu</div>
-                <div class="petal petal-0"><span class="petal-name">Naura</span></div>
-                <div class="petal petal-1"><span class="petal-name">Nayla</span></div>
-                <div class="petal petal-2"><span class="petal-name">Niken</span></div>
-                <div class="petal petal-3"><span class="petal-name">Pelangi</span></div>
-                <div class="petal petal-4"><span class="petal-name">Belva</span></div>
-            </div>
+    <!-- STRUKTUR PENGURUS -->
+    <section id="pengurus" style="margin-bottom: 50px;">
+        <h2 class="section-title">🏛️ Pengurus Kelas</h2>
+        <div>
+            <!-- STOVENSA_STRUKTUR_START -->
+            <!-- STOVENSA_STRUKTUR_END -->
         </div>
-    </div>
+    </section>
 
-    <!-- ================= TAB 5: LAGU ================= -->
-    <div id="tab-lagu" class="tab-content">
-        <h2 class="section-title">🎧 LAGU FAVORIT KELAS</h2>
-        <div class="music-card">
-            <div class="music-cover" id="musicCover">🎵</div>
-            <h3 style="color: var(--accent-bamboo);" id="songTitle">Lagu Favorit Stovensa</h3>
-            <p style="font-size: 12px; color: var(--text-secondary);">Putar dan dengarkan lagu kebangsaan kelas!</p>
-            
-            <audio controls id="myAudio">
-                <source src="media/lagu.mp3" type="audio/mpeg">
-                Browser kamu tidak mendukung pemutar musik.
-            </audio>
+    <!-- MEDIA SOSIAL -->
+    <section id="sosmed" style="margin-bottom: 30px;">
+        <h2 class="section-title">📱 Media Sosial</h2>
+        <div class="grid">
+            <!-- STOVENSA_SOSMED_START -->
+            <!-- STOVENSA_SOSMED_END -->
         </div>
-    </div>
-
-    <!-- ================= TAB 6: STRUKTUR & ANGGOTA ================= -->
-    <div id="tab-struktur" class="tab-content">
-        <h2 class="section-title">🏛️ PENGURUS KELAS</h2>
-        <!-- STOVENSA_STRUKTUR_START -->
-<div class="org-tree"><div class="org-level"><div class="tree-node"><div class="node-photo-placeholder">E</div><div class="title">Wali Kelas</div><div class="name">Eka Devi Safitri</div></div></div><div class="org-level"><div class="tree-node"><div class="node-photo-placeholder">A</div><div class="title">Ketua Kelas</div><div class="name">Alby Yudhira S.</div></div><div class="tree-node"><div class="node-photo-placeholder">K</div><div class="title">Wakil Ketua</div><div class="name">Kayla Ayudya R.</div></div></div><div class="org-level"><div class="tree-node"><div class="node-photo-placeholder">N</div><div class="title">Sekertaris</div><div class="name">Nayla Azka A.</div></div><div class="tree-node"><div class="node-photo-placeholder">A</div><div class="title">Sekertaris 2</div><div class="name">Asyraf Reje M.</div></div><div class="tree-node"><div class="node-photo-placeholder">A</div><div class="title">Bendahara</div><div class="name">Arkananta Yaala M.</div></div></div></div>
-<!-- STOVENSA_STRUKTUR_END -->
-
-        <h2 class="section-title">🌺 ANGGOTA KELAS</h2>
-        <div class="grid-anggota" id="gridDisplayAnggota">
-            <div class="member-card"><div class="avatar" id="avatar-0">🐘</div><div class="member-name" id="nama-0">Anggota 1</div><div class="member-tag" id="tag-0">@stovensa</div></div>
-            <div class="member-card"><div class="avatar" id="avatar-1">🐘</div><div class="member-name" id="nama-1">Anggota 2</div><div class="member-tag" id="tag-1">@stovensa</div></div>
-            <div class="member-card"><div class="avatar" id="avatar-2">🐘</div><div class="member-name" id="nama-2">Anggota 3</div><div class="member-tag" id="tag-2">@stovensa</div></div>
-            <div class="member-card"><div class="avatar" id="avatar-3">🐘</div><div class="member-name" id="nama-3">Anggota 4</div><div class="member-tag" id="tag-3">@stovensa</div></div>
-            <div class="member-card"><div class="avatar" id="avatar-4">🐘</div><div class="member-name" id="nama-4">Anggota 5</div><div class="member-tag" id="tag-4">@stovensa</div></div>
-            <div class="member-card"><div class="avatar" id="avatar-5">🐘</div><div class="member-name" id="nama-5">Anggota 6</div><div class="member-tag" id="tag-5">@stovensa</div></div>
-            <div class="member-card"><div class="avatar" id="avatar-6">🐘</div><div class="member-name" id="nama-6">Anggota 7</div><div class="member-tag" id="tag-6">@stovensa</div></div>
-            <div class="member-card"><div class="avatar" id="avatar-7">🐘</div><div class="member-name" id="nama-7">Anggota 8</div><div class="member-tag" id="tag-7">@stovensa</div></div>
-            <div class="member-card"><div class="avatar" id="avatar-8">🐘</div><div class="member-name" id="nama-8">Anggota 9</div><div class="member-tag" id="tag-8">@stovensa</div></div>
-        </div>
-    </div>
+    </section>
 
 </div>
 
+<!-- Player Audio Musik Favorit -->
+<div class="audio-player">
+    <span style="font-size:13px; font-weight:700;" id="songTitle">Lagu Favorit Stovensa</span>
+    <audio id="bgMusic" controls style="height:30px; width:180px;">
+        <source src="media/lagu.mp3" type="audio/mpeg">
+    </audio>
+</div>
+
 <footer>
-    <h3>🐘 STOVENSA 🌸</h3>
-    <p>© 2026 Stovensa. All rights reserved.</p>
+    <h3 style="color:var(--accent-bamboo); font-size:16px;">STOVENSA CLASS</h3>
+    <p style="color:var(--text-secondary); font-size:12px; margin-top:5px;">© 2026 Stovensa Official Web. All Rights Reserved.</p>
 </footer>
 
 <script>
+// Array global data anggota (diinjeksikan otomatis dari server.js)
 let daftarAnggota = [];
 
-function switchTab(tabName) {
-    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-
-    const selectedTab = document.getElementById('tab-' + tabName);
-    if (selectedTab) selectedTab.classList.add('active');
-
-    if (window.event && window.event.target) {
-        window.event.target.classList.add('active');
-    }
-}
-
-const audio = document.getElementById('myAudio');
-const cover = document.getElementById('musicCover');
-if(audio) {
-    audio.onplay = () => cover.classList.add('playing');
-    audio.onpause = () => cover.classList.remove('playing');
-}
-
-function acakAnggota() {
-    if (!daftarAnggota || daftarAnggota.length === 0) return;
-    let pool = [...daftarAnggota];
-    for (let i = pool.length - 1; i > 0; i--) {
+// Fungsi Acak Array (Fisher-Yates Shuffle) untuk Peluang Setara Tanpa Duplikat
+function acakData(array) {
+    let copy = [...array];
+    for (let i = copy.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [pool[i], pool[j]] = [pool[j], pool[i]];
+        [copy[i], copy[j]] = [copy[j], copy[i]];
     }
-
-    const jumlahTampil = Math.min(9, pool.length);
-    for (let i = 0; i < 9; i++) {
-        if (i < jumlahTampil) {
-            const item = pool[i];
-            document.getElementById('nama-' + i).textContent = item.judul || "Tanpa Nama";
-            document.getElementById('tag-' + i).textContent = item.isi || "@stovensa";
-            if (item.mediaUrl) {
-                document.getElementById('avatar-' + i).innerHTML = `<img src="${item.mediaUrl}">`;
-            } else {
-                const inisial = (item.judul || "S").charAt(0).toUpperCase();
-                document.getElementById('avatar-' + i).innerHTML = inisial;
-            }
-        } else {
-            document.getElementById('nama-' + i).textContent = "-";
-            document.getElementById('tag-' + i).textContent = "-";
-            document.getElementById('avatar-' + i).innerHTML = "-";
-        }
-    }
+    return copy;
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-    acakAnggota();
-    setInterval(acakAnggota, 7000);
+function rotasiAnggotaGaji() {
+    const container = document.getElementById("gridAnggotaUtama");
+    if (!container) return;
+
+    if (!daftarAnggota || daftarAnggota.length === 0) {
+        container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; color:var(--text-secondary);">Belum ada anggota kelas yang ditambahkan di Admin Panel.</div>`;
+        return;
+    }
+
+    // 1. Acak seluruh urutan anggota kelas
+    const anggotaTeracak = acakData(daftarAnggota);
+
+    // 2. Ambil tepat 9 data terdepan dari hasil acakan (TIDAK AKAN DUPLIKAT DI 9 KOTAK)
+    const sembilanTerpilih = anggotaTeracak.slice(0, 9);
+
+    // 3. Render 9 kotak ke halaman dengan efek animasi pudar
+    container.innerHTML = sembilanTerpilih.map(item => {
+        let mediaTag = item.mediaUrl 
+            ? `<img src="${item.mediaUrl}" alt="${item.judul}">` 
+            : `<div class="card-avatar-placeholder">${(item.judul || "A").charAt(0).toUpperCase()}</div>`;
+
+        return `
+            <div class="card-anggota shuffle-fade">
+                <div class="card-media">${mediaTag}</div>
+                <h3>${item.judul}</h3>
+                <p>${item.isi || '@stovensa'}</p>
+            </div>
+        `;
+    }).join("");
+}
+
+// Jalankan sistem saat website selesai terbuka
+document.addEventListener("DOMContentLoaded", () => {
+    rotasiAnggotaGaji();
+    // Rotasi ulang acak secara otomatis tepat tiap 7 DETIK (7000ms)
+    setInterval(rotasiAnggotaGaji, 7000);
 });
 </script>
+
 </body>
 </html>

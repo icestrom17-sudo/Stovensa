@@ -197,7 +197,6 @@ footer { border-top: 1px solid var(--card-border); padding: 40px 20px; text-alig
             <button onclick="tambahPost('anggota', 'aNama', 'aTag', 'aMedia')" class="btn-primary">➕ Tambah Anggota Ke Daftar</button>
         </div>
 
-        <!-- COUNTER TERHUBUNG LANGSUNG DENGAN DAFTAR ANGGOTA -->
         <h3 id="anggotaCounter" style="margin-bottom:15px; color:var(--accent-bamboo);">Daftar Seluruh Anggota Kelas: (0 / 25)</h3>
         <div id="gridAnggota" class="grid"><i>Memuat anggota...</i></div>
     </div>
@@ -214,7 +213,7 @@ footer { border-top: 1px solid var(--card-border); padding: 40px 20px; text-alig
 <script>
 const statusToast = document.getElementById("status-toast");
 let toastTimer = null;
-let totalAnggotaSaatIni = 0; // Menyimpan data kuota real-time
+let totalAnggotaSaatIni = 0;
 
 function showToast(msg, isError = false) {
     if (toastTimer) clearTimeout(toastTimer);
@@ -513,7 +512,6 @@ function tambahSosmed() {
     document.getElementById("sLink").value = "";
 }
 
-// FUNGSI HAPUS: Otomatis mengurangi kuota anggota secara instan saat diklik!
 function hapusPost(kategori, id) {
     if (confirm("Hapus data ini?")) {
         sendData({ aksi: "hapus_post", kategori, id });

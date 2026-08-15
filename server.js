@@ -80,7 +80,10 @@ function loadData() {
         };
     }
     try {
-        const d = JSON.parse(fs.readFileSync(DATA_FILE, "utf8"));
+        const fileContent = fs.readFileSync(DATA_FILE, "utf8");
+        if (!fileContent.trim()) throw new Error("File kosong");
+
+        const d = JSON.parse(fileContent);
         if (!Array.isArray(d.berita)) d.berita = [];
         if (!Array.isArray(d.galeri)) d.galeri = [];
         if (!Array.isArray(d.sosmed)) d.sosmed = [];
@@ -88,40 +91,30 @@ function loadData() {
         if (!Array.isArray(d.pengurus) || d.pengurus.length === 0) d.pengurus = defaultPengurus();
         if (!Array.isArray(d.anggota)) d.anggota = [];
         return d;
-    } catch {
-        return { judul: "STOVENSA", deskripsi: "The best and religious generation", berita: [], galeri: [], sosmed: [], jadwal: defaultJadwal(), pengurus: defaultPengurus(), anggota: [] };
+    } catch (e) {
+        console.error("DATA KORUP:", e);
+        throw new Error("Data korup, batalkan menyimpan!");
     }
 }
 
 function saveData(data) {
-    fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), "utf8");
+    const tempFile = DATA_FILE + ".tmp";
+    fs.writeFileSync(tempFile, JSON.stringify(data, null, 2), "utf8");
+    fs.renameSync(tempFile, DATA_FILE);
 }
 
 function generateCards(items, emptyText) {
     if (!items || items.length === 0) {
         return `<div class="card"><div class="card-body"><h3>Belum Ada Data</h3><p>${emptyText}</p></div></div>`;
     }
-    return items.map(item => {
-        let mediaTag = "";
-        if (item.mediaUrl) {
-            if (item.mediaType === "video") {
-                mediaTag = `<div class="card-media"><video controls preload="metadata"><source src="${escapeHTML(item.mediaUrl)}"></video></div>`;
-            } else {
-                mediaTag = `<div class="card-media"><img src="${escapeHTML(item.mediaUrl)}" alt="${escapeHTML(item.judul)}"></div>`;
-            }
-        }
-        return `
-            <div class="card">
-                ${mediaTag}
-                ${(item.judul || item.isi) ? `
-                    <div class="card-body">
-                        ${item.judul ? `<h3>${escapeHTML(item.judul)}</h3>` : ''}
-                        ${item.isi ? `<p>${escapeHTML(item.isi)}</p>` : ''}
-                    </div>
-                ` : ''}
+    return items.map(item => `
+        <div class="card">
+            <div class="card-body">
+                <h3>${escapeHTML(item.judul)}</h3>
+                <p style="white-space: pre-line;">${escapeHTML(item.isi)}</p>
             </div>
-        `;
-    }).join("");
+        </div>
+    `).join("");
 }
 
 function generateGaleriHTML(items) {
@@ -167,7 +160,6 @@ function generateSosmedHTML(items) {
 
 function generatePengurusHTML(items) {
     if (!items || items.length === 0) items = defaultPengurus();
-    
     return `<div class="org-tree">` + 
            `<div class="org-level"><div class="tree-node"><div class="node-photo-placeholder">${(items[0]?.isi||"E").charAt(0)}</div><div class="title">${escapeHTML(items[0]?.judul)}</div><div class="name">${escapeHTML(items[0]?.isi)}</div></div></div>` +
            `<div class="org-level"><div class="tree-node"><div class="node-photo-placeholder">${(items[1]?.isi||"A").charAt(0)}</div><div class="title">${escapeHTML(items[1]?.judul)}</div><div class="name">${escapeHTML(items[1]?.isi)}</div></div><div class="tree-node"><div class="node-photo-placeholder">${(items[2]?.isi||"K").charAt(0)}</div><div class="title">${escapeHTML(items[2]?.judul)}</div><div class="name">${escapeHTML(items[2]?.isi)}</div></div></div>` +
@@ -209,6 +201,7 @@ function createWebsite(data) {
         html = html.replace(/id="songTitle">[^<]*/, `id="songTitle">${escapeHTML(data.judulLagu)}`);
     }
 
+    // Injeksi data daftar anggota ke dalam index.html untuk acak 7 detik
     const anggotaJS = JSON.stringify(data.anggota || []);
     html = html.replace(/let daftarAnggota = \[[\s\S]*?\];/i, `let daftarAnggota = ${anggotaJS};`);
 
@@ -260,6 +253,11 @@ const server = http.createServer(async (req, res) => {
 
             if (input.aksi === "tambah_post") {
                 const kat = input.kategori || "berita";
+
+                if (kat === "anggota" && data.anggota.length >= 25) {
+                    return json(res, 400, { success: false, message: "Maksimal 25 anggota tercapai!" });
+                }
+
                 let mediaUrl = "";
                 let mediaType = "";
 
@@ -358,8 +356,7 @@ const server = http.createServer(async (req, res) => {
             saveData(data);
             createWebsite(data);
             
-            // Sync GitHub secara background tanpa membuat admin menunggu
-            updateGitHub().catch(err => console.error("Error Git push:", err));
+            updateGitHub().catch(err => console.error("Git Push error:", err));
 
             return json(res, 200, { success: true, message: "Berhasil disimpan!" });
         } catch (error) {
