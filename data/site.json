@@ -103,7 +103,15 @@
       "mediaType": ""
     }
   ],
-  "anggota": [],
+  "anggota": [
+    {
+      "id": 1786771576248,
+      "judul": "Izasndndn",
+      "isi": "",
+      "mediaUrl": "media/1786771576244_dgn0rv.jpg",
+      "mediaType": "image"
+    }
+  ],
   "galeri": [
     {
       "id": 1786748412362,
