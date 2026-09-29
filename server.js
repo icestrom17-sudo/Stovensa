@@ -117,18 +117,14 @@ function generateCards(items, emptyText) {
     `).join("");
 }
 
-function generateGaleriHTML(items) {
-    if (!items || items.length === 0) {
-        return `<div class="galeri-card"><div class="galeri-body"><h3>Belum Ada Kenangan</h3><p>Kenangan foto dan video akan muncul di sini.</p></div></div>`;
+function generateGaleriCard(item) {
+    let mediaTag = "";
+    if (item.mediaType === "video") {
+        mediaTag = `<video src="${escapeHTML(item.mediaUrl)}" controls></video>`;
+    } else {
+        mediaTag = `<img src="${escapeHTML(item.mediaUrl)}" alt="${escapeHTML(item.judul)}">`;
     }
-    return items.map(item => {
-        let mediaTag = "";
-        if (item.mediaType === "video") {
-            mediaTag = `<video src="${escapeHTML(item.mediaUrl)}" controls></video>`;
-        } else {
-            mediaTag = `<img src="${escapeHTML(item.mediaUrl)}" alt="${escapeHTML(item.judul)}">`;
-        }
-        return `
+    return `
             <div class="galeri-card">
                 <div class="galeri-media">${mediaTag}</div>
                 <div class="galeri-body">
@@ -138,7 +134,25 @@ function generateGaleriHTML(items) {
                 </div>
             </div>
         `;
-    }).join("");
+}
+
+function generateGaleriHTML(items) {
+    items = items || [];
+    const foto = items.filter(it => it.mediaType !== "video");
+    const video = items.filter(it => it.mediaType === "video");
+
+    const fotoHTML = foto.length
+        ? foto.map(generateGaleriCard).join("")
+        : `<div class="galeri-card"><div class="galeri-body"><h3>Belum Ada Foto</h3><p>Foto kenangan akan muncul di sini.</p></div></div>`;
+
+    const videoHTML = video.length
+        ? video.map(generateGaleriCard).join("")
+        : `<div class="galeri-card"><div class="galeri-body"><h3>Belum Ada Video</h3><p>Video kenangan akan muncul di sini.</p></div></div>`;
+
+    return `<h3 class="galeri-subtitle">📷 Foto</h3>
+        <div class="grid-galeri">${fotoHTML}</div>
+        <h3 class="galeri-subtitle">🎬 Video</h3>
+        <div class="grid-galeri">${videoHTML}</div>`;
 }
 
 function generateSosmedHTML(items) {
