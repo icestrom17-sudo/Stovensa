@@ -158,13 +158,30 @@ function generateSosmedHTML(items) {
     }).join("");
 }
 
+function renderPengurusNode(item) {
+    if (!item) return "";
+    const initial = escapeHTML(((item.isi || "?").trim().charAt(0)) || "?");
+    const photoHTML = item.mediaUrl
+        ? `<img class="node-photo-placeholder" src="${escapeHTML(item.mediaUrl)}" alt="${escapeHTML(item.isi)}">`
+        : `<div class="node-photo-placeholder">${initial}</div>`;
+    return `<div class="tree-node">${photoHTML}<div class="title">${escapeHTML(item.judul)}</div><div class="name">${escapeHTML(item.isi)}</div></div>`;
+}
+
 function generatePengurusHTML(items) {
     if (!items || items.length === 0) items = defaultPengurus();
-    return `<div class="org-tree">` + 
-           `<div class="org-level"><div class="tree-node"><div class="node-photo-placeholder">${(items[0]?.isi||"E").charAt(0)}</div><div class="title">${escapeHTML(items[0]?.judul)}</div><div class="name">${escapeHTML(items[0]?.isi)}</div></div></div>` +
-           `<div class="org-level"><div class="tree-node"><div class="node-photo-placeholder">${(items[1]?.isi||"A").charAt(0)}</div><div class="title">${escapeHTML(items[1]?.judul)}</div><div class="name">${escapeHTML(items[1]?.isi)}</div></div><div class="tree-node"><div class="node-photo-placeholder">${(items[2]?.isi||"K").charAt(0)}</div><div class="title">${escapeHTML(items[2]?.judul)}</div><div class="name">${escapeHTML(items[2]?.isi)}</div></div></div>` +
-           `<div class="org-level"><div class="tree-node"><div class="node-photo-placeholder">${(items[3]?.isi||"N").charAt(0)}</div><div class="title">${escapeHTML(items[3]?.judul)}</div><div class="name">${escapeHTML(items[3]?.isi)}</div></div><div class="tree-node"><div class="node-photo-placeholder">${(items[4]?.isi||"A").charAt(0)}</div><div class="title">${escapeHTML(items[4]?.judul)}</div><div class="name">${escapeHTML(items[4]?.isi)}</div></div><div class="tree-node"><div class="node-photo-placeholder">${(items[5]?.isi||"A").charAt(0)}</div><div class="title">${escapeHTML(items[5]?.judul)}</div><div class="name">${escapeHTML(items[5]?.isi)}</div></div></div>` +
-           `</div>`;
+    const groups = [1, 2, 3, 2]; // struktur baris pohon organisasi
+    let idx = 0;
+    let levelsHTML = "";
+    for (const size of groups) {
+        const nodes = items.slice(idx, idx + size).map(renderPengurusNode).join("");
+        if (nodes) levelsHTML += `<div class="org-level">${nodes}</div>`;
+        idx += size;
+    }
+    if (idx < items.length) {
+        const extra = items.slice(idx).map(renderPengurusNode).join("");
+        levelsHTML += `<div class="org-level">${extra}</div>`;
+    }
+    return `<div class="org-tree">${levelsHTML}</div>`;
 }
 
 function createWebsite(data) {
