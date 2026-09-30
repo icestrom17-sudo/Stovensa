@@ -123,7 +123,11 @@ function generateCards(items, emptyText) {
 }
 
 function generateVideoCard(item) {
-    const mediaTag = `<video src="${escapeHTML(item.mediaUrl)}" controls></video>`;
+    const mediaTag = `<div class="video-wrap">
+                <video src="${escapeHTML(item.mediaUrl)}" controls controlsList="nofullscreen"></video>
+                <button class="video-fs-btn" onclick="bukaFullscreenVideo(this)" title="Layar penuh">⛶</button>
+                <button class="video-exit-btn" onclick="tutupFullscreenVideo()" title="Keluar">✕</button>
+            </div>`;
     return `
             <div class="galeri-card">
                 <div class="galeri-media">${mediaTag}</div>
