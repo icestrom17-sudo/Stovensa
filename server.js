@@ -31,6 +31,11 @@ function json(res, code, data) {
     send(res, code, "application/json", JSON.stringify(data));
 }
 
+function formatTanggalIndo(date) {
+    const bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    return `${date.getDate()} ${bulan[date.getMonth()]} ${date.getFullYear()}`;
+}
+
 function escapeHTML(text) {
     return String(text || "")
         .replace(/&/g, "&amp;")
@@ -117,13 +122,8 @@ function generateCards(items, emptyText) {
     `).join("");
 }
 
-function generateGaleriCard(item) {
-    let mediaTag = "";
-    if (item.mediaType === "video") {
-        mediaTag = `<video src="${escapeHTML(item.mediaUrl)}" controls></video>`;
-    } else {
-        mediaTag = `<img src="${escapeHTML(item.mediaUrl)}" alt="${escapeHTML(item.judul)}">`;
-    }
+function generateVideoCard(item) {
+    const mediaTag = `<video src="${escapeHTML(item.mediaUrl)}" controls></video>`;
     return `
             <div class="galeri-card">
                 <div class="galeri-media">${mediaTag}</div>
@@ -136,21 +136,28 @@ function generateGaleriCard(item) {
         `;
 }
 
+function generateFotoThumbnail(item, index) {
+    return `<div class="foto-thumb" onclick="bukaFotoLightbox(${index})">
+                <div class="foto-thumb-img"><img src="${escapeHTML(item.mediaUrl)}" alt="${escapeHTML(item.judul)}" loading="lazy"></div>
+                <div class="foto-thumb-title">${escapeHTML(item.judul)}</div>
+            </div>`;
+}
+
 function generateGaleriHTML(items) {
     items = items || [];
     const foto = items.filter(it => it.mediaType !== "video");
     const video = items.filter(it => it.mediaType === "video");
 
     const fotoHTML = foto.length
-        ? foto.map(generateGaleriCard).join("")
+        ? foto.map((item, i) => generateFotoThumbnail(item, i)).join("")
         : `<div class="galeri-card"><div class="galeri-body"><h3>Belum Ada Foto</h3><p>Foto kenangan akan muncul di sini.</p></div></div>`;
 
     const videoHTML = video.length
-        ? video.map(generateGaleriCard).join("")
+        ? video.map(generateVideoCard).join("")
         : `<div class="galeri-card"><div class="galeri-body"><h3>Belum Ada Video</h3><p>Video kenangan akan muncul di sini.</p></div></div>`;
 
     return `<div id="galeri-sub-foto" class="galeri-panel active">
-        <div class="grid-galeri">${fotoHTML}</div>
+        <div class="grid-foto">${fotoHTML}</div>
     </div>
     <div id="galeri-sub-video" class="galeri-panel">
         <div class="grid-galeri">${videoHTML}</div>
@@ -238,6 +245,11 @@ function createWebsite(data) {
     const anggotaJS = JSON.stringify(data.anggota || []);
     html = html.replace(/let daftarAnggota = \[[\s\S]*?\];/i, `let daftarAnggota = ${anggotaJS};`);
 
+    // Injeksi data foto galeri (dipakai lightbox saat foto diklik) - urutannya harus
+    // sama dengan urutan generateFotoThumbnail() supaya index-nya cocok
+    const galeriFotoJS = JSON.stringify((data.galeri || []).filter(it => it.mediaType !== "video"));
+    html = html.replace(/let daftarGaleriFoto = \[[\s\S]*?\];/i, `let daftarGaleriFoto = ${galeriFotoJS};`);
+
     fs.writeFileSync(INDEX_FILE, html, "utf8");
 }
 
@@ -253,13 +265,20 @@ async function updateGitHub() {
 
 function receiveBody(req) {
     return new Promise((resolve, reject) => {
-        let body = "";
+        const chunks = [];
+        let size = 0;
         req.on("data", chunk => {
-            body += chunk;
-            if (body.length > 150 * 1024 * 1024) { reject(new Error("File terlalu besar")); req.destroy(); }
+            size += chunk.length;
+            if (size > 150 * 1024 * 1024) { reject(new Error("File terlalu besar")); req.destroy(); return; }
+            chunks.push(chunk);
         });
         req.on("end", () => {
-            try { resolve(JSON.parse(body)); } catch { reject(new Error("Data tidak valid")); }
+            try {
+                const body = Buffer.concat(chunks).toString("utf8");
+                resolve(JSON.parse(body));
+            } catch {
+                reject(new Error("Data tidak valid"));
+            }
         });
         req.on("error", reject);
     });
@@ -333,7 +352,7 @@ const server = http.createServer(async (req, res) => {
                 data.galeri.unshift({
                     id: Date.now(),
                     judul: input.judul || "",
-                    tanggal: input.tanggal || "",
+                    tanggal: formatTanggalIndo(new Date()),
                     isi: input.isi || "",
                     mediaUrl,
                     mediaType
