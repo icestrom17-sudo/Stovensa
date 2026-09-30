@@ -88,6 +88,19 @@ audio { width: 100%; max-width: 400px; border-radius: 30px; filter: invert(0.9) 
 .galeri-subnav { justify-content: center; margin: 5px 0 18px; flex-wrap: wrap; }
 .galeri-panel { display: none; }
 .galeri-panel.active { display: block; animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.grid-foto { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 30px; }
+.foto-thumb { border-radius: 10px; overflow: hidden; cursor: pointer; background: var(--card-bg); border: 1px solid var(--card-border); display: flex; flex-direction: column; }
+.foto-thumb-img { aspect-ratio: 1; overflow: hidden; background: #000; }
+.foto-thumb-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.15s ease; }
+.foto-thumb:active .foto-thumb-img img { transform: scale(0.93); }
+.foto-thumb-title { font-size: 10px; font-weight: 700; color: var(--text-primary); padding: 4px 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; }
+.galeri-desc:empty { display: none; }
+.lightbox-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 999; align-items: center; justify-content: center; padding: 20px; }
+.lightbox-overlay.active { display: flex; }
+.lightbox-content { position: relative; max-width: 480px; width: 100%; max-height: 90vh; background: var(--card-bg); border-radius: 18px; overflow: hidden; display: flex; flex-direction: column; }
+.lightbox-content img { width: 100%; max-height: 60vh; object-fit: contain; background: #000; display: block; }
+.lightbox-close { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: #fff; border: 0; width: 34px; height: 34px; border-radius: 50%; font-size: 16px; cursor: pointer; z-index: 2; }
+.lightbox-caption { padding: 16px; }
 .galeri-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 18px; overflow: hidden; backdrop-filter: blur(12px); transition: all 0.3s ease; display: flex; flex-direction: column; }
 .galeri-card:hover { transform: translateY(-4px); border-color: var(--accent-flower); box-shadow: 0 10px 25px rgba(244, 63, 94, 0.25); }
 .galeri-media { width: 100%; height: 200px; overflow: hidden; background: #000; position: relative; }
@@ -249,16 +262,10 @@ footer { border-top: 1px solid var(--card-border); padding: 30px 15px; text-alig
         </div>
             <!-- STOVENSA_GALERI_START -->
 <div id="galeri-sub-foto" class="galeri-panel active">
-        <div class="grid-galeri">
-            <div class="galeri-card">
-                <div class="galeri-media"><img src="media/galeri_1790765747692.jpg" alt="Foto"></div>
-                <div class="galeri-body">
-                    <span class="galeri-date">3848</span>
-                    <h3 class="galeri-title">Foto</h3>
-                    <p class="galeri-desc">Ndndnd</p>
-                </div>
-            </div>
-        </div>
+        <div class="grid-foto"><div class="foto-thumb" onclick="bukaFotoLightbox(0)">
+                <div class="foto-thumb-img"><img src="media/galeri_1790765747692.jpg" alt="Foto" loading="lazy"></div>
+                <div class="foto-thumb-title">Foto</div>
+            </div></div>
     </div>
     <div id="galeri-sub-video" class="galeri-panel">
         <div class="grid-galeri">
@@ -268,15 +275,6 @@ footer { border-top: 1px solid var(--card-border); padding: 30px 15px; text-alig
                     <span class="galeri-date">Ndne</span>
                     <h3 class="galeri-title">Hdbdn</h3>
                     <p class="galeri-desc">Bdbd</p>
-                </div>
-            </div>
-        
-            <div class="galeri-card">
-                <div class="galeri-media"><video src="media/galeri_1786748387588.mp4" controls></video></div>
-                <div class="galeri-body">
-                    <span class="galeri-date">24 Januari 1230</span>
-                    <h3 class="galeri-title">Momen sinematik</h3>
-                    <p class="galeri-desc">Ceritanya lalu babubkd</p>
                 </div>
             </div>
         </div>
@@ -453,7 +451,20 @@ BAHASA INDONESIA</p>
     <p>© 2026 Stovensa. All rights reserved.</p>
 </footer>
 
+<div id="fotoLightbox" class="lightbox-overlay" onclick="tutupFotoLightbox()">
+    <div class="lightbox-content" onclick="event.stopPropagation()">
+        <button class="lightbox-close" onclick="tutupFotoLightbox()">✕</button>
+        <img id="lightboxImg" src="" alt="">
+        <div class="lightbox-caption">
+            <span id="lightboxTanggal" class="galeri-date"></span>
+            <h3 id="lightboxJudul" class="galeri-title"></h3>
+            <p id="lightboxIsi" class="galeri-desc"></p>
+        </div>
+    </div>
+</div>
+
 <script>
+let daftarGaleriFoto = [{"id":1790765747706,"judul":"Foto","tanggal":"3848","isi":"Ndndnd","mediaUrl":"media/galeri_1790765747692.jpg","mediaType":"image"}];
 let daftarAnggota = [{"id":1786771696446,"judul":"Vdbdbdhf","isi":"","mediaUrl":"media/1786771696443_b5nh4l.jpg","mediaType":"image"},{"id":1786771689730,"judul":"Hfnfjfnfj","isi":"","mediaUrl":"media/1786771689718_cxvsrg.jpg","mediaType":"image"},{"id":1786771680718,"judul":"Hfnfjfnfn","isi":"","mediaUrl":"media/1786771680716_83eilt.jpg","mediaType":"image"},{"id":1786771671798,"judul":"Hdnfbf","isi":"","mediaUrl":"media/1786771671795_2todhs.jpg","mediaType":"image"},{"id":1786771657292,"judul":"Hdnfjfnfng","isi":"","mediaUrl":"media/1786771657284_jzm9cb.jpg","mediaType":"image"},{"id":1786771647155,"judul":"Ifjtntjgn","isi":"","mediaUrl":"media/1786771647152_9kk5n6.jpg","mediaType":"image"},{"id":1786771632480,"judul":"Iiigngngnfj","isi":"","mediaUrl":"media/1786771632476_yp9w9a.jpg","mediaType":"image"},{"id":1786771617508,"judul":"Jfngkmhkhk","isi":"","mediaUrl":"media/1786771617505_qt3h92.jpg","mediaType":"image"},{"id":1786771608102,"judul":"Urbfjtntkgkn","isi":"","mediaUrl":"media/1786771608098_hnp6n4.jpg","mediaType":"image"},{"id":1786771598968,"judul":"Jdnfnfn","isi":"","mediaUrl":"media/1786771598965_0ityvo.jpg","mediaType":"image"},{"id":1786771587391,"judul":"Hrnrnfkjf","isi":"","mediaUrl":"media/1786771587386_mrig8p.jpg","mediaType":"image"},{"id":1786771576248,"judul":"Izasndndn","isi":"","mediaUrl":"media/1786771576244_dgn0rv.jpg","mediaType":"image"}];
 
 function switchTab(tabName) {
@@ -466,6 +477,20 @@ function switchTab(tabName) {
     if (window.event && window.event.target) {
         window.event.target.classList.add('active');
     }
+}
+
+function bukaFotoLightbox(index) {
+    const item = daftarGaleriFoto[index];
+    if (!item) return;
+    document.getElementById('lightboxImg').src = item.mediaUrl;
+    document.getElementById('lightboxJudul').textContent = item.judul || '';
+    document.getElementById('lightboxIsi').textContent = item.isi || '';
+    document.getElementById('lightboxTanggal').textContent = item.tanggal || '';
+    document.getElementById('fotoLightbox').classList.add('active');
+}
+
+function tutupFotoLightbox() {
+    document.getElementById('fotoLightbox').classList.remove('active');
 }
 
 function switchGaleriSub(type, btnEl) {
