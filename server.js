@@ -149,10 +149,12 @@ function generateGaleriHTML(items) {
         ? video.map(generateGaleriCard).join("")
         : `<div class="galeri-card"><div class="galeri-body"><h3>Belum Ada Video</h3><p>Video kenangan akan muncul di sini.</p></div></div>`;
 
-    return `<h3 class="galeri-subtitle">📷 Foto</h3>
+    return `<div id="galeri-sub-foto" class="galeri-panel active">
         <div class="grid-galeri">${fotoHTML}</div>
-        <h3 class="galeri-subtitle">🎬 Video</h3>
-        <div class="grid-galeri">${videoHTML}</div>`;
+    </div>
+    <div id="galeri-sub-video" class="galeri-panel">
+        <div class="grid-galeri">${videoHTML}</div>
+    </div>`;
 }
 
 function generateSosmedHTML(items) {
