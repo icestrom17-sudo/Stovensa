@@ -189,7 +189,16 @@
       "mediaType": "image"
     }
   ],
-  "galeri": [],
+  "galeri": [
+    {
+      "id": 1790767201299,
+      "judul": "Mantap man",
+      "tanggal": "30 September 2026",
+      "isi": "",
+      "mediaUrl": "media/galeri_1790767201287.jpg",
+      "mediaType": "image"
+    }
+  ],
   "sosmed": [
     {
       "id": 1786748275975,
