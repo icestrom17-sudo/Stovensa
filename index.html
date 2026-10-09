@@ -268,25 +268,12 @@ footer { border-top: 1px solid var(--card-border); padding: 30px 15px; text-alig
             <button class="tab-btn" onclick="switchGaleriSub('video', this)">🎬 Video</button>
         </div>
             <!-- STOVENSA_GALERI_START -->
-
-            <div class="galeri-card">
-                <div class="galeri-media"><video src="media/galeri_1786748412360.mp4" controls></video></div>
-                <div class="galeri-body">
-                    <span class="galeri-date">Ndne</span>
-                    <h3 class="galeri-title">Hdbdn</h3>
-                    <p class="galeri-desc">Bdbd</p>
-                </div>
+            <div id="galeri-sub-foto" class="galeri-panel active">
+                <div class="grid-foto"><div class="galeri-card"><div class="galeri-body"><h3>Belum Ada Foto</h3><p>Foto kenangan akan muncul di sini setelah kamu simpan dari admin panel.</p></div></div></div>
             </div>
-        
-            <div class="galeri-card">
-                <div class="galeri-media"><video src="media/galeri_1786748387588.mp4" controls></video></div>
-                <div class="galeri-body">
-                    <span class="galeri-date">24 Januari 1230</span>
-                    <h3 class="galeri-title">Momen sinematik</h3>
-                    <p class="galeri-desc">Ceritanya lalu babubkd</p>
-                </div>
+            <div id="galeri-sub-video" class="galeri-panel">
+                <div class="grid-galeri"><div class="galeri-card"><div class="galeri-body"><h3>Belum Ada Video</h3><p>Video kenangan akan muncul di sini setelah kamu simpan dari admin panel.</p></div></div></div>
             </div>
-        
 <!-- STOVENSA_GALERI_END -->
     </div>
 
@@ -564,3 +551,4 @@ window.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
+
