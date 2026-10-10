@@ -262,12 +262,27 @@ footer { border-top: 1px solid var(--card-border); padding: 30px 15px; text-alig
             <button class="tab-btn" onclick="switchGaleriSub('video', this)">🎬 Video</button>
         </div>
             <!-- STOVENSA_GALERI_START -->
-            <div id="galeri-sub-foto" class="galeri-panel active">
-                <div class="grid-foto"><div class="galeri-card"><div class="galeri-body"><h3>Belum Ada Foto</h3><p>Foto kenangan akan muncul di sini setelah kamu simpan dari admin panel.</p></div></div></div>
+<div id="galeri-sub-foto" class="galeri-panel active">
+        <div class="grid-foto"><div class="foto-thumb" onclick="bukaFotoLightbox(0)">
+                <div class="foto-thumb-img"><img src="media/galeri_1791545802188.jpg" alt="Poto" loading="lazy"></div>
+                <div class="foto-thumb-title">Poto</div>
+            </div><div class="foto-thumb" onclick="bukaFotoLightbox(1)">
+                <div class="foto-thumb-img"><img src="media/galeri_1790767201287.jpg" alt="Mantap man" loading="lazy"></div>
+                <div class="foto-thumb-title">Mantap man</div>
+            </div></div>
+    </div>
+    <div id="galeri-sub-video" class="galeri-panel">
+        <div class="grid-galeri">
+            <div class="galeri-card">
+                <div class="galeri-media"><video src="media/galeri_1790767214616.mp4" controls></video></div>
+                <div class="galeri-body">
+                    <span class="galeri-date">30 September 2026</span>
+                    <h3 class="galeri-title">Wifi man</h3>
+                    <p class="galeri-desc"></p>
+                </div>
             </div>
-            <div id="galeri-sub-video" class="galeri-panel">
-                <div class="grid-galeri"><div class="galeri-card"><div class="galeri-body"><h3>Belum Ada Video</h3><p>Video kenangan akan muncul di sini setelah kamu simpan dari admin panel.</p></div></div></div>
-            </div>
+        </div>
+    </div>
 <!-- STOVENSA_GALERI_END -->
     </div>
 
@@ -416,7 +431,7 @@ BAHASA INDONESIA</p>
     <div id="tab-struktur" class="tab-content">
         <h2 class="section-title">🏛️ PENGURUS KELAS</h2>
         <!-- STOVENSA_STRUKTUR_START -->
-<div class="org-tree"><div class="org-level"><div class="tree-node"><div class="node-photo-placeholder">E</div><div class="title">Wali Kelas</div><div class="name">Eka Devi Safitri</div></div></div><div class="org-level"><div class="tree-node"><div class="node-photo-placeholder">A</div><div class="title">Ketua Kelas</div><div class="name">Alby Yudhira S.</div></div><div class="tree-node"><div class="node-photo-placeholder">K</div><div class="title">Wakil Ketua</div><div class="name">Kayla Ayudya R.</div></div></div><div class="org-level"><div class="tree-node"><div class="node-photo-placeholder">N</div><div class="title">Sekertaris</div><div class="name">Nayla Azka A.</div></div><div class="tree-node"><div class="node-photo-placeholder">A</div><div class="title">Sekertaris 2</div><div class="name">Asyraf Reje M.</div></div><div class="tree-node"><div class="node-photo-placeholder">A</div><div class="title">Bendahara</div><div class="name">Arkananta Yaala M.</div></div></div></div>
+<div class="org-tree"><div class="org-level"><div class="tree-node"><img class="node-photo-placeholder" src="media/pengurus_1_1786772834092.jpg" alt="Eka Devi Safitri"><div class="title">Wali Kelas</div><div class="name">Eka Devi Safitri</div></div></div><div class="org-level"><div class="tree-node"><img class="node-photo-placeholder" src="media/pengurus_2_1790691059304.jpg" alt="Alby Yudhira S."><div class="title">Ketua Kelas</div><div class="name">Alby Yudhira S.</div></div><div class="tree-node"><div class="node-photo-placeholder">K</div><div class="title">Wakil Ketua</div><div class="name">Kayla Ayudya R.</div></div></div><div class="org-level"><div class="tree-node"><div class="node-photo-placeholder">N</div><div class="title">Sekertaris</div><div class="name">Nayla Azka A.</div></div><div class="tree-node"><div class="node-photo-placeholder">A</div><div class="title">Sekertaris 2</div><div class="name">Asyraf Reje M.</div></div><div class="tree-node"><div class="node-photo-placeholder">A</div><div class="title">Bendahara</div><div class="name">Arkananta Yaala M.</div></div></div><div class="org-level"><div class="tree-node"><div class="node-photo-placeholder">C</div><div class="title">Seksi Kebersihan</div><div class="name">Carissa Rana S.</div></div><div class="tree-node"><div class="node-photo-placeholder">A</div><div class="title">Seksi Keamanan</div><div class="name">Ahmad Kurniawan</div></div></div></div>
 <!-- STOVENSA_STRUKTUR_END -->
 
         <h2 class="section-title">🌺 ANGGOTA KELAS</h2>
@@ -453,7 +468,7 @@ BAHASA INDONESIA</p>
 </div>
 
 <script>
-let daftarGaleriFoto = [];
+let daftarGaleriFoto = [{"id":1791545802200,"judul":"Poto","tanggal":"9 Oktober 2026","isi":"","mediaUrl":"media/galeri_1791545802188.jpg","mediaType":"image"},{"id":1790767201299,"judul":"Mantap man","tanggal":"30 September 2026","isi":"","mediaUrl":"media/galeri_1790767201287.jpg","mediaType":"image"}];
 let daftarAnggota = [{"id":1786771696446,"judul":"Vdbdbdhf","isi":"","mediaUrl":"media/1786771696443_b5nh4l.jpg","mediaType":"image"},{"id":1786771689730,"judul":"Hfnfjfnfj","isi":"","mediaUrl":"media/1786771689718_cxvsrg.jpg","mediaType":"image"},{"id":1786771680718,"judul":"Hfnfjfnfn","isi":"","mediaUrl":"media/1786771680716_83eilt.jpg","mediaType":"image"},{"id":1786771671798,"judul":"Hdnfbf","isi":"","mediaUrl":"media/1786771671795_2todhs.jpg","mediaType":"image"},{"id":1786771657292,"judul":"Hdnfjfnfng","isi":"","mediaUrl":"media/1786771657284_jzm9cb.jpg","mediaType":"image"},{"id":1786771647155,"judul":"Ifjtntjgn","isi":"","mediaUrl":"media/1786771647152_9kk5n6.jpg","mediaType":"image"},{"id":1786771632480,"judul":"Iiigngngnfj","isi":"","mediaUrl":"media/1786771632476_yp9w9a.jpg","mediaType":"image"},{"id":1786771617508,"judul":"Jfngkmhkhk","isi":"","mediaUrl":"media/1786771617505_qt3h92.jpg","mediaType":"image"},{"id":1786771608102,"judul":"Urbfjtntkgkn","isi":"","mediaUrl":"media/1786771608098_hnp6n4.jpg","mediaType":"image"},{"id":1786771598968,"judul":"Jdnfnfn","isi":"","mediaUrl":"media/1786771598965_0ityvo.jpg","mediaType":"image"},{"id":1786771587391,"judul":"Hrnrnfkjf","isi":"","mediaUrl":"media/1786771587386_mrig8p.jpg","mediaType":"image"},{"id":1786771576248,"judul":"Izasndndn","isi":"","mediaUrl":"media/1786771576244_dgn0rv.jpg","mediaType":"image"}];
 
 function switchTab(tabName) {
